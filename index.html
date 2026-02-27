@@ -1,176 +1,264 @@
-<style>
-    .sanctie-container {
-        margin-top: 100px;
-        padding: 40px;
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 30px;
-        border: 1px solid rgba(255, 215, 0, 0.1);
-    }
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RKD | Staff & Sancties</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --accent-gold: #ffd700;
+            --card-glass: rgba(255, 255, 255, 0.07);
+            --text-color: #ffffff;
+            --beheer-glow: #ff4757;
+            --admin-glow: #7d5fff;
+            --senior-glow: #ffaf40;
+            --staff-glow: #3ae374;
+        }
 
-    .sanctie-header-main {
-        text-align: center;
-        margin-bottom: 50px;
-    }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    .sanctie-header-main h2 {
-        font-family: 'Cinzel Decorative', cursive;
-        font-size: 2.5rem;
-        color: #ff4757;
-        text-transform: uppercase;
-    }
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
 
-    /* Categorie styling */
-    .cat-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 40px;
-    }
+        /* --- STICKY NAV --- */
+        nav {
+            position: fixed;
+            top: 0; width: 100%; height: 80px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(15, 12, 41, 0.9);
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid var(--accent-gold);
+            z-index: 1000;
+        }
 
-    .sanctie-cat {
-        border-left: 6px solid var(--cat-color);
-        background: rgba(255, 255, 255, 0.02);
-        padding: 25px;
-        border-radius: 0 20px 20px 0;
-    }
+        .nav-logo {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            letter-spacing: 3px;
+        }
 
-    .sanctie-cat h3 {
-        font-family: 'Cinzel Decorative', cursive;
-        color: var(--cat-color);
-        font-size: 1.6rem;
-        margin-bottom: 20px;
-        text-transform: uppercase;
-    }
+        .container { max-width: 1200px; margin: 0 auto; padding: 120px 20px 60px; }
 
-    .rules-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-    }
+        /* --- STAFF SECTION (GEFIXT & GECENTREERD) --- */
+        .section-title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 60px;
+        }
 
-    .rule-card {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        transition: 0.3s;
-    }
+        .rank-container {
+            margin-bottom: 80px;
+            text-align: center;
+        }
 
-    .rule-card:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: var(--cat-color);
-    }
+        .rank-title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            color: var(--rank-color);
+            display: inline-block;
+            border-bottom: 2px solid var(--rank-color);
+            padding-bottom: 5px;
+        }
 
-    .rule-card h4 {
-        color: #ffd700;
-        margin-bottom: 10px;
-        font-size: 1.1rem;
-    }
+        .staff-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
 
-    .rule-details {
-        font-size: 0.85rem;
-        color: #ccc;
-        line-height: 1.6;
-    }
+        .staff-card {
+            background: var(--card-glass);
+            border-radius: 20px;
+            padding: 30px 20px;
+            width: 240px;
+            text-align: center;
+            transition: 0.4s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
 
-    .rule-details b {
-        color: #fff;
-    }
+        .staff-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 15px var(--rank-color);
+        }
 
-    .highlight-ban {
-        color: #ff4757;
-        font-weight: 900;
-        text-transform: uppercase;
-    }
-</style>
+        .skin-img {
+            height: 150px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+        }
 
-<div class="sanctie-container">
-    <div class="sanctie-header-main">
-        <h2>Sanctie Systeem</h2>
-        <p>Handhaving binnen het Remake Kingdom</p>
+        .staff-card h3 { font-size: 1.6rem; margin-bottom: 5px; }
+        .staff-card p { font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- SANCTIE SYSTEEM UPGRADE --- */
+        .sanctie-section {
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 1px solid rgba(255,215,0,0.2);
+        }
+
+        .sanctie-category {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 25px;
+            padding: 35px;
+            margin-bottom: 50px;
+            border-left: 10px solid var(--cat-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .sanctie-category h2 {
+            margin-bottom: 25px;
+            font-family: 'Cinzel Decorative', cursive;
+            color: var(--cat-color);
+            letter-spacing: 2px;
+        }
+
+        .sanctie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .sanctie-item {
+            background: rgba(255,255,255,0.03);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+
+        .sanctie-item:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: var(--cat-color);
+        }
+
+        .sanctie-item h4 { 
+            color: var(--accent-gold); 
+            font-size: 1.2rem; 
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255,215,0,0.2);
+            padding-bottom: 5px;
+        }
+
+        .sanctie-steps { font-size: 0.9rem; color: #ddd; line-height: 1.8; }
+        .sanctie-steps span { color: #fff; font-weight: 900; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; }
+
+        footer { text-align: center; padding: 60px; opacity: 0.4; }
+
+    </style>
+</head>
+<body>
+
+    <nav><div class="nav-logo">REMAKE KINGDOM</div></nav>
+
+    <div class="container">
+        
+        <h1 class="section-title">DE STAFF HIERARCHIE</h1>
+        <div id="staff-target"></div>
+
+        <div class="sanctie-section">
+            <h1 class="section-title" style="color: #ff4757;">SANCTIE PROTOCOL</h1>
+
+            <div class="sanctie-category" style="--cat-color: #3ae374;">
+                <h2>1. COMMUNICATIE</h2>
+                <div class="sanctie-grid">
+                    <div class="sanctie-item">
+                        <h4>Spam / Caps / Flood</h4>
+                        <div class="sanctie-steps">1e: <span>Warn</span> | 2e: <span>Kick</span> | 3e: <span>1u Mute</span></div>
+                    </div>
+                    <div class="sanctie-item">
+                        <h4>Provocatie / Toxicity</h4>
+                        <div class="sanctie-steps">1e: <span>Warn</span> | 2e: <span>2u Mute</span> | 3e: <span>12u Mute</span></div>
+                    </div>
+                    <div class="sanctie-item">
+                        <h4>Belediging (Staff/Leden)</h4>
+                        <div class="sanctie-steps">1e: <span>Warn</span> | 2e: <span>1u Mute</span> | 3e: <span>24u Ban</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sanctie-category" style="--cat-color: #ffa502;">
+                <h2>2. GAMEPLAY & INFLUENCE</h2>
+                <div class="sanctie-grid">
+                    <div class="sanctie-item">
+                        <h4>Influence Omzeiling</h4>
+                        <div class="sanctie-steps">Sanctie: <span>7d Ban + Reset van vorderingen</span></div>
+                    </div>
+                    <div class="sanctie-item">
+                        <h4>Combat Log</h4>
+                        <div class="sanctie-steps">1e: <span>Warn + Inv Clear</span> | 2e: <span>1d Ban</span></div>
+                    </div>
+                    <div class="sanctie-item">
+                        <h4>Bug Abuse (Licht)</h4>
+                        <div class="sanctie-steps">1e: <span>Warn + Rollback</span> | 2e: <span>3d Ban</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sanctie-category" style="--cat-color: #ff4757;">
+                <h2>3. ZWARE OVERTREDINGEN</h2>
+                <div class="sanctie-grid">
+                    <div class="sanctie-item">
+                        <h4>Hacking / Cheating</h4>
+                        <div class="sanctie-steps">Straf: <span>PERMANENT BAN</span></div>
+                    </div>
+                    <div class="sanctie-item">
+                        <h4>Duplicating / Exploiting</h4>
+                        <div class="sanctie-steps">Straf: <span>PERMANENT BAN</span></div>
+                    </div>
+                    <div class="sanctie-item">
+                        <h4>Doxing / IRL Dreigementen</h4>
+                        <div class="sanctie-steps">Straf: <span>IP-BAN + PERM</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="cat-wrapper">
-        <div class="sanctie-cat" style="--cat-color: #3ae374;">
-            <h3>1. Communicatie & Gedrag</h3>
-            <div class="rules-grid">
-                <div class="rule-card">
-                    <h4>Spam / Caps</h4>
-                    <div class="rule-details">
-                        1e: <b>Warn</b><br>
-                        2e: <b>Kick</b><br>
-                        3e: <b>1u Mute</b>
-                    </div>
-                </div>
-                <div class="rule-card">
-                    <h4>Provocatie / Toxicity</h4>
-                    <div class="rule-details">
-                        1e: <b>Warn</b><br>
-                        2e: <b>2u Mute</b><br>
-                        3e: <b>12u Mute</b>
-                    </div>
-                </div>
-                <div class="rule-card">
-                    <h4>Staff Belediging</h4>
-                    <div class="rule-details">
-                        1e: <b>Warn</b><br>
-                        2e: <b>Kick</b><br>
-                        3e: <b>24u Mute / Ban</b>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <footer>&copy; 2026 RKD REMAKE KINGDOM</footer>
 
-        <div class="sanctie-cat" style="--cat-color: #ffa502;">
-            <h3>2. Gameplay & Influence</h3>
-            <div class="rules-grid">
-                <div class="rule-card">
-                    <h4>Influence Omzeiling</h4>
-                    <div class="rule-details">
-                        Sanctie: <b>7d Verbanning + Reset van Influence vorderingen.</b>
-                    </div>
-                </div>
-                <div class="rule-card">
-                    <h4>Combat Log (RP-Gevecht)</h4>
-                    <div class="rule-details">
-                        1e: <b>Warn + Inventory Clear</b><br>
-                        2e: <b>1d Verbanning</b>
-                    </div>
-                </div>
-                <div class="rule-card">
-                    <h4>Bug Abuse (Licht)</h4>
-                    <div class="rule-details">
-                        1e: <b>Warn + Rollback</b><br>
-                        2e: <b>3d Verbanning</b>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <script>
+        const staffMembers = [
+            { rank: "Beheer", color: "var(--beheer-glow)", members: [{ name: "Binnenlander", role: "Eigenaar" }]},
+            { rank: "Admin", color: "var(--admin-glow)", members: [{ name: "Shaykuhh", role: "Admin" }, { name: "Penpijn", role: "Admin" }]},
+            { rank: "Senior Staff", color: "var(--senior-glow)", members: [{ name: "Noootjee", role: "Senior Staff" }, { name: "BjornNL", role: "Senior Staff" }, { name: "Peanerd", role: "Senior Staff" }]},
+            { rank: "Staff", color: "var(--staff-glow)", members: [{ name: "ItssAyden", role: "Staff" }, { name: "Koningbitterbal", role: "Staff" }, { name: "Annewannn", role: "Staff" }, { name: "Clashermike", role: "Staff" }, { name: "ItssGirav", role: "Staff" }, { name: "Odsko", role: "Staff" }]}
+        ];
 
-        <div class="sanctie-cat" style="--cat-color: #ff4757;">
-            <h3>3. Ernstige Overtredingen</h3>
-            <div class="rules-grid">
-                <div class="rule-card">
-                    <h4>Hacking / Cheating</h4>
-                    <div class="rule-details">
-                        Strafmaat: <span class="highlight-ban">Permanent Ban</span><br>
-                        <i>Geen discussie mogelijk.</i>
-                    </div>
+        const target = document.getElementById('staff-target');
+
+        staffMembers.forEach(group => {
+            const container = document.createElement('div');
+            container.className = 'rank-container';
+            container.style.setProperty('--rank-color', group.color);
+            
+            container.innerHTML = `
+                <h2 class="rank-title">${group.rank}</h2>
+                <div class="staff-grid">
+                    ${group.members.map(m => `
+                        <div class="staff-card">
+                            <img src="https://mc-heads.net/body/${m.name}/right" class="skin-img">
+                            <h3>${m.name}</h3>
+                            <p style="color: ${group.color}">${m.role}</p>
+                        </div>
+                    `).join('')}
                 </div>
-                <div class="rule-card">
-                    <h4>Duplicating</h4>
-                    <div class="rule-details">
-                        Strafmaat: <span class="highlight-ban">Permanent Ban</span><br>
-                        <i>Items kopiëren via glitches.</i>
-                    </div>
-                </div>
-                <div class="rule-card">
-                    <h4>Doxing / Dreigementen</h4>
-                    <div class="rule-details">
-                        Strafmaat: <span class="highlight-ban">IP-Ban / Permanent</span><br>
-                        <i>Persoonlijke info van spelers delen.</i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+            `;
+            target.appendChild(container);
+        });
+    </script>
+</body>
+</html>
