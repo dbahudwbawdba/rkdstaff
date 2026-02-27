@@ -1,272 +1,255 @@
---[[
-    CREATOR: Gemini AI Collaboration
-    VERSION: 4.0 (Gold Edition)
-    DESCRIPTION: Advanced Wood Animation, Leaderstats Integration & Staff Rank Management
-    SCRIPTS: 800+ Line Logic Structure
---]]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RKD Remakekingdom | Staff</title>
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #92fe9d;
+            --bg: #0f0c29;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
 
-local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-local Debris = game:GetService("Debris")
-local UserInputService = game:GetService("UserInputService")
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
-local player = Players.LocalPlayer
-local screenGui = script.Parent
+        /* Animated Background Particles */
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
 
---------------------------------------------------------------------------------
--- CONFIGURATIE & DATABASE
---------------------------------------------------------------------------------
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+            text-align: center;
+        }
 
-local ASSET_IDS = {
-	WOOD_ICON = "rbxassetid://75868542804246",
-	FADE_GRADIENT = "rbxassetid://123456789" -- Voor eventuele custom gradients
-}
+        h1 {
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 50px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(0,210,255,0.5));
+        }
 
--- Staff Database
-local STAFF_ROSTER = {
-	["Beheer"] = {
-		["Binnenlander"] = true,
-	},
-	["Admin"] = {
-		["Shaykuhh"] = true,
-		["Penpijn"] = true,
-	},
-	["Senior Staff"] = {
-		["Noootjee"] = true,
-		["BjornNL"] = true,
-		["Peanerd"] = true,
-	},
-	["Staff"] = {
-		["ItssAyden"] = true,
-		["Koningbitterbal"] = true,
-		["Annewannn"] = true,
-		["Clashermike"] = true,
-		["ItssGirav"] = true,
-		["Odsko"] = true,
-	}
-}
+        .rank-section {
+            margin-bottom: 80px;
+            perspective: 1000px;
+        }
 
---------------------------------------------------------------------------------
--- SYSTEEM VARIABELEN
---------------------------------------------------------------------------------
+        .rank-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
 
-local hiddenStats = player:WaitForChild("HiddenStats", 20)
-local leaderstats = player:WaitForChild("leaderstats", 20)
-local woodValue = hiddenStats and hiddenStats:WaitForChild("Wood", 20)
-local lastWoodAmount = woodValue and woodValue.Value or 0
+        .rank-title::before, .rank-title::after {
+            content: "";
+            height: 2px;
+            width: 100px;
+            background: linear-gradient(90deg, transparent, var(--primary));
+        }
 
-local isAnimating = false
-local notificationQueue = {}
+        .staff-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
 
---------------------------------------------------------------------------------
--- STAFF RANK LOGICA
---------------------------------------------------------------------------------
+        /* 3D Glassmorphism Cards */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            width: 200px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            cursor: pointer;
+            position: relative;
+        }
 
-local function GetPlayerRank(targetPlayer)
-	local name = targetPlayer.Name
-	for rank, members in pairs(STAFF_ROSTER) do
-		if members[name] then
-			return rank
-		end
-	end
-	return "Speler"
-end
+        .card:hover {
+            transform: translateY(-15px) rotateX(10deg) rotateY(10deg);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(0, 210, 255, 0.2);
+        }
 
-local myRank = GetPlayerRank(player)
+        .card h3 {
+            margin: 10px 0 5px 0;
+            font-size: 1.4rem;
+        }
 
---------------------------------------------------------------------------------
--- UI CONSTRUCTIE MODULES
---------------------------------------------------------------------------------
+        .card p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin: 0;
+            color: var(--secondary);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
 
-local function CreateNotificationFrame(amount)
-	-- De Hoofd Container
-	local frame = Instance.new("Frame")
-	frame.Name = "AdvancedWoodNotify"
-	frame.Size = UDim2.new(0.18, 0, 0.055, 0)
-	frame.Position = UDim2.new(1.2, 0, 0.75, 0) -- Startpositie (rechts buiten beeld)
-	frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-	frame.BackgroundTransparency = 0.1
-	frame.BorderSizePixel = 0
-	
-	-- Ronde hoeken
-	local corner = Instance.new("UICorner")
-	corner.CornerRadius = UDim.new(0.4, 0)
-	corner.Parent = frame
+        /* Rank Colors */
+        .beheer { border-top: 5px solid #ff4b2b; }
+        .admin { border-top: 5px solid #a832a4; }
+        .senior { border-top: 5px solid #f9d423; }
+        .staff { border-top: 5px solid #00d2ff; }
 
-	-- De Fade Gradient (Precies zoals gevraagd)
-	local gradient = Instance.new("UIGradient")
-	gradient.Color = ColorSequence.new({
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 30, 30)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
-	})
-	gradient.Transparency = NumberSequence.new({
-		NumberSequenceKeypoint.new(0, 0),    -- Donker aan de linkerkant
-		NumberSequenceKeypoint.new(0.5, 0.2), 
-		NumberSequenceKeypoint.new(1, 1)     -- Volledig doorzichtig aan de rechterkant
-	})
-	gradient.Parent = frame
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
 
-	-- Layout voor perfecte spacing
-	local layout = Instance.new("UIListLayout")
-	layout.FillDirection = Enum.FillDirection.Horizontal
-	layout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-	layout.VerticalAlignment = Enum.VerticalAlignment.Center
-	layout.Padding = UDim.new(0.02, 0) -- Extreem strakke ruimte tussen icoon en tekst
-	layout.Parent = frame
+        footer {
+            margin-top: 50px;
+            padding-bottom: 30px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
 
-	-- Padding binnenin
-	local padding = Instance.new("UIPadding")
-	padding.PaddingLeft = UDim.new(0.06, 0)
-	padding.Parent = frame
+    <canvas id="canvas"></canvas>
 
-	-- Het Icoon
-	local icon = Instance.new("ImageLabel")
-	icon.Name = "WoodIcon"
-	icon.Size = UDim2.new(0.65, 0, 0.65, 0)
-	icon.Image = ASSET_IDS.WOOD_ICON
-	icon.BackgroundTransparency = 1
-	icon.Parent = frame
-	
-	local aspect = Instance.new("UIAspectRatioConstraint", icon)
-	aspect.AspectRatio = 1
+    <div class="container">
+        <h1>RKD STAFF TEAM</h1>
 
-	-- De Tekst
-	local text = Instance.new("TextLabel")
-	text.Name = "AmountText"
-	text.Size = UDim2.new(0.7, 0, 0.7, 0)
-	text.BackgroundTransparency = 1
-	text.Text = "+" .. amount .. " WOOD"
-	text.TextColor3 = Color3.fromRGB(255, 255, 255)
-	text.Font = Enum.Font.LuckiestGuy
-	text.TextScaled = true
-	text.TextXAlignment = Enum.TextXAlignment.Left
-	text.Parent = frame
+        <section class="rank-section">
+            <div class="rank-title">BEHEER</div>
+            <div class="staff-grid">
+                <div class="card beheer">
+                    <div class="avatar">B</div>
+                    <h3>Binnenlander</h3>
+                    <p>Eigenaar</p>
+                </div>
+            </div>
+        </section>
 
-	-- Outline voor de tekst
-	local stroke = Instance.new("UIStroke")
-	stroke.Thickness = 2.5
-	stroke.Color = Color3.fromRGB(0, 0, 0)
-	stroke.Transparency = 0.3
-	stroke.Parent = text
+        <section class="rank-section">
+            <div class="rank-title">ADMINS</div>
+            <div class="staff-grid">
+                <div class="card admin">
+                    <div class="avatar">S</div>
+                    <h3>Shaykuhh</h3>
+                    <p>Admin</p>
+                </div>
+                <div class="card admin">
+                    <div class="avatar">P</div>
+                    <h3>Penpijn</h3>
+                    <p>Admin</p>
+                </div>
+            </div>
+        </section>
 
-	-- Exclusieve staff-glans (Alleen voor Beheer & Admin)
-	if myRank == "Beheer" or myRank == "Admin" then
-		local uiGradient = Instance.new("UIGradient")
-		uiGradient.Color = ColorSequence.new(Color3.fromRGB(255, 215, 0), Color3.fromRGB(255, 255, 255))
-		uiGradient.Parent = text
-	end
+        <section class="rank-section">
+            <div class="rank-title">SENIOR STAFF</div>
+            <div class="staff-grid">
+                <div class="card senior">
+                    <div class="avatar">N</div>
+                    <h3>Noootjee</h3>
+                    <p>Senior</p>
+                </div>
+                <div class="card senior">
+                    <div class="avatar">B</div>
+                    <h3>BjornNL</h3>
+                    <p>Senior</p>
+                </div>
+                <div class="card senior">
+                    <div class="avatar">P</div>
+                    <h3>Peanerd</h3>
+                    <p>Senior</p>
+                </div>
+            </div>
+        </section>
 
-	return frame
-end
+        <section class="rank-section">
+            <div class="rank-title">STAFF</div>
+            <div class="staff-grid">
+                <div class="card staff"><div class="avatar">I</div><h3>ItssAyden</h3><p>Staff</p></div>
+                <div class="card staff"><div class="avatar">K</div><h3>Koningbitterbal</h3><p>Staff</p></div>
+                <div class="card staff"><div class="avatar">A</div><h3>Annewannn</h3><p>Staff</p></div>
+                <div class="card staff"><div class="avatar">C</div><h3>Clashermike</h3><p>Staff</p></div>
+                <div class="card staff"><div class="avatar">I</div><h3>ItssGirav</h3><p>Staff</p></div>
+                <div class="card staff"><div class="avatar">O</div><h3>Odsko</h3><p>Staff</p></div>
+            </div>
+        </section>
 
---------------------------------------------------------------------------------
--- ANIMATIE ENGINE
---------------------------------------------------------------------------------
+        <footer>
+            &copy; 2026 RKD Remakekingdom - Designed for Greatness
+        </footer>
+    </div>
 
-local function PlayNotification(amount)
-	local notifyFrame = CreateNotificationFrame(amount)
-	notifyFrame.Parent = screenGui
+    <script>
+        // Interactive Star Background
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
-	-- TWEEN INFO DEFINITIES
-	local slideInInfo = TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
-	local slideOutInfo = TweenInfo.new(0.8, Enum.EasingStyle.Quart, Enum.EasingDirection.In)
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            for(let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 1,
+                    speed: Math.random() * 0.5 + 0.1
+                });
+            }
+        }
 
-	-- ANIMATIE STAP 1: Inschuiven
-	local tweenIn = TweenService:Create(notifyFrame, slideInInfo, {
-		Position = UDim2.new(0.8, 0, 0.8, 0)
-	})
-	
-	tweenIn:Play()
-	
-	-- Geluidseffect (Optioneel, voeg ID toe indien je een sound hebt)
-	-- local sound = Instance.new("Sound", player.PlayerGui)
-	-- sound.SoundId = "rbxassetid://..."
-	-- sound:Play()
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                p.y -= p.speed;
+                if(p.y < 0) p.y = canvas.height;
+            });
+            requestAnimationFrame(animate);
+        }
 
-	task.wait(1.8) -- Tijd dat de melding zichtbaar blijft
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
 
-	-- ANIMATIE STAP 2: Omhoog vliegen en vervagen
-	local tweenOut = TweenService:Create(notifyFrame, slideOutInfo, {
-		Position = UDim2.new(0.8, 0, 0.7, 0),
-		BackgroundTransparency = 1
-	})
-	
-	-- Tekst en Icoon apart vervagen voor maximale smoothness
-	local text = notifyFrame:FindFirstChild("AmountText")
-	local icon = notifyFrame:FindFirstChild("WoodIcon")
-	
-	if text then
-		TweenService:Create(text, slideOutInfo, {TextTransparency = 1}):Play()
-		if text:FindFirstChildWhichIsA("UIStroke") then
-			TweenService:Create(text.UIStroke, slideOutInfo, {Transparency = 1}):Play()
-		end
-	end
-	
-	if icon then
-		TweenService:Create(icon, slideOutInfo, {ImageTransparency = 1}):Play()
-	end
+        init();
+        animate();
 
-	tweenOut:Play()
-	
-	-- Opruimen
-	Debris:AddItem(notifyFrame, 1)
-end
-
---------------------------------------------------------------------------------
--- MAIN UPDATE LOGICA
---------------------------------------------------------------------------------
-
-local function UpdateStatDisplay()
-	local woodGui = screenGui:FindFirstChild("WoodGUI")
-	local cashGui = screenGui:FindFirstChild("CashGUI")
-
-	if woodGui and woodValue then
-		local label = woodGui:FindFirstChildWhichIsA("TextLabel") or woodGui
-		label.Text = tostring(woodValue.Value)
-	end
-	
-	if cashGui and leaderstats:FindFirstChild("Cash") then
-		local label = cashGui:FindFirstChildWhichIsA("TextLabel") or cashGui
-		label.Text = tostring(leaderstats.Cash.Value)
-	end
-end
-
---------------------------------------------------------------------------------
--- EVENT LISTENERS
---------------------------------------------------------------------------------
-
-if woodValue then
-	woodValue.Changed:Connect(function(newVal)
-		UpdateStatDisplay()
-		
-		local diff = newVal - lastWoodAmount
-		if diff > 0 then
-			-- Start de geavanceerde animatie
-			task.spawn(function()
-				PlayNotification(diff)
-			end)
-		end
-		
-		lastWoodAmount = newVal
-	end)
-end
-
-if leaderstats:FindFirstChild("Cash") then
-	leaderstats.Cash.Changed:Connect(UpdateStatDisplay)
-end
-
--- Eerste update bij laden
-UpdateStatDisplay()
-
---------------------------------------------------------------------------------
--- STAFF WELKOM LOGICA (Debug console)
---------------------------------------------------------------------------------
-
-print("========================================")
-print("Systeem geladen voor: " .. player.Name)
-print("Rank: " .. myRank)
-if myRank ~= "Speler" then
-	print("Welkom, stafflid! UI-Modificaties toegepast.")
-end
-print("========================================")
+        // 3D Tilt Effect logic can be added here for more "oemph"
+    </script>
+</body>
+</html>
