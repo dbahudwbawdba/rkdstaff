@@ -6,178 +6,186 @@
 <title>Remake Kingdom - Staff</title>
 
 <style>
+/* RKDS Kleuren & Basis */
+:root {
+    --bg-dark: #0a0f1e;
+    --accent-gold: #facc15;
+    --accent-blue: #3b82f6;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0f172a;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: radial-gradient(circle at top, #1e293b 0%, var(--bg-dark) 100%);
     color: white;
     text-align: center;
+    line-height: 1.6;
 }
 
 header {
-    padding: 40px;
-    background: #111827;
-    font-size: 32px;
-    font-weight: bold;
+    padding: 60px 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid var(--accent-gold);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    font-size: 38px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
-.section {
-    margin: 50px 0;
-}
+/* 3D Glass Cards */
+.section { margin: 60px 0; padding: 0 20px; }
 
 .role-title {
-    font-size: 26px;
-    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.role-title::before, .role-title::after {
+    content: "";
+    height: 2px;
+    width: 50px;
+    background: var(--accent-gold);
 }
 
 .staff-container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 40px;
 }
 
 .staff-card {
-    background: #1f2937;
-    padding: 20px;
-    border-radius: 12px;
-    width: 150px;
-    transition: 0.3s;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    padding: 30px 20px;
+    border-radius: 20px;
+    width: 180px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    position: relative;
 }
 
 .staff-card:hover {
-    transform: scale(1.05);
-    background: #374151;
+    transform: translateY(-15px) scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-gold);
+    box-shadow: 0 20px 40px rgba(250, 204, 21, 0.2);
 }
 
+/* 3D Skin Render */
 .staff-card img {
-    width: 100px;
-    height: 100px;
-    border-radius: 8px;
+    width: 130px;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+    margin-bottom: 15px;
+}
+
+.username {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .badge {
-    display: block;
-    margin-top: 5px;
-    font-size: 12px;
-    color: #facc15;
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: bold;
+    background: var(--accent-gold);
+    color: #000;
 }
 
+/* Sanctie Box Modern */
 .sanctie-box {
-    max-width: 700px;
+    max-width: 800px;
     margin: auto;
     text-align: left;
-    background: #1e293b;
-    padding: 30px;
-    border-radius: 12px;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 24px;
+    border-left: 5px solid var(--accent-gold);
 }
 
+.sanctie-box h3 { border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; color: var(--accent-gold); }
+
 footer {
-    margin-top: 50px;
-    padding: 20px;
-    background: #111827;
+    margin-top: 100px;
+    padding: 40px;
+    background: #050810;
     font-size: 14px;
+    color: #64748b;
 }
 </style>
 </head>
-
 <body>
 
-<header>
-🏰 Remake Kingdom – Staff Team
-</header>
-
-<!-- SENIOR ADMIN -->
-<div class="section">
-<div class="role-title">👑 Senior Admin</div>
-<div class="staff-container">
-
-<div class="staff-card">
-<img src="https://mc-heads.net/avatar/USERNAME">
-<div>USERNAME</div>
-<span class="badge">Lead</span>
-</div>
-
-</div>
-</div>
+<header>🏰 Remake Kingdom</header>
 
 <!-- ADMIN -->
 <div class="section">
-<div class="role-title">🔱 Admin</div>
-<div class="staff-container">
-
-<div class="staff-card">
-<img src="https://mc-heads.net/avatar/USERNAME">
-<div>USERNAME</div>
-</div>
-
-</div>
+    <div class="role-title">🔱 Admin</div>
+    <div class="staff-container">
+        <!-- Vervang GEBRUIKERSNAAM door de echte MC naam -->
+        <div class="staff-card">
+            <img src="https://visage.surgeplay.com" alt="Skin">
+            <div class="username">AdminNaam</div>
+            <span class="badge">Leiding</span>
+        </div>
+    </div>
 </div>
 
 <!-- SENIOR STAFF -->
 <div class="section">
-<div class="role-title">🏆 Senior Staff</div>
-<div class="staff-container">
-
-<div class="staff-card">
-<img src="https://mc-heads.net/avatar/USERNAME">
-<div>USERNAME</div>
-</div>
-
-</div>
+    <div class="role-title">🏆 Senior Staff</div>
+    <div class="staff-container">
+        <div class="staff-card">
+            <img src="https://visage.surgeplay.com" alt="Skin">
+            <div class="username">SrStaffNaam</div>
+        </div>
+    </div>
 </div>
 
 <!-- STAFF -->
 <div class="section">
-<div class="role-title">🛡 Staff</div>
-<div class="staff-container">
-
-<div class="staff-card">
-<img src="https://mc-heads.net/avatar/USERNAME">
-<div>USERNAME</div>
-</div>
-
-</div>
+    <div class="role-title">🛡 Staff</div>
+    <div class="staff-container">
+        <div class="staff-card">
+            <img src="https://visage.surgeplay.com" alt="Skin">
+            <div class="username">StaffNaam</div>
+        </div>
+    </div>
 </div>
 
 <!-- SANCTIE SYSTEEM -->
 <div class="section">
-<div class="role-title">⚖️ Sanctiesysteem</div>
-<div class="sanctie-box">
+    <div class="role-title">⚖️ Sanctiesysteem</div>
+    <div class="sanctie-box">
+        <h3>Chat Overtredingen</h3>
+        <p><strong>1e:</strong> Waarschuwing | <strong>2e:</strong> 30m mute | <strong>3e:</strong> 3u mute | <strong>4e:</strong> 24u mute</p>
 
-<h3>Chat Overtredingen</h3>
-1e keer: Waarschuwing<br>
-2e keer: 30m mute<br>
-3e keer: 3u mute<br>
-4e keer: 24u mute<br>
+        <h3>Hacken / Cheats</h3>
+        <p>Directe <strong>30 dagen ban</strong>. Herhaling is permanent.</p>
 
-<br>
-
-<h3>Hacken / Cheat Clients</h3>
-Directe 30 dagen ban<br>
-Herhaling: Permanent<br>
-
-<br>
-
-<h3>Bug Abuse</h3>
-7 dagen ban<br>
-
-<br>
-
-<h3>Disrespect naar staff</h3>
-1u mute → 24u mute → 7d ban<br>
-
-<br>
-
-<h3>Staff Abuse</h3>
-Direct onderzoek door Senior Admin<br>
-
-</div>
+        <h3>Overige</h3>
+        <p><strong>Bug Abuse:</strong> 7 dagen ban <br>
+        <strong>Disrespect:</strong> 1u mute &rarr; 24u mute &rarr; 7d ban</p>
+    </div>
 </div>
 
-<footer>
-© 2026 Remake Kingdom
-</footer>
+<footer>© 2026 Remake Kingdom • High-End Community</footer>
 
 </body>
 </html>
