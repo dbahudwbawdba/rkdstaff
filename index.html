@@ -3,251 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RKD | Staff Overzicht</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <title>RKD | Het Magische Team</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0d0d0d;
-            --card-bg: #161616;
-            --accent-gold: #c9a86a;
+            /* Vrolijk & Warm Kleurenpalet */
+            --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            --accent-gold: #ffd700;
+            --card-glass: rgba(255, 255, 255, 0.08);
             --text-color: #ffffff;
-            --border-color: rgba(201, 168, 106, 0.2);
             
-            /* Rank Identifiers */
-            --beheer-hex: #ff4757;
-            --admin-hex: #a55eea;
-            --senior-hex: #ffa502;
-            --staff-hex: #2e86de;
+            /* Levendige Rank Kleuren */
+            --beheer-glow: #ff4757;
+            --admin-glow: #7d5fff;
+            --senior-glow: #ffaf40;
+            --staff-glow: #3ae374;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--bg-color);
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
-                url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            background: var(--bg-gradient);
             color: var(--text-color);
-            font-family: 'Montserrat', sans-serif;
-            line-height: 1.6;
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* --- STICKY HEADER --- */
+        /* --- MAGIC BACKGROUND PARTICLES --- */
+        #particles-js {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        /* --- STICKY NAV --- */
         nav {
             position: fixed;
-            top: 0;
-            width: 100%;
-            height: 70px;
-            background: rgba(13, 13, 13, 0.95);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            top: 0; width: 100%; height: 80px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 2px solid rgba(255, 215, 0, 0.2);
             z-index: 1000;
-            backdrop-filter: blur(10px);
         }
 
-        .nav-inner {
-            width: 100%;
-            max-width: 1100px;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
-        }
-
-        .brand {
-            font-family: 'Cinzel', serif;
-            color: var(--accent-gold);
-            font-size: 1.3rem;
-            letter-spacing: 2px;
+        .nav-logo {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 1.8rem;
+            background: linear-gradient(to bottom, #fff, var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
         }
 
         /* --- HERO --- */
         .hero {
-            padding: 140px 20px 60px;
+            padding: 160px 20px 60px;
             text-align: center;
         }
 
         .hero h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 4rem;
             margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, var(--accent-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
         }
 
-        /* --- CONTENT WRAPPER --- */
+        /* --- CONTAINER --- */
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        /* --- RANK SECTIONS (UNDER EACH OTHER) --- */
-        .rank-block {
-            margin-bottom: 80px;
-        }
+        .rank-section { margin-bottom: 100px; }
 
-        .rank-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .rank-header h2 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.8rem;
-            white-space: nowrap;
-            color: var(--accent-gold);
-        }
-
-        .rank-line {
-            height: 1px;
-            flex-grow: 1;
-            background: linear-gradient(to right, var(--accent-gold), transparent);
-            opacity: 0.3;
-        }
-
-        /* --- FLEX GRID --- */
-        .staff-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
-        }
-
-        /* --- CLEAN CARDS --- */
-        .card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 30px 20px;
+        .rank-title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            color: var(--rank-color);
+            position: relative;
+        }
+
+        .rank-title::after {
+            content: ""; display: block; width: 100px; height: 4px;
+            background: var(--rank-color); margin: 10px auto; border-radius: 10px;
+            box-shadow: 0 0 15px var(--rank-color);
+        }
+
+        /* --- MAGIC CARDS --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 40px;
+        }
+
+        .card {
+            background: var(--card-glass);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 40px 20px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             cursor: pointer;
-            overflow: hidden;
         }
 
         .card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-15px) scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
             border-color: var(--rank-color);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px var(--rank-color);
         }
 
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 3px;
-            background: var(--rank-color);
-        }
-
+        /* Floating Skin Animation */
         .skin-img {
-            height: 130px;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
-            transition: transform 0.3s ease;
+            height: 160px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+            animation: float 4s ease-in-out infinite;
         }
 
-        .card:hover .skin-img {
-            transform: scale(1.1);
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
         }
 
         .card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-size: 1.8rem;
+            font-weight: 900;
             margin-bottom: 5px;
             letter-spacing: 1px;
         }
 
         .card p {
-            font-size: 0.75rem;
-            font-weight: 400;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
+            font-size: 0.8rem;
             color: var(--rank-color);
         }
 
-        /* --- FOOTER --- */
         footer {
             text-align: center;
-            padding: 60px;
-            opacity: 0.4;
-            font-size: 0.8rem;
-            border-top: 1px solid var(--border-color);
-        }
-
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 2rem; }
-            .staff-grid { grid-template-columns: 1fr 1fr; }
+            padding: 80px;
+            font-size: 0.9rem;
+            opacity: 0.6;
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
+    <div id="particles-js"></div>
+
     <nav>
-        <div class="nav-inner">
-            <div class="brand">REMAKE KINGDOM</div>
-            <div style="font-weight: 700; font-size: 0.7rem; color: #666; letter-spacing: 1px;">STAFF HIERARCHY</div>
-        </div>
+        <div class="nav-logo">REMAKE KINGDOM</div>
     </nav>
 
     <header class="hero">
-        <h1>STAFF TEAM</h1>
-        <p style="opacity: 0.5; letter-spacing: 3px;">HET GEZICHT VAN HET RIJK</p>
+        <h1>ONZE HELDEN</h1>
+        <p style="font-size: 1.2rem; opacity: 0.8;">De mensen die de magie mogelijk maken.</p>
     </header>
 
-    <div class="container" id="main-content">
-        </div>
+    <div class="container" id="staff-content"></div>
 
-    <footer>
-        &copy; 2026 RKD REMAKE KINGDOM | ALL RIGHTS RESERVED
-    </footer>
+    <footer>&copy; 2026 RKD REMAKE KINGDOM | STAY MAGICAL</footer>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         const data = [
-            { rank: "Beheer", color: "var(--beheer-hex)", members: [
-                { name: "Binnenlander", title: "Eigenaar" }
-            ]},
-            { rank: "Admin", color: "var(--admin-hex)", members: [
-                { name: "Shaykuhh", title: "Admin" },
-                { name: "Penpijn", title: "Admin" }
-            ]},
-            { rank: "Senior Staff", color: "var(--senior-hex)", members: [
-                { name: "Noootjee", title: "Senior Staff" },
-                { name: "BjornNL", title: "Senior Staff" },
-                { name: "Peanerd", title: "Senior Staff" }
-            ]},
-            { rank: "Staff", color: "var(--staff-hex)", members: [
-                { name: "ItssAyden", title: "Staff" },
-                { name: "Koningbitterbal", title: "Staff" },
-                { name: "Annewannn", title: "Staff" },
-                { name: "Clashermike", title: "Staff" },
-                { name: "ItssGirav", title: "Staff" },
-                { name: "Odsko", title: "Staff" }
-            ]}
+            { rank: "Beheer", color: "var(--beheer-glow)", members: [{ name: "Binnenlander", title: "Eigenaar" }]},
+            { rank: "Admin", color: "var(--admin-glow)", members: [{ name: "Shaykuhh", title: "Admin" }, { name: "Penpijn", title: "Admin" }]},
+            { rank: "Senior Staff", color: "var(--senior-glow)", members: [{ name: "Noootjee", title: "Senior Staff" }, { name: "BjornNL", title: "Senior Staff" }, { name: "Peanerd", title: "Senior Staff" }]},
+            { rank: "Staff", color: "var(--staff-glow)", members: [{ name: "ItssAyden", title: "Staff" }, { name: "Koningbitterbal", title: "Staff" }, { name: "Annewannn", title: "Staff" }, { name: "Clashermike", title: "Staff" }, { name: "ItssGirav", title: "Staff" }, { name: "Odsko", title: "Staff" }]}
         ];
 
-        const container = document.getElementById('main-content');
+        const container = document.getElementById('staff-content');
 
         data.forEach(group => {
             const section = document.createElement('section');
-            section.className = 'rank-block';
+            section.className = 'rank-section';
+            section.style.setProperty('--rank-color', group.color);
             
             section.innerHTML = `
-                <div class="rank-header">
-                    <h2>${group.rank}</h2>
-                    <div class="rank-line"></div>
-                </div>
-                <div class="staff-grid">
+                <h2 class="rank-title">${group.rank}</h2>
+                <div class="grid">
                     ${group.members.map(m => `
-                        <div class="card" style="--rank-color: ${group.color}">
+                        <div class="card">
                             <img src="https://mc-heads.net/body/${m.name}/right" class="skin-img" alt="${m.name}">
                             <h3>${m.name}</h3>
                             <p>${m.title}</p>
@@ -258,20 +206,21 @@
             container.appendChild(section);
         });
 
-        // Subtiele interactie (niet te heftig)
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                
-                // Heel lichte tilt voor diepte zonder dat het lelijk wordt
-                card.style.transform = `perspective(1000px) translateY(-8px) rotateX(${y * -4}deg) rotateY(${x * 4}deg)`;
-            });
-
-            card.addEventListener('mouseleave', (e) => {
-                card.style.transform = `perspective(1000px) translateY(0) rotateX(0) rotateY(0)`;
-            });
+        // Vrolijke Partikel Configuratie
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffd700" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": false },
+                "move": { "enable": true, "speed": 1.5, "direction": "top", "random": true, "straight": false, "out_mode": "out" }
+            },
+            "interactivity": {
+                "events": { "onhover": { "enable": true, "mode": "bubble" } },
+                "modes": { "bubble": { "distance": 250, "size": 6, "duration": 2, "opacity": 1, "speed": 3 } }
+            }
         });
     </script>
 </body>
