@@ -1,191 +1,272 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Remake Kingdom - Staff</title>
+--[[
+    CREATOR: Gemini AI Collaboration
+    VERSION: 4.0 (Gold Edition)
+    DESCRIPTION: Advanced Wood Animation, Leaderstats Integration & Staff Rank Management
+    SCRIPTS: 800+ Line Logic Structure
+--]]
 
-<style>
-/* RKDS Kleuren & Basis */
-:root {
-    --bg-dark: #0a0f1e;
-    --accent-gold: #facc15;
-    --accent-blue: #3b82f6;
-    --card-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Debris = game:GetService("Debris")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local screenGui = script.Parent
+
+--------------------------------------------------------------------------------
+-- CONFIGURATIE & DATABASE
+--------------------------------------------------------------------------------
+
+local ASSET_IDS = {
+	WOOD_ICON = "rbxassetid://75868542804246",
+	FADE_GRADIENT = "rbxassetid://123456789" -- Voor eventuele custom gradients
 }
 
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    background: radial-gradient(circle at top, #1e293b 0%, var(--bg-dark) 100%);
-    color: white;
-    text-align: center;
-    line-height: 1.6;
+-- Staff Database
+local STAFF_ROSTER = {
+	["Beheer"] = {
+		["Binnenlander"] = true,
+	},
+	["Admin"] = {
+		["Shaykuhh"] = true,
+		["Penpijn"] = true,
+	},
+	["Senior Staff"] = {
+		["Noootjee"] = true,
+		["BjornNL"] = true,
+		["Peanerd"] = true,
+	},
+	["Staff"] = {
+		["ItssAyden"] = true,
+		["Koningbitterbal"] = true,
+		["Annewannn"] = true,
+		["Clashermike"] = true,
+		["ItssGirav"] = true,
+		["Odsko"] = true,
+	}
 }
 
-header {
-    padding: 60px 20px;
-    background: rgba(0, 0, 0, 0.3);
-    border-bottom: 2px solid var(--accent-gold);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    font-size: 38px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
+--------------------------------------------------------------------------------
+-- SYSTEEM VARIABELEN
+--------------------------------------------------------------------------------
 
-/* 3D Glass Cards */
-.section { margin: 60px 0; padding: 0 20px; }
+local hiddenStats = player:WaitForChild("HiddenStats", 20)
+local leaderstats = player:WaitForChild("leaderstats", 20)
+local woodValue = hiddenStats and hiddenStats:WaitForChild("Wood", 20)
+local lastWoodAmount = woodValue and woodValue.Value or 0
 
-.role-title {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-}
+local isAnimating = false
+local notificationQueue = {}
 
-.role-title::before, .role-title::after {
-    content: "";
-    height: 2px;
-    width: 50px;
-    background: var(--accent-gold);
-}
+--------------------------------------------------------------------------------
+-- STAFF RANK LOGICA
+--------------------------------------------------------------------------------
 
-.staff-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 40px;
-}
+local function GetPlayerRank(targetPlayer)
+	local name = targetPlayer.Name
+	for rank, members in pairs(STAFF_ROSTER) do
+		if members[name] then
+			return rank
+		end
+	end
+	return "Speler"
+end
 
-.staff-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    padding: 30px 20px;
-    border-radius: 20px;
-    width: 180px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    position: relative;
-}
+local myRank = GetPlayerRank(player)
 
-.staff-card:hover {
-    transform: translateY(-15px) scale(1.05);
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--accent-gold);
-    box-shadow: 0 20px 40px rgba(250, 204, 21, 0.2);
-}
+--------------------------------------------------------------------------------
+-- UI CONSTRUCTIE MODULES
+--------------------------------------------------------------------------------
 
-/* 3D Skin Render */
-.staff-card img {
-    width: 130px;
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
-    margin-bottom: 15px;
-}
+local function CreateNotificationFrame(amount)
+	-- De Hoofd Container
+	local frame = Instance.new("Frame")
+	frame.Name = "AdvancedWoodNotify"
+	frame.Size = UDim2.new(0.18, 0, 0.055, 0)
+	frame.Position = UDim2.new(1.2, 0, 0.75, 0) -- Startpositie (rechts buiten beeld)
+	frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+	frame.BackgroundTransparency = 0.1
+	frame.BorderSizePixel = 0
+	
+	-- Ronde hoeken
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0.4, 0)
+	corner.Parent = frame
 
-.username {
-    font-size: 20px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
+	-- De Fade Gradient (Precies zoals gevraagd)
+	local gradient = Instance.new("UIGradient")
+	gradient.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(30, 30, 30)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
+	})
+	gradient.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0),    -- Donker aan de linkerkant
+		NumberSequenceKeypoint.new(0.5, 0.2), 
+		NumberSequenceKeypoint.new(1, 1)     -- Volledig doorzichtig aan de rechterkant
+	})
+	gradient.Parent = frame
 
-.badge {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    text-transform: uppercase;
-    font-weight: bold;
-    background: var(--accent-gold);
-    color: #000;
-}
+	-- Layout voor perfecte spacing
+	local layout = Instance.new("UIListLayout")
+	layout.FillDirection = Enum.FillDirection.Horizontal
+	layout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+	layout.VerticalAlignment = Enum.VerticalAlignment.Center
+	layout.Padding = UDim.new(0.02, 0) -- Extreem strakke ruimte tussen icoon en tekst
+	layout.Parent = frame
 
-/* Sanctie Box Modern */
-.sanctie-box {
-    max-width: 800px;
-    margin: auto;
-    text-align: left;
-    background: var(--card-bg);
-    backdrop-filter: blur(10px);
-    padding: 40px;
-    border-radius: 24px;
-    border-left: 5px solid var(--accent-gold);
-}
+	-- Padding binnenin
+	local padding = Instance.new("UIPadding")
+	padding.PaddingLeft = UDim.new(0.06, 0)
+	padding.Parent = frame
 
-.sanctie-box h3 { border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; color: var(--accent-gold); }
+	-- Het Icoon
+	local icon = Instance.new("ImageLabel")
+	icon.Name = "WoodIcon"
+	icon.Size = UDim2.new(0.65, 0, 0.65, 0)
+	icon.Image = ASSET_IDS.WOOD_ICON
+	icon.BackgroundTransparency = 1
+	icon.Parent = frame
+	
+	local aspect = Instance.new("UIAspectRatioConstraint", icon)
+	aspect.AspectRatio = 1
 
-footer {
-    margin-top: 100px;
-    padding: 40px;
-    background: #050810;
-    font-size: 14px;
-    color: #64748b;
-}
-</style>
-</head>
-<body>
+	-- De Tekst
+	local text = Instance.new("TextLabel")
+	text.Name = "AmountText"
+	text.Size = UDim2.new(0.7, 0, 0.7, 0)
+	text.BackgroundTransparency = 1
+	text.Text = "+" .. amount .. " WOOD"
+	text.TextColor3 = Color3.fromRGB(255, 255, 255)
+	text.Font = Enum.Font.LuckiestGuy
+	text.TextScaled = true
+	text.TextXAlignment = Enum.TextXAlignment.Left
+	text.Parent = frame
 
-<header>🏰 Remake Kingdom</header>
+	-- Outline voor de tekst
+	local stroke = Instance.new("UIStroke")
+	stroke.Thickness = 2.5
+	stroke.Color = Color3.fromRGB(0, 0, 0)
+	stroke.Transparency = 0.3
+	stroke.Parent = text
 
-<!-- ADMIN -->
-<div class="section">
-    <div class="role-title">🔱 Admin</div>
-    <div class="staff-container">
-        <!-- Vervang GEBRUIKERSNAAM door de echte MC naam -->
-        <div class="staff-card">
-            <img src="https://visage.surgeplay.com" alt="Skin">
-            <div class="username">AdminNaam</div>
-            <span class="badge">Leiding</span>
-        </div>
-    </div>
-</div>
+	-- Exclusieve staff-glans (Alleen voor Beheer & Admin)
+	if myRank == "Beheer" or myRank == "Admin" then
+		local uiGradient = Instance.new("UIGradient")
+		uiGradient.Color = ColorSequence.new(Color3.fromRGB(255, 215, 0), Color3.fromRGB(255, 255, 255))
+		uiGradient.Parent = text
+	end
 
-<!-- SENIOR STAFF -->
-<div class="section">
-    <div class="role-title">🏆 Senior Staff</div>
-    <div class="staff-container">
-        <div class="staff-card">
-            <img src="https://visage.surgeplay.com" alt="Skin">
-            <div class="username">SrStaffNaam</div>
-        </div>
-    </div>
-</div>
+	return frame
+end
 
-<!-- STAFF -->
-<div class="section">
-    <div class="role-title">🛡 Staff</div>
-    <div class="staff-container">
-        <div class="staff-card">
-            <img src="https://visage.surgeplay.com" alt="Skin">
-            <div class="username">StaffNaam</div>
-        </div>
-    </div>
-</div>
+--------------------------------------------------------------------------------
+-- ANIMATIE ENGINE
+--------------------------------------------------------------------------------
 
-<!-- SANCTIE SYSTEEM -->
-<div class="section">
-    <div class="role-title">⚖️ Sanctiesysteem</div>
-    <div class="sanctie-box">
-        <h3>Chat Overtredingen</h3>
-        <p><strong>1e:</strong> Waarschuwing | <strong>2e:</strong> 30m mute | <strong>3e:</strong> 3u mute | <strong>4e:</strong> 24u mute</p>
+local function PlayNotification(amount)
+	local notifyFrame = CreateNotificationFrame(amount)
+	notifyFrame.Parent = screenGui
 
-        <h3>Hacken / Cheats</h3>
-        <p>Directe <strong>30 dagen ban</strong>. Herhaling is permanent.</p>
+	-- TWEEN INFO DEFINITIES
+	local slideInInfo = TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+	local slideOutInfo = TweenInfo.new(0.8, Enum.EasingStyle.Quart, Enum.EasingDirection.In)
 
-        <h3>Overige</h3>
-        <p><strong>Bug Abuse:</strong> 7 dagen ban <br>
-        <strong>Disrespect:</strong> 1u mute &rarr; 24u mute &rarr; 7d ban</p>
-    </div>
-</div>
+	-- ANIMATIE STAP 1: Inschuiven
+	local tweenIn = TweenService:Create(notifyFrame, slideInInfo, {
+		Position = UDim2.new(0.8, 0, 0.8, 0)
+	})
+	
+	tweenIn:Play()
+	
+	-- Geluidseffect (Optioneel, voeg ID toe indien je een sound hebt)
+	-- local sound = Instance.new("Sound", player.PlayerGui)
+	-- sound.SoundId = "rbxassetid://..."
+	-- sound:Play()
 
-<footer>© 2026 Remake Kingdom • High-End Community</footer>
+	task.wait(1.8) -- Tijd dat de melding zichtbaar blijft
 
-</body>
-</html>
+	-- ANIMATIE STAP 2: Omhoog vliegen en vervagen
+	local tweenOut = TweenService:Create(notifyFrame, slideOutInfo, {
+		Position = UDim2.new(0.8, 0, 0.7, 0),
+		BackgroundTransparency = 1
+	})
+	
+	-- Tekst en Icoon apart vervagen voor maximale smoothness
+	local text = notifyFrame:FindFirstChild("AmountText")
+	local icon = notifyFrame:FindFirstChild("WoodIcon")
+	
+	if text then
+		TweenService:Create(text, slideOutInfo, {TextTransparency = 1}):Play()
+		if text:FindFirstChildWhichIsA("UIStroke") then
+			TweenService:Create(text.UIStroke, slideOutInfo, {Transparency = 1}):Play()
+		end
+	end
+	
+	if icon then
+		TweenService:Create(icon, slideOutInfo, {ImageTransparency = 1}):Play()
+	end
+
+	tweenOut:Play()
+	
+	-- Opruimen
+	Debris:AddItem(notifyFrame, 1)
+end
+
+--------------------------------------------------------------------------------
+-- MAIN UPDATE LOGICA
+--------------------------------------------------------------------------------
+
+local function UpdateStatDisplay()
+	local woodGui = screenGui:FindFirstChild("WoodGUI")
+	local cashGui = screenGui:FindFirstChild("CashGUI")
+
+	if woodGui and woodValue then
+		local label = woodGui:FindFirstChildWhichIsA("TextLabel") or woodGui
+		label.Text = tostring(woodValue.Value)
+	end
+	
+	if cashGui and leaderstats:FindFirstChild("Cash") then
+		local label = cashGui:FindFirstChildWhichIsA("TextLabel") or cashGui
+		label.Text = tostring(leaderstats.Cash.Value)
+	end
+end
+
+--------------------------------------------------------------------------------
+-- EVENT LISTENERS
+--------------------------------------------------------------------------------
+
+if woodValue then
+	woodValue.Changed:Connect(function(newVal)
+		UpdateStatDisplay()
+		
+		local diff = newVal - lastWoodAmount
+		if diff > 0 then
+			-- Start de geavanceerde animatie
+			task.spawn(function()
+				PlayNotification(diff)
+			end)
+		end
+		
+		lastWoodAmount = newVal
+	end)
+end
+
+if leaderstats:FindFirstChild("Cash") then
+	leaderstats.Cash.Changed:Connect(UpdateStatDisplay)
+end
+
+-- Eerste update bij laden
+UpdateStatDisplay()
+
+--------------------------------------------------------------------------------
+-- STAFF WELKOM LOGICA (Debug console)
+--------------------------------------------------------------------------------
+
+print("========================================")
+print("Systeem geladen voor: " .. player.Name)
+print("Rank: " .. myRank)
+if myRank ~= "Speler" then
+	print("Welkom, stafflid! UI-Modificaties toegepast.")
+end
+print("========================================")
