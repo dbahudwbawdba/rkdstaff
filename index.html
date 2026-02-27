@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RKD | Het Magische Team</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+    <title>RKD | Staff & Sancties</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&family=Cinzel+Decorative:wght@700&family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Vrolijk & Warm Kleurenpalet */
-            --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             --accent-gold: #ffd700;
-            --card-glass: rgba(255, 255, 255, 0.08);
+            --card-glass: rgba(255, 255, 255, 0.07);
+            --danger: #ff4757;
+            --warning: #ffa502;
+            --info: #2e86de;
             --text-color: #ffffff;
             
-            /* Levendige Rank Kleuren */
             --beheer-glow: #ff4757;
             --admin-glow: #7d5fff;
             --senior-glow: #ffaf40;
@@ -27,199 +28,246 @@
             color: var(--text-color);
             font-family: 'Outfit', sans-serif;
             overflow-x: hidden;
-            min-height: 100vh;
+            scroll-behavior: smooth;
         }
 
-        /* --- MAGIC BACKGROUND PARTICLES --- */
         #particles-js {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
         }
 
-        /* --- STICKY NAV --- */
         nav {
             position: fixed;
             top: 0; width: 100%; height: 80px;
             display: flex; align-items: center; justify-content: center;
-            background: rgba(26, 26, 46, 0.8);
+            background: rgba(15, 12, 41, 0.9);
             backdrop-filter: blur(15px);
-            border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+            border-bottom: 2px solid var(--accent-gold);
             z-index: 1000;
         }
 
         .nav-logo {
             font-family: 'Cinzel Decorative', cursive;
             font-size: 1.8rem;
-            background: linear-gradient(to bottom, #fff, var(--accent-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--accent-gold);
             letter-spacing: 3px;
         }
 
-        /* --- HERO --- */
-        .hero {
-            padding: 160px 20px 60px;
-            text-align: center;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 120px 20px 60px; }
 
-        .hero h1 {
+        /* --- STAFF SECTION --- */
+        .section-title {
             font-family: 'Cinzel Decorative', cursive;
-            font-size: 4rem;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 60px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
-
-        /* --- CONTAINER --- */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .rank-section { margin-bottom: 100px; }
 
         .rank-title {
             font-family: 'Cinzel Decorative', cursive;
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            text-align: center;
+            font-size: 2rem;
+            margin-top: 50px;
+            margin-bottom: 30px;
             color: var(--rank-color);
-            position: relative;
+            border-left: 5px solid var(--rank-color);
+            padding-left: 20px;
         }
 
-        .rank-title::after {
-            content: ""; display: block; width: 100px; height: 4px;
-            background: var(--rank-color); margin: 10px auto; border-radius: 10px;
-            box-shadow: 0 0 15px var(--rank-color);
-        }
-
-        /* --- MAGIC CARDS --- */
-        .grid {
+        .staff-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
         }
 
-        .card {
+        .staff-card {
             background: var(--card-glass);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            padding: 40px 20px;
+            border-radius: 20px;
+            padding: 30px 15px;
             text-align: center;
-            backdrop-filter: blur(5px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            cursor: pointer;
+            transition: 0.4s ease;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .card:hover {
-            transform: translateY(-15px) scale(1.05);
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--rank-color);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px var(--rank-color);
+        .staff-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 15px var(--rank-color);
         }
 
-        /* Floating Skin Animation */
         .skin-img {
-            height: 160px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+            height: 140px;
+            margin-bottom: 15px;
             animation: float 4s ease-in-out infinite;
         }
 
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
-        .card h3 {
-            font-size: 1.8rem;
-            font-weight: 900;
-            margin-bottom: 5px;
+        /* --- SANCTIE SYSTEEM --- */
+        .sanctie-panel {
+            margin-top: 150px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--danger);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 0 40px rgba(255, 71, 87, 0.2);
+        }
+
+        .sanctie-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .sanctie-header h2 {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2.5rem;
+            color: var(--danger);
+            margin-bottom: 10px;
+        }
+
+        .sanctie-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .sanctie-table th {
+            text-align: left;
+            padding: 15px;
+            background: rgba(255, 71, 87, 0.1);
+            color: var(--danger);
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .card p {
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
-            color: var(--rank-color);
+        .sanctie-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        footer {
-            text-align: center;
-            padding: 80px;
-            font-size: 0.9rem;
-            opacity: 0.6;
-            letter-spacing: 2px;
+        .sanctie-row:hover {
+            background: rgba(255,255,255,0.02);
         }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        .b-warn { background: var(--warning); color: #000; }
+        .b-kick { background: var(--info); color: #fff; }
+        .b-ban { background: var(--danger); color: #fff; }
+        .b-perm { background: #000; color: var(--danger); border: 1px solid var(--danger); }
+
+        footer { text-align: center; padding: 100px 20px; opacity: 0.5; }
+
     </style>
 </head>
 <body>
 
     <div id="particles-js"></div>
 
-    <nav>
-        <div class="nav-logo">REMAKE KINGDOM</div>
-    </nav>
+    <nav><div class="nav-logo">REMAKE KINGDOM</div></nav>
 
-    <header class="hero">
-        <h1>ONZE HELDEN</h1>
-        <p style="font-size: 1.2rem; opacity: 0.8;">De mensen die de magie mogelijk maken.</p>
-    </header>
+    <div class="container">
+        
+        <h1 class="section-title">DE KONINKLIJKE STAFF</h1>
+        <div id="staff-render-target"></div>
 
-    <div class="container" id="staff-content"></div>
+        <div class="sanctie-panel">
+            <div class="sanctie-header">
+                <h2>SANCTIE PROTOCOL</h2>
+                <p>Overtreding van de wetten resulteert in directe handhaving.</p>
+            </div>
 
-    <footer>&copy; 2026 RKD REMAKE KINGDOM | STAY MAGICAL</footer>
+            <table class="sanctie-table">
+                <thead>
+                    <tr>
+                        <th>Overtreding</th>
+                        <th>Type</th>
+                        <th>1e Keer</th>
+                        <th>2e Keer</th>
+                        <th>3e Keer</th>
+                    </tr>
+                </thead>
+                <tbody id="sanctie-target">
+                    </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <footer>&copy; 2026 RKD REMAKE KINGDOM | DE WET IS ONVERBIDDELIJK</footer>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        const data = [
-            { rank: "Beheer", color: "var(--beheer-glow)", members: [{ name: "Binnenlander", title: "Eigenaar" }]},
-            { rank: "Admin", color: "var(--admin-glow)", members: [{ name: "Shaykuhh", title: "Admin" }, { name: "Penpijn", title: "Admin" }]},
-            { rank: "Senior Staff", color: "var(--senior-glow)", members: [{ name: "Noootjee", title: "Senior Staff" }, { name: "BjornNL", title: "Senior Staff" }, { name: "Peanerd", title: "Senior Staff" }]},
-            { rank: "Staff", color: "var(--staff-glow)", members: [{ name: "ItssAyden", title: "Staff" }, { name: "Koningbitterbal", title: "Staff" }, { name: "Annewannn", title: "Staff" }, { name: "Clashermike", title: "Staff" }, { name: "ItssGirav", title: "Staff" }, { name: "Odsko", title: "Staff" }]}
+        // STAFF DATA
+        const staffMembers = [
+            { rank: "Beheer", color: "var(--beheer-glow)", members: [{ name: "Binnenlander", role: "Eigenaar" }]},
+            { rank: "Admin", color: "var(--admin-glow)", members: [{ name: "Shaykuhh", role: "Admin" }, { name: "Penpijn", role: "Admin" }]},
+            { rank: "Senior Staff", color: "var(--senior-glow)", members: [{ name: "Noootjee", role: "Senior Staff" }, { name: "BjornNL", role: "Senior Staff" }, { name: "Peanerd", role: "Senior Staff" }]},
+            { rank: "Staff", color: "var(--staff-glow)", members: [{ name: "ItssAyden", role: "Staff" }, { name: "Koningbitterbal", role: "Staff" }, { name: "Annewannn", role: "Staff" }, { name: "Clashermike", role: "Staff" }, { name: "ItssGirav", role: "Staff" }, { name: "Odsko", role: "Staff" }]}
         ];
 
-        const container = document.getElementById('staff-content');
+        // SANCTIE DATA
+        const sancties = [
+            { crime: "Spammen / Caps", type: "Chat", s1: "Warn", s2: "Kick", s3: "1H Mute", b: "b-warn" },
+            { crime: "Belediging Staff", type: "Gedrag", s1: "Warn", s2: "1D Ban", s3: "7D Ban", b: "b-warn" },
+            { crime: "Griefen (Klein)", type: "World", s1: "3D Ban", s2: "7D Ban", s3: "Permanent", b: "b-ban" },
+            { crime: "Hacks / Cheats", type: "Technisch", s1: "Permanent", s2: "-", s3: "-", b: "b-perm" },
+            { crime: "Combat Log", type: "PvP", s1: "Warn + Kill", s2: "1D Ban", s3: "3D Ban", b: "b-kick" },
+            { crime: "Reclame maken", type: "Chat", s1: "IP-Ban", s2: "-", s3: "-", b: "b-perm" },
+            { crime: "Landverraad", type: "Roleplay", s1: "Kerker (1H)", s2: "Verbanning", s3: "Executie", b: "b-kick" },
+            { crime: "Bug Abuse", type: "Technisch", s1: "Warn", s2: "3D Ban", s3: "Permanent", b: "b-ban" },
+            { crime: "Inappropriate Skin", type: "Gedrag", s1: "Kick", s2: "Warn", s3: "7D Ban", b: "b-kick" },
+            { crime: "Respectloos gedrag", type: "Social", s1: "Warn", s2: "Mute", s3: "1D Ban", b: "b-warn" }
+        ];
 
-        data.forEach(group => {
-            const section = document.createElement('section');
-            section.className = 'rank-section';
-            section.style.setProperty('--rank-color', group.color);
-            
-            section.innerHTML = `
-                <h2 class="rank-title">${group.rank}</h2>
-                <div class="grid">
-                    ${group.members.map(m => `
-                        <div class="card">
-                            <img src="https://mc-heads.net/body/${m.name}/right" class="skin-img" alt="${m.name}">
-                            <h3>${m.name}</h3>
-                            <p>${m.title}</p>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            container.appendChild(section);
+        // RENDERING
+        const staffTarget = document.getElementById('staff-render-target');
+        staffMembers.forEach(group => {
+            let html = `<h2 class="rank-title" style="--rank-color: ${group.color}">${group.rank}</h2><div class="staff-grid">`;
+            group.members.forEach(m => {
+                html += `<div class="staff-card" style="--rank-color: ${group.color}">
+                    <img src="https://mc-heads.net/body/${m.name}/right" class="skin-img">
+                    <h3>${m.name}</h3>
+                    <p style="color: ${group.color}">${m.role}</p>
+                </div>`;
+            });
+            html += `</div>`;
+            staffTarget.innerHTML += html;
         });
 
-        // Vrolijke Partikel Configuratie
+        const sanctieTarget = document.getElementById('sanctie-target');
+        sancties.forEach(s => {
+            sanctieTarget.innerHTML += `
+                <tr class="sanctie-row">
+                    <td><strong>${s.crime}</strong></td>
+                    <td><span class="badge ${s.b}">${s.type}</span></td>
+                    <td>${s.s1}</td>
+                    <td>${s.s2}</td>
+                    <td>${s.s3}</td>
+                </tr>
+            `;
+        });
+
+        // PARTICLES
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "number": { "value": 60 },
                 "color": { "value": "#ffd700" },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5, "random": true },
-                "size": { "value": 3, "random": true },
+                "opacity": { "value": 0.3 },
+                "size": { "value": 2 },
                 "line_linked": { "enable": false },
-                "move": { "enable": true, "speed": 1.5, "direction": "top", "random": true, "straight": false, "out_mode": "out" }
-            },
-            "interactivity": {
-                "events": { "onhover": { "enable": true, "mode": "bubble" } },
-                "modes": { "bubble": { "distance": 250, "size": 6, "duration": 2, "opacity": 1, "speed": 3 } }
+                "move": { "speed": 1, "direction": "top" }
             }
         });
     </script>
