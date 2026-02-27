@@ -3,375 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RKD RemakeKingdom | Staff</title>
+    <title>RKD RemakeKingdom | Staff Team</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=IM+Fell+English+SC&family=Noto+Serif:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Quicksand:wght@500;700&display=swap');
 
-        /* === CORE VARIABLES (REMAKE KINGDOM THEME) === */
         :root {
-            --dark-stone: #1a1a1a;
-            --mid-stone: #2c2c2c;
-            --beige-dark: #d2b48c;
-            --beige-light: #f5f5dc;
-            --gold-old: #b8860b;
-            --gold-bright: #ffd700;
-            --accent-red: #8b0000;
-            --brown-wood: #654321;
-            
-            --text-main: #f5f5dc; /* Beige-wit voor leesbaarheid */
-            --shadow-castle: 0 10px 20px rgba(0,0,0,0.8), 0 6px 6px rgba(0,0,0,0.5);
-            
-            --font-heading: 'Cinzel', serif; /* Middeleeuws koninklijk */
-            --font-sub: 'IM Fell English SC', serif; /* Perkament achtig */
-            --font-body: 'Noto Serif', serif; /* Strakke Serif */
+            /* Lichtere, warmere kleuren */
+            --bg-light: #eaddca; /* Beige zandkleur */
+            --perkament: #fdf5e6;
+            --bruin-border: #8b5a2b;
+            --text-dark: #3e2723;
+            --gold-rank: #b8860b;
+            --shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
 
-        /* === RESET & BACKGROUND === */
         body {
             margin: 0;
             padding: 0;
-            font-family: var(--font-body);
-            color: var(--text-main);
-            /* Donkergrijze stenen achtergrond */
-            background-color: var(--dark-stone);
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)),
-                url('https://www.transparenttextures.com/patterns/dark-stone-wall.png');
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-light);
+            /* Subtiele papier/perkament textuur */
+            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');
+            color: var(--text-dark);
             overflow-x: hidden;
-            min-height: 100vh;
         }
 
-        /* === CANVA (INTERACTIVE ATMOSPHERE) === */
-        #canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            opacity: 0.3; /* Subtiel */
-        }
-
-        /* === MAIN CONTAINER === */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 80px 20px;
+            padding: 60px 20px;
             text-align: center;
         }
 
-        /* === TITLE (REMAKE KINGDOM STYLE) === */
         h1 {
-            font-family: var(--font-heading);
-            font-size: 4rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            margin-bottom: 20px;
-            background: linear-gradient(to bottom, var(--gold-bright), var(--gold-old));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(255,215,0,0.6));
-            position: relative;
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            letter-spacing: 3px;
         }
 
-        h1::after {
-            content: "STAFF TEAM";
-            display: block;
-            font-family: var(--font-sub);
-            font-size: 1.5rem;
-            color: var(--beige-light);
-            -webkit-text-fill-color: var(--beige-light);
-            letter-spacing: 4px;
-            margin-top: 10px;
-            opacity: 0.8;
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--bruin-border);
+            font-weight: bold;
         }
 
         /* === RANK SECTIONS === */
         .rank-section {
-            margin-bottom: 100px;
-            perspective: 1500px; /* Belangrijk voor 3D effect */
+            margin-bottom: 80px;
         }
 
-        .rank-title {
-            font-family: var(--font-sub);
+        .rank-header {
+            font-family: 'Cinzel', serif;
             font-size: 2.2rem;
             margin-bottom: 40px;
-            color: var(--beige-dark);
-            text-shadow: 0 2px 4px rgba(0,0,0,1);
-            position: relative;
-            display: inline-block;
-            padding: 0 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            color: var(--text-dark);
         }
 
-        /* Decoratieve lijnen naast titels */
-        .rank-title::before, .rank-title::after {
+        .rank-header::before, .rank-header::after {
             content: "";
-            position: absolute;
-            top: 50%;
-            width: 150px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--beige-dark), transparent);
+            height: 3px;
+            width: 80px;
+            background: var(--bruin-border);
+            border-radius: 2px;
         }
-        
-        .rank-title::before { left: -160px; }
-        .rank-title::after { right: -160px; }
 
-        /* === STAFF GRID === */
+        /* === GRID & CARDS === */
         .staff-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 40px;
+            gap: 30px;
         }
 
-        /* === THE INTERACTIVE 3D CARD === */
         .card {
-            background-color: var(--mid-stone);
-            /* Donkere hout textuur */
-            background-image: 
-                linear-gradient(135deg, rgba(0,0,0,0.5), rgba(0,0,0,0.2)),
-                url('https://www.transparenttextures.com/patterns/dark-wood.png');
-            
-            border: 2px solid var(--brown-wood);
-            border-radius: 8px; /* Iets minder rond, steviger */
-            padding: 40px 30px;
-            width: 220px;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            transform-style: preserve-3d;
+            background: var(--perkament);
+            border: 2px solid var(--bruin-border);
+            border-radius: 15px;
+            padding: 25px;
+            width: 200px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
             cursor: pointer;
-            box-shadow: var(--shadow-castle);
-            position: relative;
+            overflow: hidden;
         }
 
-        /* Hover Effecten */
         .card:hover {
-            transform: translateY(-20px) rotateX(10deg) rotateY(10deg);
-            border-color: var(--gold-old);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 30px rgba(184, 134, 11, 0.4);
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(139, 90, 43, 0.3);
+            background: #fff;
         }
 
-        /* Glans effect op hover */
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
-            border-radius: 6px;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-        
-        .card:hover::before { opacity: 1; }
-
-        /* === CARD ELEMENTS === */
-        .avatar-container {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            background-color: rgba(0,0,0,0.4);
-            border: 3px solid var(--brown-wood);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: border-color 0.3s;
-            position: relative;
-            transform: translateZ(30px); /* Lift element in 3D */
+        /* Minecraft Skin Styling */
+        .skin-preview {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+            transition: transform 0.3s ease;
         }
 
-        .card:hover .avatar-container {
-            border-color: var(--gold-bright);
-        }
-
-        .avatar-container img {
-            width: 60px;
-            height: 60px;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-        }
-
-        .card:hover .avatar-container img {
-            opacity: 1;
+        .card:hover .skin-preview {
+            transform: scale(1.2) rotate(5deg);
         }
 
         .card h3 {
-            font-family: var(--font-body);
-            font-size: 1.6rem;
-            font-weight: 700;
             margin: 10px 0 5px 0;
-            color: var(--beige-light);
-            text-shadow: 0 2px 2px rgba(0,0,0,0.5);
-            transform: translateZ(20px);
+            font-size: 1.3rem;
+            font-weight: 700;
         }
 
         .card p {
-            font-family: var(--font-sub);
-            font-size: 1rem;
-            letter-spacing: 2px;
             margin: 0;
-            color: var(--gold-old);
-            text-transform: uppercase;
+            font-size: 0.9rem;
             font-weight: bold;
-            transform: translateZ(10px);
+            text-transform: uppercase;
+            color: var(--gold-rank);
         }
 
-        /* === RANK-SPECIFIC ACCENTS === */
-        /* De Beheerder krijgt een rode gloed */
-        .beheer .avatar-container { border-color: var(--accent-red); }
-        .beheer .avatar-container img { filter: sepia(100%) hue-rotate(-50deg) saturate(300%); }
-        .beheer p { color: var(--accent-red); }
+        /* Rank-specifieke kleuren */
+        .rank-beheer { border-top: 8px solid #d32f2f; }
+        .rank-admin { border-top: 8px solid #7b1fa2; }
+        .rank-senior { border-top: 8px solid #fbc02d; }
+        .rank-staff { border-top: 8px solid #1976d2; }
 
-        /* Admins goud, Seniors beige, Staff houtbruin */
-        .admin p { color: var(--gold-bright); }
-        .senior p { color: var(--beige-dark); }
-        .staff p { color: var(--brown-wood); }
-
-        /* === FOOTER === */
         footer {
-            margin-top: 50px;
-            padding-bottom: 40px;
-            opacity: 0.6;
-            font-family: var(--font-sub);
+            margin-top: 100px;
+            padding: 40px;
             font-size: 0.9rem;
-            color: var(--beige-dark);
+            opacity: 0.7;
+            border-top: 1px solid var(--bruin-border);
         }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas"></canvas>
-
     <div class="container">
         <h1>REMAKE KINGDOM</h1>
+        <div class="subtitle">Officiële Staff Structuur</div>
 
         <section class="rank-section">
-            <div class="rank-title">KONINKLIJK BEHEER</div>
+            <div class="rank-header">BEHEER</div>
             <div class="staff-grid">
-                <div class="card beheer">
-                    <div class="avatar-container">
-                        <img src="https://img.icons8.com/ios-filled/100/eeeeee/crown.png" alt="Beheer"/>
-                    </div>
+                <div class="card rank-beheer">
+                    <img class="skin-preview" src="https://mc-heads.net/avatar/Binnenlander/100" alt="Skin">
                     <h3>Binnenlander</h3>
-                    <p>Eigenaar</p>
+                    <p style="color: #d32f2f;">Eigenaar</p>
                 </div>
             </div>
         </section>
 
         <section class="rank-section">
-            <div class="rank-title">HOOGSTE ADVISUERS</div>
+            <div class="rank-header">ADMIN</div>
             <div class="staff-grid">
-                <div class="card admin">
-                    <div class="avatar-container">
-                        <img src="https://img.icons8.com/ios-filled/100/eeeeee/castle.png" alt="Admin"/>
-                    </div>
+                <div class="card rank-admin">
+                    <img class="skin-preview" src="https://mc-heads.net/avatar/Shaykuhh/100" alt="Skin">
                     <h3>Shaykuhh</h3>
-                    <p>Admin</p>
+                    <p style="color: #7b1fa2;">Admin</p>
                 </div>
-                <div class="card admin">
-                    <div class="avatar-container">
-                        <img src="https://img.icons8.com/ios-filled/100/eeeeee/castle.png" alt="Admin"/>
-                    </div>
+                <div class="card rank-admin">
+                    <img class="skin-preview" src="https://mc-heads.net/avatar/Penpijn/100" alt="Skin">
                     <h3>Penpijn</h3>
-                    <p>Admin</p>
+                    <p style="color: #7b1fa2;">Admin</p>
                 </div>
             </div>
         </section>
 
         <section class="rank-section">
-            <div class="rank-title">ERVAREN RIDDERS</div>
+            <div class="rank-header">SENIOR STAFF</div>
             <div class="staff-grid">
-                <div class="card senior">
-                    <div class="avatar-container">
-                        <img src="https://img.icons8.com/ios-filled/100/eeeeee/shield.png" alt="Senior"/>
-                    </div>
+                <div class="card rank-senior">
+                    <img class="skin-preview" src="https://mc-heads.net/avatar/Noootjee/100" alt="Skin">
                     <h3>Noootjee</h3>
-                    <p>Senior Staff</p>
+                    <p style="color: #fbc02d;">Senior Staff</p>
                 </div>
-                <div class="card senior">
-                    <div class="avatar-container">
-                        <img src="https://img.icons8.com/ios-filled/100/eeeeee/shield.png" alt="Senior"/>
-                    </div>
+                <div class="card rank-senior">
+                    <img class="skin-preview" src="https://mc-heads.net/avatar/BjornNL/100" alt="Skin">
                     <h3>BjornNL</h3>
-                    <p>Senior Staff</p>
+                    <p style="color: #fbc02d;">Senior Staff</p>
                 </div>
-                <div class="card senior">
-                    <div class="avatar-container">
-                        <img src="https://img.icons8.com/ios-filled/100/eeeeee/shield.png" alt="Senior"/>
-                    </div>
+                <div class="card rank-senior">
+                    <img class="skin-preview" src="https://mc-heads.net/avatar/Peanerd/100" alt="Skin">
                     <h3>Peanerd</h3>
-                    <p>Senior Staff</p>
+                    <p style="color: #fbc02d;">Senior Staff</p>
                 </div>
             </div>
         </section>
 
         <section class="rank-section">
-            <div class="rank-title">HET VOETVOLK</div>
+            <div class="rank-header">STAFF</div>
             <div class="staff-grid">
-                <div class="card staff"><div class="avatar-container"><img src="https://img.icons8.com/ios-filled/100/eeeeee/swords.png"/></div><h3>ItssAyden</h3><p>Staff</p></div>
-                <div class="card staff"><div class="avatar-container"><img src="https://img.icons8.com/ios-filled/100/eeeeee/swords.png"/></div><h3>Koningbitterbal</h3><p>Staff</p></div>
-                <div class="card staff"><div class="avatar-container"><img src="https://img.icons8.com/ios-filled/100/eeeeee/swords.png"/></div><h3>Annewannn</h3><p>Staff</p></div>
-                <div class="card staff"><div class="avatar-container"><img src="https://img.icons8.com/ios-filled/100/eeeeee/swords.png"/></div><h3>Clashermike</h3><p>Staff</p></div>
-                <div class="card staff"><div class="avatar-container"><img src="https://img.icons8.com/ios-filled/100/eeeeee/swords.png"/></div><h3>ItssGirav</h3><p>Staff</p></div>
-                <div class="card staff"><div class="avatar-container"><img src="https://img.icons8.com/ios-filled/100/eeeeee/swords.png"/></div><h3>Odsko</h3><p>Staff</p></div>
+                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/ItssAyden/100"><h3>ItssAyden</h3><p>Staff</p></div>
+                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/Koningbitterbal/100"><h3>Koningbitterbal</h3><p>Staff</p></div>
+                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/Annewannn/100"><h3>Annewannn</h3><p>Staff</p></div>
+                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/Clashermike/100"><h3>Clashermike</h3><p>Staff</p></div>
+                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/ItssGirav/100"><h3>ItssGirav</h3><p>Staff</p></div>
+                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/Odsko/100"><h3>Odsko</h3><p>Staff</p></div>
             </div>
         </section>
 
         <footer>
-            &copy; 2026 RKD Remakekingdom - Voor Volk en Vaderland
+            &copy; 2026 RKD RemakeKingdom - De Troon Wacht op Niemand.
         </footer>
     </div>
 
     <script>
-        // === ATMOSPHERIC INTERACTIVE BACKGROUND (ASHES/DUST) ===
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = []; // Clear old particles
-            // Meer deeltjes voor een vollere sfeer
-            for(let i = 0; i < 150; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    // Deeltjes zijn beige-achtig
-                    size: Math.random() * 2 + 0.5,
-                    color: Math.random() > 0.5 ? '#d2b48c' : '#f5f5dc',
-                    speedY: Math.random() * 0.7 + 0.1,
-                    speedX: (Math.random() - 0.5) * 0.3,
-                    opacity: Math.random() * 0.5 + 0.1
-                });
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                ctx.globalAlpha = p.opacity;
-                ctx.fillStyle = p.color;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
+        // Voegt een subtiel interactief effect toe aan de kaarten
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                let rect = card.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let y = e.clientY - rect.top;
                 
-                // Bewegen
-                p.y -= p.speedY; // Stijgen (als as/rook)
-                p.x += p.speedX; // Lichtjes opzij dwalen
-
-                // Reset als ze buiten beeld gaan
-                if(p.y < -10) {
-                    p.y = canvas.height + 10;
-                    p.x = Math.random() * canvas.width;
-                }
+                let centerX = rect.width / 2;
+                let centerY = rect.height / 2;
+                
+                let rotateX = (y - centerY) / 10;
+                let rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) translateY(-15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
             });
-            ctx.globalAlpha = 1.0; // Reset opacity
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', init);
-
-        init();
-        animate();
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) translateY(0) rotateX(0) rotateY(0) scale(1)`;
+            });
+        });
     </script>
 </body>
 </html>
