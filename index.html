@@ -3,240 +3,426 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RKD RemakeKingdom | Staff Team</title>
+    <title>RKD REMAKE KINGDOM | OFFICIAL STAFF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Montserrat:wght@300;600;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Quicksand:wght@500;700&display=swap');
-
+        /* CSS RESET & VARIABLES */
         :root {
-            /* Lichtere, warmere kleuren */
-            --bg-light: #eaddca; /* Beige zandkleur */
-            --perkament: #fdf5e6;
-            --bruin-border: #8b5a2b;
-            --text-dark: #3e2723;
-            --gold-rank: #b8860b;
-            --shadow: 0 10px 30px rgba(0,0,0,0.15);
+            --gold: #ffcc33;
+            --gold-glow: rgba(255, 204, 51, 0.4);
+            --beige: #f5f5dc;
+            --dark-brown: #2a1b0a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --beheer-color: #ff3333;
+            --admin-color: #e033ff;
+            --senior-color: #ffcc00;
+            --staff-color: #33ccff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Quicksand', sans-serif;
-            background-color: var(--bg-light);
-            /* Subtiele papier/perkament textuur */
-            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');
-            color: var(--text-dark);
+            background: #0a0a0a;
+            color: var(--beige);
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
+            min-height: 200vh;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 20px;
-            text-align: center;
+        /* DYNAMISCHE ACHTERGROND */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
         }
 
-        h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 3.5rem;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-            letter-spacing: 3px;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 50px;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: var(--bruin-border);
-            font-weight: bold;
-        }
-
-        /* === RANK SECTIONS === */
-        .rank-section {
-            margin-bottom: 80px;
-        }
-
-        .rank-header {
-            font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
-            margin-bottom: 40px;
+        /* NAVIGATION BAR */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 20px;
-            color: var(--text-dark);
+            justify-content: space-between;
+            padding: 0 50px;
         }
 
-        .rank-header::before, .rank-header::after {
-            content: "";
-            height: 3px;
-            width: 80px;
-            background: var(--bruin-border);
-            border-radius: 2px;
+        .nav-logo {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 1.8rem;
+            color: var(--gold);
+            text-shadow: 0 0 10px var(--gold-glow);
         }
 
-        /* === GRID & CARDS === */
-        .staff-grid {
+        .nav-links {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
             gap: 30px;
         }
 
-        .card {
-            background: var(--perkament);
-            border: 2px solid var(--bruin-border);
-            border-radius: 15px;
-            padding: 25px;
-            width: 200px;
-            box-shadow: var(--shadow);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-15px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(139, 90, 43, 0.3);
-            background: #fff;
-        }
-
-        /* Minecraft Skin Styling */
-        .skin-preview {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 15px;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover .skin-preview {
-            transform: scale(1.2) rotate(5deg);
-        }
-
-        .card h3 {
-            margin: 10px 0 5px 0;
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
-
-        .card p {
-            margin: 0;
-            font-size: 0.9rem;
-            font-weight: bold;
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
             text-transform: uppercase;
-            color: var(--gold-rank);
-        }
-
-        /* Rank-specifieke kleuren */
-        .rank-beheer { border-top: 8px solid #d32f2f; }
-        .rank-admin { border-top: 8px solid #7b1fa2; }
-        .rank-senior { border-top: 8px solid #fbc02d; }
-        .rank-staff { border-top: 8px solid #1976d2; }
-
-        footer {
-            margin-top: 100px;
-            padding: 40px;
+            letter-spacing: 2px;
             font-size: 0.9rem;
-            opacity: 0.7;
-            border-top: 1px solid var(--bruin-border);
+            transition: 0.3s;
+            padding: 10px 20px;
+            border-radius: 5px;
         }
+
+        .nav-links a:hover {
+            background: var(--glass);
+            color: var(--gold);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: clamp(3rem, 10vw, 6rem);
+            margin-bottom: 20px;
+            background: linear-gradient(to bottom, #fff, var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+        }
+
+        .hero-divider {
+            width: 300px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin-bottom: 20px;
+        }
+
+        /* RANK SECTIONS */
+        .content-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .rank-title-container {
+            margin: 100px 0 60px;
+            text-align: center;
+        }
+
+        .rank-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            letter-spacing: 10px;
+            opacity: 0.1;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            z-index: 0;
+            width: 100%;
+        }
+
+        .rank-title {
+            position: relative;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2.5rem;
+            z-index: 1;
+            color: var(--beige);
+        }
+
+        /* THE CARDS ENGINE */
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            padding: 20px;
+        }
+
+        .card-perspective {
+            perspective: 1000px;
+        }
+
+        .card {
+            position: relative;
+            height: 450px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 40px;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,0.1) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before { opacity: 1; }
+
+        /* Minecraft Skin Render */
+        .skin-render {
+            position: absolute;
+            top: 20px;
+            height: 300px;
+            z-index: 2;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            pointer-events: none;
+            transform: translateZ(50px);
+        }
+
+        .card:hover .skin-render {
+            transform: translateZ(80px) translateY(-20px) scale(1.1);
+        }
+
+        .card-info {
+            z-index: 3;
+            text-align: center;
+            transform: translateZ(30px);
+        }
+
+        .card-info h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .card-info p {
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+        }
+
+        /* Rank Accents */
+        .beheer-card { border-bottom: 5px solid var(--beheer-color); }
+        .beheer-card p { color: var(--beheer-color); }
+        
+        .admin-card { border-bottom: 5px solid var(--admin-color); }
+        .admin-card p { color: var(--admin-color); }
+
+        .senior-card { border-bottom: 5px solid var(--senior-color); }
+        .senior-card p { color: var(--senior-color); }
+
+        .staff-card { border-bottom: 5px solid var(--staff-color); }
+        .staff-card p { color: var(--staff-color); }
+
+        /* FOOTER */
+        footer {
+            margin-top: 150px;
+            background: #050505;
+            padding: 80px 20px;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-logo {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>REMAKE KINGDOM</h1>
-        <div class="subtitle">Officiële Staff Structuur</div>
+    <canvas id="bg-canvas"></canvas>
 
-        <section class="rank-section">
-            <div class="rank-header">BEHEER</div>
-            <div class="staff-grid">
-                <div class="card rank-beheer">
-                    <img class="skin-preview" src="https://mc-heads.net/avatar/Binnenlander/100" alt="Skin">
-                    <h3>Binnenlander</h3>
-                    <p style="color: #d32f2f;">Eigenaar</p>
-                </div>
-            </div>
-        </section>
+    <nav class="top-nav">
+        <div class="nav-logo">REMAKE KINGDOM</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Regels</a>
+            <a href="#" style="color: var(--gold)">Staff Team</a>
+            <a href="#">Discord</a>
+        </div>
+    </nav>
 
-        <section class="rank-section">
-            <div class="rank-header">ADMIN</div>
-            <div class="staff-grid">
-                <div class="card rank-admin">
-                    <img class="skin-preview" src="https://mc-heads.net/avatar/Shaykuhh/100" alt="Skin">
-                    <h3>Shaykuhh</h3>
-                    <p style="color: #7b1fa2;">Admin</p>
-                </div>
-                <div class="card rank-admin">
-                    <img class="skin-preview" src="https://mc-heads.net/avatar/Penpijn/100" alt="Skin">
-                    <h3>Penpijn</h3>
-                    <p style="color: #7b1fa2;">Admin</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="rank-section">
-            <div class="rank-header">SENIOR STAFF</div>
-            <div class="staff-grid">
-                <div class="card rank-senior">
-                    <img class="skin-preview" src="https://mc-heads.net/avatar/Noootjee/100" alt="Skin">
-                    <h3>Noootjee</h3>
-                    <p style="color: #fbc02d;">Senior Staff</p>
-                </div>
-                <div class="card rank-senior">
-                    <img class="skin-preview" src="https://mc-heads.net/avatar/BjornNL/100" alt="Skin">
-                    <h3>BjornNL</h3>
-                    <p style="color: #fbc02d;">Senior Staff</p>
-                </div>
-                <div class="card rank-senior">
-                    <img class="skin-preview" src="https://mc-heads.net/avatar/Peanerd/100" alt="Skin">
-                    <h3>Peanerd</h3>
-                    <p style="color: #fbc02d;">Senior Staff</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="rank-section">
-            <div class="rank-header">STAFF</div>
-            <div class="staff-grid">
-                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/ItssAyden/100"><h3>ItssAyden</h3><p>Staff</p></div>
-                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/Koningbitterbal/100"><h3>Koningbitterbal</h3><p>Staff</p></div>
-                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/Annewannn/100"><h3>Annewannn</h3><p>Staff</p></div>
-                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/Clashermike/100"><h3>Clashermike</h3><p>Staff</p></div>
-                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/ItssGirav/100"><h3>ItssGirav</h3><p>Staff</p></div>
-                <div class="card rank-staff"><img class="skin-preview" src="https://mc-heads.net/avatar/Odsko/100"><h3>Odsko</h3><p>Staff</p></div>
-            </div>
-        </section>
-
-        <footer>
-            &copy; 2026 RKD RemakeKingdom - De Troon Wacht op Niemand.
-        </footer>
+    <div class="hero">
+        <h1>STAFF TEAM</h1>
+        <div class="hero-divider"></div>
+        <p style="letter-spacing: 5px; opacity: 0.7;">HET GEZICHT ACHTER HET KONINKRIJK</p>
     </div>
 
+    <div class="content-wrapper">
+
+        <div class="rank-title-container">
+            <div class="rank-label">MANAGEMENT</div>
+            <h2 class="rank-title">HET BEHEER</h2>
+        </div>
+        <div class="staff-grid" id="grid-beheer">
+            </div>
+
+        <div class="rank-title-container">
+            <div class="rank-label">ADMINISTRATION</div>
+            <h2 class="rank-title">ADMINISTRATORS</h2>
+        </div>
+        <div class="staff-grid" id="grid-admin"></div>
+
+        <div class="rank-title-container">
+            <div class="rank-label">SENIOR STAFF</div>
+            <h2 class="rank-title">ERVAREN STAFF</h2>
+        </div>
+        <div class="staff-grid" id="grid-senior"></div>
+
+        <div class="rank-title-container">
+            <div class="rank-label">STAFF MEMBERS</div>
+            <h2 class="rank-title">HET PERSONEEL</h2>
+        </div>
+        <div class="staff-grid" id="grid-staff"></div>
+
+    </div>
+
+    <footer>
+        <div class="footer-logo">REMAKE KINGDOM</div>
+        <p>&copy; 2026 RKD RemakeKingdom. Alle rechten voorbehouden.</p>
+    </footer>
+
     <script>
-        // Voegt een subtiel interactief effect toe aan de kaarten
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                let rect = card.getBoundingClientRect();
-                let x = e.clientX - rect.left;
-                let y = e.clientY - rect.top;
-                
-                let centerX = rect.width / 2;
-                let centerY = rect.height / 2;
-                
-                let rotateX = (y - centerY) / 10;
-                let rotateY = (centerX - x) / 10;
-                
-                card.style.transform = `perspective(1000px) translateY(-15px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        // STAFF DATA
+        const staffData = {
+            beheer: [{name: "Binnenlander", rank: "Beheer"}],
+            admin: [{name: "Shaykuhh", rank: "Admin"}, {name: "Penpijn", rank: "Admin"}],
+            senior: [{name: "Noootjee", rank: "Senior Staff"}, {name: "BjornNL", rank: "Senior Staff"}, {name: "Peanerd", rank: "Senior Staff"}],
+            staff: [
+                {name: "ItssAyden", rank: "Staff"}, {name: "Koningbitterbal", rank: "Staff"}, 
+                {name: "Annewannn", rank: "Staff"}, {name: "Clashermike", rank: "Staff"}, 
+                {name: "ItssGirav", rank: "Staff"}, {name: "Odsko", rank: "Staff"}
+            ]
+        };
+
+        // RENDER ENGINE
+        function renderStaff() {
+            Object.keys(staffData).forEach(rankKey => {
+                const container = document.getElementById(`grid-${rankKey}`);
+                staffData[rankKey].forEach(member => {
+                    const cardHTML = `
+                        <div class="card-perspective">
+                            <div class="card ${rankKey}-card" data-tilt>
+                                <img class="skin-render" src="https://mc-heads.net/body/${member.name}/right" alt="${member.name}">
+                                <div class="card-info">
+                                    <h3>${member.name}</h3>
+                                    <p>${member.rank}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += cardHTML;
+                });
             });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = `perspective(1000px) translateY(0) rotateX(0) rotateY(0) scale(1)`;
+        }
+
+        // BACKGROUND PARTICLES
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initBG() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            for(let i=0; i<100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5 + 0.2,
+                    opacity: Math.random()
+                });
+            }
+        }
+
+        function drawBG() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 204, 51, 0.2)";
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+                ctx.fill();
+                p.y -= p.speed;
+                if(p.y < 0) p.y = canvas.height;
             });
-        });
+            requestAnimationFrame(drawBG);
+        }
+
+        // INTERACTIVE TILT EFFECT
+        function handleTilt() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    card.style.setProperty('--x', `${x}px`);
+                    card.style.setProperty('--y', `${y}px`);
+
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 10;
+                    const rotateY = (centerX - x) / 10;
+
+                    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+                });
+            });
+        }
+
+        // INITIALIZE
+        window.onload = () => {
+            renderStaff();
+            initBG();
+            drawBG();
+            handleTilt();
+        };
+
+        window.onresize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
     </script>
 </body>
 </html>
