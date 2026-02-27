@@ -3,426 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RKD REMAKE KINGDOM | OFFICIAL STAFF</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Montserrat:wght@300;600;800&family=Bebas+Neue&display=swap" rel="stylesheet">
-    
+    <title>RKD RemakeKingdom | Staff</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS RESET & VARIABLES */
         :root {
-            --gold: #ffcc33;
-            --gold-glow: rgba(255, 204, 51, 0.4);
-            --beige: #f5f5dc;
-            --dark-brown: #2a1b0a;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --beheer-color: #ff3333;
-            --admin-color: #e033ff;
-            --senior-color: #ffcc00;
-            --staff-color: #33ccff;
+            --primary-gold: #c5a059;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-white: #ffffff;
+            --text-gray: #a0a0a0;
+            /* Rank Kleuren */
+            --color-beheer: #ff4757;
+            --color-admin: #a55eea;
+            --color-senior: #f7b731;
+            --color-staff: #2e86de;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
         }
 
         body {
-            background: #0a0a0a;
-            color: var(--beige);
-            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            min-height: 200vh;
+            line-height: 1.6;
         }
 
-        /* DYNAMISCHE ACHTERGROND */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
-        }
-
-        /* NAVIGATION BAR */
-        .top-nav {
+        /* --- STICKY NAV BAR --- */
+        nav {
             position: fixed;
             top: 0;
             width: 100%;
-            height: 80px;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 1000;
+            height: 70px;
+            background: rgba(18, 18, 18, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 50px;
-        }
-
-        .nav-logo {
-            font-family: 'Cinzel Decorative', cursive;
-            font-size: 1.8rem;
-            color: var(--gold);
-            text-shadow: 0 0 10px var(--gold-glow);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-
-        .nav-links a:hover {
-            background: var(--glass);
-            color: var(--gold);
-        }
-
-        /* HERO SECTION */
-        .hero {
-            height: 60vh;
-            display: flex;
-            flex-direction: column;
             justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding-top: 100px;
+            z-index: 1000;
         }
 
-        .hero h1 {
-            font-family: 'Cinzel Decorative', cursive;
-            font-size: clamp(3rem, 10vw, 6rem);
-            margin-bottom: 20px;
-            background: linear-gradient(to bottom, #fff, var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
-        }
-
-        .hero-divider {
-            width: 300px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
-            margin-bottom: 20px;
-        }
-
-        /* RANK SECTIONS */
-        .content-wrapper {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 50px 20px;
-        }
-
-        .rank-title-container {
-            margin: 100px 0 60px;
-            text-align: center;
-        }
-
-        .rank-label {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 4rem;
-            letter-spacing: 10px;
-            opacity: 0.1;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%) translateY(-20px);
-            z-index: 0;
+        .nav-content {
             width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
         }
 
-        .rank-title {
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            color: var(--primary-gold);
+            letter-spacing: 2px;
+        }
+
+        /* --- HERO SECTION --- */
+        header {
+            padding: 150px 20px 80px;
+            text-align: center;
+            background: radial-gradient(circle at top, #252525 0%, #121212 70%);
+        }
+
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 5px;
+        }
+
+        header p {
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+        }
+
+        /* --- STAFF SECTIONS --- */
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+
+        .rank-group {
+            margin-bottom: 80px;
+        }
+
+        .rank-header {
+            text-align: center;
+            margin-bottom: 40px;
             position: relative;
-            font-family: 'Cinzel Decorative', cursive;
-            font-size: 2.5rem;
+        }
+
+        .rank-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            display: inline-block;
+            background: var(--dark-bg);
+            padding: 0 30px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .rank-header::after {
+            content: "";
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            top: 50%;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
             z-index: 1;
-            color: var(--beige);
         }
 
-        /* THE CARDS ENGINE */
-        .staff-grid {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 50px;
-            padding: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
         }
 
-        .card-perspective {
+        /* --- 3D CARD ENGINE --- */
+        .card-container {
             perspective: 1000px;
         }
 
         .card {
-            position: relative;
-            height: 450px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: transform 0.1s ease-out;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease;
             transform-style: preserve-3d;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            padding-bottom: 40px;
+            border: 1px solid rgba(255,255,255,0.03);
+            position: relative;
+            cursor: pointer;
         }
+
+        .card:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Minecraft Body Render */
+        .skin {
+            height: 180px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4));
+            transform: translateZ(40px); /* Dit maakt het 3D */
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .skin {
+            transform: translateZ(60px) scale(1.1);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            transform: translateZ(25px);
+        }
+
+        .card span {
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transform: translateZ(20px);
+            display: block;
+        }
+
+        /* Rank-specifieke accents */
+        .beheer span { color: var(--color-beheer); }
+        .admin span { color: var(--color-admin); }
+        .senior span { color: var(--color-senior); }
+        .staff span { color: var(--color-staff); }
 
         .card::before {
-            content: '';
+            content: "";
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,0.1) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.3s;
+            top: 0; left: 0; right: 0; height: 4px;
+            border-radius: 12px 12px 0 0;
         }
+        .beheer::before { background: var(--color-beheer); }
+        .admin::before { background: var(--color-admin); }
+        .senior::before { background: var(--color-senior); }
+        .staff::before { background: var(--color-staff); }
 
-        .card:hover::before { opacity: 1; }
-
-        /* Minecraft Skin Render */
-        .skin-render {
-            position: absolute;
-            top: 20px;
-            height: 300px;
-            z-index: 2;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            pointer-events: none;
-            transform: translateZ(50px);
-        }
-
-        .card:hover .skin-render {
-            transform: translateZ(80px) translateY(-20px) scale(1.1);
-        }
-
-        .card-info {
-            z-index: 3;
-            text-align: center;
-            transform: translateZ(30px);
-        }
-
-        .card-info h3 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.5rem;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-            color: white;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        .card-info p {
-            font-weight: 800;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-        }
-
-        /* Rank Accents */
-        .beheer-card { border-bottom: 5px solid var(--beheer-color); }
-        .beheer-card p { color: var(--beheer-color); }
-        
-        .admin-card { border-bottom: 5px solid var(--admin-color); }
-        .admin-card p { color: var(--admin-color); }
-
-        .senior-card { border-bottom: 5px solid var(--senior-color); }
-        .senior-card p { color: var(--senior-color); }
-
-        .staff-card { border-bottom: 5px solid var(--staff-color); }
-        .staff-card p { color: var(--staff-color); }
-
-        /* FOOTER */
         footer {
-            margin-top: 150px;
-            background: #050505;
-            padding: 80px 20px;
             text-align: center;
-            border-top: 1px solid var(--glass-border);
+            padding: 60px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-gray);
+            font-size: 0.8rem;
         }
-
-        .footer-logo {
-            font-family: 'Cinzel Decorative', cursive;
-            font-size: 2rem;
-            color: var(--gold);
-            margin-bottom: 20px;
-        }
-
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
-
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
-
-    <nav class="top-nav">
-        <div class="nav-logo">REMAKE KINGDOM</div>
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Regels</a>
-            <a href="#" style="color: var(--gold)">Staff Team</a>
-            <a href="#">Discord</a>
+    <nav>
+        <div class="nav-content">
+            <div class="logo">RKD</div>
+            <div style="color: var(--text-gray); font-size: 0.8rem; font-weight: bold;">REMAKE KINGDOM</div>
         </div>
     </nav>
 
-    <div class="hero">
+    <header>
         <h1>STAFF TEAM</h1>
-        <div class="hero-divider"></div>
-        <p style="letter-spacing: 5px; opacity: 0.7;">HET GEZICHT ACHTER HET KONINKRIJK</p>
-    </div>
+        <p>De krachten achter het rijk</p>
+    </header>
 
-    <div class="content-wrapper">
-
-        <div class="rank-title-container">
-            <div class="rank-label">MANAGEMENT</div>
-            <h2 class="rank-title">HET BEHEER</h2>
+    <div class="wrapper" id="staff-content">
         </div>
-        <div class="staff-grid" id="grid-beheer">
-            </div>
-
-        <div class="rank-title-container">
-            <div class="rank-label">ADMINISTRATION</div>
-            <h2 class="rank-title">ADMINISTRATORS</h2>
-        </div>
-        <div class="staff-grid" id="grid-admin"></div>
-
-        <div class="rank-title-container">
-            <div class="rank-label">SENIOR STAFF</div>
-            <h2 class="rank-title">ERVAREN STAFF</h2>
-        </div>
-        <div class="staff-grid" id="grid-senior"></div>
-
-        <div class="rank-title-container">
-            <div class="rank-label">STAFF MEMBERS</div>
-            <h2 class="rank-title">HET PERSONEEL</h2>
-        </div>
-        <div class="staff-grid" id="grid-staff"></div>
-
-    </div>
 
     <footer>
-        <div class="footer-logo">REMAKE KINGDOM</div>
-        <p>&copy; 2026 RKD RemakeKingdom. Alle rechten voorbehouden.</p>
+        &copy; 2026 Remake Kingdom. Niet gelieerd aan Mojang AB.
     </footer>
 
     <script>
-        // STAFF DATA
-        const staffData = {
-            beheer: [{name: "Binnenlander", rank: "Beheer"}],
-            admin: [{name: "Shaykuhh", rank: "Admin"}, {name: "Penpijn", rank: "Admin"}],
-            senior: [{name: "Noootjee", rank: "Senior Staff"}, {name: "BjornNL", rank: "Senior Staff"}, {name: "Peanerd", rank: "Senior Staff"}],
-            staff: [
-                {name: "ItssAyden", rank: "Staff"}, {name: "Koningbitterbal", rank: "Staff"}, 
-                {name: "Annewannn", rank: "Staff"}, {name: "Clashermike", rank: "Staff"}, 
-                {name: "ItssGirav", rank: "Staff"}, {name: "Odsko", rank: "Staff"}
-            ]
-        };
+        const team = [
+            { name: "Binnenlander", rank: "Beheer" },
+            { name: "Shaykuhh", rank: "Admin" },
+            { name: "Penpijn", rank: "Admin" },
+            { name: "Noootjee", rank: "Senior Staff" },
+            { name: "BjornNL", rank: "Senior Staff" },
+            { name: "Peanerd", rank: "Senior Staff" },
+            { name: "ItssAyden", rank: "Staff" },
+            { name: "Koningbitterbal", rank: "Staff" },
+            { name: "Annewannn", rank: "Staff" },
+            { name: "Clashermike", rank: "Staff" },
+            { name: "ItssGirav", rank: "Staff" },
+            { name: "Odsko", rank: "Staff" }
+        ];
 
-        // RENDER ENGINE
-        function renderStaff() {
-            Object.keys(staffData).forEach(rankKey => {
-                const container = document.getElementById(`grid-${rankKey}`);
-                staffData[rankKey].forEach(member => {
-                    const cardHTML = `
-                        <div class="card-perspective">
-                            <div class="card ${rankKey}-card" data-tilt>
-                                <img class="skin-render" src="https://mc-heads.net/body/${member.name}/right" alt="${member.name}">
-                                <div class="card-info">
-                                    <h3>${member.name}</h3>
-                                    <p>${member.rank}</p>
+        const ranks = ["Beheer", "Admin", "Senior Staff", "Staff"];
+
+        function init() {
+            const container = document.getElementById('staff-content');
+            
+            ranks.forEach(rank => {
+                const members = team.filter(m => m.rank === rank);
+                if (members.length === 0) return;
+
+                const section = document.createElement('section');
+                section.className = 'rank-group';
+                
+                const rankClass = rank.toLowerCase().replace(' ', '-');
+                
+                section.innerHTML = `
+                    <div class="rank-header"><h2>${rank}</h2></div>
+                    <div class="grid">
+                        ${members.map(m => `
+                            <div class="card-container">
+                                <div class="card ${rankClass}">
+                                    <img src="https://mc-heads.net/body/${m.name}/right" class="skin" alt="${m.name}">
+                                    <h3>${m.name}</h3>
+                                    <span>${m.rank}</span>
                                 </div>
                             </div>
-                        </div>
-                    `;
-                    container.innerHTML += cardHTML;
-                });
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(section);
             });
+
+            setupTilt();
         }
 
-        // BACKGROUND PARTICLES
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function initBG() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            for(let i=0; i<100; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 2,
-                    speed: Math.random() * 0.5 + 0.2,
-                    opacity: Math.random()
-                });
-            }
-        }
-
-        function drawBG() {
-            ctx.clearRect(0,0, canvas.width, canvas.height);
-            ctx.fillStyle = "rgba(255, 204, 51, 0.2)";
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-                ctx.fill();
-                p.y -= p.speed;
-                if(p.y < 0) p.y = canvas.height;
-            });
-            requestAnimationFrame(drawBG);
-        }
-
-        // INTERACTIVE TILT EFFECT
-        function handleTilt() {
+        function setupTilt() {
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => {
-                card.addEventListener('mousemove', e => {
+                card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
                     
-                    card.style.setProperty('--x', `${x}px`);
-                    card.style.setProperty('--y', `${y}px`);
-
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    const rotateX = (y - centerY) / 10;
-                    const rotateY = (centerX - x) / 10;
-
+                    
+                    const rotateX = (centerY - y) / 10;
+                    const rotateY = (x - centerX) / 10;
+                    
                     card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
                 });
 
                 card.addEventListener('mouseleave', () => {
-                    card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+                    card.style.transform = 'rotateX(0) rotateY(0)';
                 });
             });
         }
 
-        // INITIALIZE
-        window.onload = () => {
-            renderStaff();
-            initBG();
-            drawBG();
-            handleTilt();
-        };
-
-        window.onresize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        };
+        window.onload = init;
     </script>
 </body>
 </html>
