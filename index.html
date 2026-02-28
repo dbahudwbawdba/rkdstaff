@@ -3,309 +3,342 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RKD | Staff Operations Portal</title>
+<title>RKD Staff Portaal</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 
 /* ============================================================
-   RKD STAFF PORTAL v7.0
-   Professional GitHub Edition
+   RKD STAFF PORTAAL
+   Professionele Interne Documentatie
    ============================================================ */
 
-/* ===============================
-   DESIGN TOKENS
-================================ */
+/* =========================
+   BASIS VARIABELEN
+========================= */
 
-:root {
-
-    --bg-master: #020204;
-    --bg-card: #0c0c12;
-    --bg-hover: #141421;
-
-    --gold: #ffd700;
-    --gold-soft: rgba(255,215,0,0.08);
-    --gold-glow: rgba(255,215,0,0.2);
-
-    --white: #ffffff;
-    --text-main: #e5e5e5;
-    --text-muted: #6e6e77;
-
-    --danger: #ff3e3e;
-    --warning: #ffaf40;
-    --success: #3ae374;
-    --info: #7d5fff;
-
-    --nav-height: 90px;
-    --container-width: 1500px;
-
-    --radius-lg: 28px;
-    --radius-md: 18px;
-    --radius-sm: 12px;
-
-    --ease: cubic-bezier(0.4, 0, 0.2, 1);
-
+:root{
+--bg-dark:#0b0b11;
+--bg-card:#14141c;
+--bg-card-hover:#1b1b26;
+--gold:#d4af37;
+--text-main:#e4e4e7;
+--text-muted:#8a8a95;
+--danger:#ff4d4f;
+--warning:#ffb020;
+--success:#3ecf8e;
+--radius:18px;
 }
 
-/* ===============================
+/* =========================
    RESET
-================================ */
+========================= */
 
-* {
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
-html {
-    scroll-behavior:smooth;
-    background:var(--bg-master);
+html{
+scroll-behavior:smooth;
+background:var(--bg-dark);
 }
 
-body {
-    font-family:'Inter', sans-serif;
-    color:var(--text-main);
-    line-height:1.6;
-    overflow-x:hidden;
+body{
+font-family:'Inter',sans-serif;
+color:var(--text-main);
+overflow-x:hidden;
 }
 
-/* ===============================
-   NAVIGATION
-================================ */
+/* =========================
+   ACHTERGROND ANIMATIE
+========================= */
 
-nav {
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:var(--nav-height);
-    background:rgba(2,2,4,0.95);
-    backdrop-filter:blur(20px);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 6%;
-    z-index:9999;
-    border-bottom:1px solid rgba(255,255,255,0.06);
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 20% 20%, rgba(212,175,55,0.08), transparent 40%),
+radial-gradient(circle at 80% 70%, rgba(212,175,55,0.05), transparent 50%);
+animation:backgroundMove 20s infinite alternate ease-in-out;
+z-index:-2;
 }
 
-.brand {
-    font-weight:800;
-    font-size:1.6rem;
-    letter-spacing:4px;
-    color:var(--gold);
-    cursor:pointer;
+@keyframes backgroundMove{
+0%{transform:translate(0,0);}
+100%{transform:translate(-50px,-30px);}
 }
 
-.nav-links {
-    display:flex;
-    gap:40px;
+/* =========================
+   NAVIGATIE
+========================= */
+
+nav{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:80px;
+background:rgba(11,11,17,0.95);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 5%;
+border-bottom:1px solid rgba(255,255,255,0.05);
+z-index:1000;
 }
 
-.nav-item {
-    color:var(--text-muted);
-    text-decoration:none;
-    font-weight:600;
-    font-size:0.8rem;
-    text-transform:uppercase;
-    letter-spacing:2px;
-    transition:0.3s;
-    cursor:pointer;
+.logo{
+font-weight:800;
+letter-spacing:3px;
+color:var(--gold);
+font-size:1.2rem;
 }
 
-.nav-item:hover,
-.nav-item.active {
-    color:var(--gold);
+.nav-links{
+display:flex;
+gap:30px;
 }
 
-/* ===============================
-   MAIN WRAPPER
-================================ */
-
-.main-container {
-    max-width:var(--container-width);
-    margin:0 auto;
-    padding:160px 5% 120px;
+.nav-links button{
+background:none;
+border:none;
+color:var(--text-muted);
+cursor:pointer;
+font-weight:600;
+transition:0.3s;
 }
 
-.view-section {
-    display:none;
+.nav-links button:hover,
+.nav-links button.active{
+color:var(--gold);
 }
 
-.view-section.active {
-    display:block;
+/* =========================
+   CONTAINER
+========================= */
+
+main{
+max-width:1400px;
+margin:auto;
+padding:140px 5% 100px;
 }
 
-/* ===============================
-   HEADER BLOCK
-================================ */
-
-.header-block {
-    text-align:center;
-    margin-bottom:80px;
+.section{
+display:none;
 }
 
-.header-block h1,
-.header-block h2 {
-    font-size:3rem;
-    font-weight:800;
-    margin-bottom:10px;
-    color:var(--gold);
+.section.active{
+display:block;
 }
 
-.header-block p {
-    color:var(--text-muted);
-    text-transform:uppercase;
-    letter-spacing:3px;
-    font-size:0.8rem;
+/* =========================
+   HERO
+========================= */
+
+.hero{
+text-align:center;
+margin-bottom:80px;
 }
 
-/* ===============================
-   CARDS
-================================ */
-
-.standard-grid {
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:30px;
+.hero h1{
+font-size:3rem;
+font-weight:800;
+color:var(--gold);
+margin-bottom:15px;
 }
 
-.rkd-card {
-    background:var(--bg-card);
-    border-radius:var(--radius-lg);
-    padding:40px;
-    border:1px solid rgba(255,255,255,0.05);
-    transition:0.4s var(--ease);
+.hero p{
+color:var(--text-muted);
+margin-bottom:40px;
 }
 
-.rkd-card:hover {
-    transform:translateY(-8px);
-    border-color:var(--gold);
+.quick-buttons{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
 }
 
-.rkd-card h3 {
-    margin-bottom:25px;
-    font-size:1.6rem;
-    font-weight:700;
-    color:var(--gold);
+.quick-buttons button{
+padding:14px 28px;
+background:var(--bg-card);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:var(--radius);
+color:var(--text-main);
+cursor:pointer;
+font-weight:600;
+transition:0.3s;
 }
 
-.bullet-list {
-    list-style:none;
+.quick-buttons button:hover{
+background:var(--bg-card-hover);
+border-color:var(--gold);
 }
 
-.bullet-list li {
-    margin-bottom:15px;
-    padding-left:20px;
-    position:relative;
+/* =========================
+   KAARTEN
+========================= */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:30px;
 }
 
-.bullet-list li::before {
-    content:'•';
-    position:absolute;
-    left:0;
-    color:var(--gold);
+.card{
+background:var(--bg-card);
+padding:30px;
+border-radius:var(--radius);
+border:1px solid rgba(255,255,255,0.05);
+transition:0.3s;
 }
 
-/* ===============================
-   LAW ENGINE
-================================ */
-
-.law-controls {
-    display:flex;
-    gap:20px;
-    margin-bottom:40px;
-    flex-wrap:wrap;
+.card:hover{
+background:var(--bg-card-hover);
+border-color:var(--gold);
 }
 
-.law-controls input,
-.law-controls select {
-    background:var(--bg-card);
-    border:1px solid rgba(255,255,255,0.1);
-    color:var(--text-main);
-    padding:12px 15px;
-    border-radius:var(--radius-sm);
-    font-family:'Inter';
+.card h3{
+margin-bottom:15px;
+color:var(--gold);
 }
 
-.law-item {
-    background:var(--bg-card);
-    border-radius:var(--radius-md);
-    margin-bottom:15px;
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,0.05);
-    transition:0.3s;
+.card ul{
+list-style:none;
 }
 
-.law-item:hover {
-    border-color:var(--gold);
+.card li{
+margin-bottom:8px;
 }
 
-.law-header {
-    padding:25px 30px;
-    display:flex;
-    justify-content:space-between;
-    cursor:pointer;
+/* =========================
+   WETBOEK
+========================= */
+
+.article{
+background:var(--bg-card);
+border-radius:var(--radius);
+margin-bottom:15px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,0.05);
 }
 
-.law-title {
-    font-weight:700;
+.article-header{
+padding:20px;
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
-.law-meta {
-    font-size:0.7rem;
-    color:var(--text-muted);
+.article-header h4{
+font-size:1rem;
 }
 
-.law-body {
-    max-height:0;
-    overflow:hidden;
-    transition:max-height 0.5s ease;
+.article-body{
+max-height:0;
+overflow:hidden;
+transition:0.4s ease;
+padding:0 20px;
 }
 
-.law-item.open .law-body {
-    max-height:2000px;
+.article.open .article-body{
+max-height:1000px;
+padding:20px;
 }
 
-.law-content {
-    padding:30px;
-    border-top:1px solid rgba(255,255,255,0.05);
+.badge{
+padding:4px 10px;
+border-radius:12px;
+font-size:0.7rem;
+font-weight:600;
 }
 
-.severity {
-    display:inline-block;
-    padding:4px 10px;
-    font-size:0.7rem;
-    border-radius:20px;
-    font-weight:600;
-    margin-left:10px;
+.badge.chat{background:rgba(255,255,255,0.1);}
+.badge.pvp{background:rgba(255,176,32,0.2);}
+.badge.security{background:rgba(255,77,79,0.2);}
+.badge.economy{background:rgba(62,207,142,0.2);}
+.badge.exploit{background:rgba(212,175,55,0.2);}
+
+/* =========================
+   STAFFTEAM
+========================= */
+
+.staff-section{
+margin-bottom:80px;
 }
 
-.sev-low { background:rgba(58,227,116,0.15); color:var(--success); }
-.sev-mid { background:rgba(255,175,64,0.15); color:var(--warning); }
-.sev-high { background:rgba(255,62,62,0.15); color:var(--danger); }
-.sev-critical { background:rgba(125,95,255,0.15); color:var(--info); }
+.staff-title{
+margin-bottom:20px;
+font-size:1.5rem;
+color:var(--gold);
+}
 
-/* ===============================
+.staff-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+}
+
+.staff-card{
+background:var(--bg-card);
+padding:25px;
+border-radius:var(--radius);
+text-align:center;
+border:1px solid rgba(255,255,255,0.05);
+}
+
+.staff-card img{
+height:120px;
+margin-bottom:15px;
+}
+
+.staff-card h4{
+margin-bottom:5px;
+}
+
+.staff-card span{
+color:var(--text-muted);
+font-size:0.8rem;
+}
+
+/* =========================
+   TABEL
+========================= */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th,td{
+border:1px solid rgba(255,255,255,0.1);
+padding:12px;
+text-align:left;
+}
+
+th{
+background:var(--bg-card-hover);
+}
+
+/* =========================
    FOOTER
-================================ */
+========================= */
 
-footer {
-    text-align:center;
-    padding:80px 0;
-    border-top:1px solid rgba(255,255,255,0.05);
-    margin-top:120px;
-}
-
-footer span {
-    color:var(--gold);
-    font-weight:700;
-    letter-spacing:4px;
-}
-
-@media(max-width:900px){
-    .nav-links{display:none;}
+footer{
+margin-top:120px;
+padding:40px 0;
+text-align:center;
+border-top:1px solid rgba(255,255,255,0.05);
+color:var(--text-muted);
 }
 
 </style>
@@ -313,247 +346,225 @@ footer span {
 <body>
 
 <nav>
-    <div class="brand" onclick="navTo('dashboard')">RKD</div>
-    <div class="nav-links">
-        <div class="nav-item active" onclick="navTo('dashboard')" id="btn-dashboard">Dashboard</div>
-        <div class="nav-item" onclick="navTo('law')" id="btn-law">Wetboek</div>
-        <div class="nav-item" onclick="navTo('sanctions')" id="btn-sanctions">Sanctie Matrix</div>
-        <div class="nav-item" onclick="navTo('protocol')" id="btn-protocol">Staff Protocol</div>
-    </div>
+<div class="logo">RKD STAFF</div>
+<div class="nav-links">
+<button onclick="openSection('home')" class="active" id="btn-home">Start</button>
+<button onclick="openSection('wetboek')" id="btn-wetboek">Wetboek</button>
+<button onclick="openSection('sancties')" id="btn-sancties">Sancties</button>
+<button onclick="openSection('staff')" id="btn-staff">Staffteam</button>
+<button onclick="openSection('protocol')" id="btn-protocol">Protocol</button>
+<button onclick="openSection('gedrag')" id="btn-gedrag">Gedragscode</button>
+</div>
 </nav>
 
-<main class="main-container">
+<main>
 
-<section id="dashboard" class="view-section active">
-<div class="header-block">
-<h1>Staff Operations</h1>
-<p>RKD Internal Control System</p>
+<!-- START -->
+<section id="home" class="section active">
+<div class="hero">
+<h1>RKD Staff Portaal</h1>
+<p>Interne documentatie, regels en procedures</p>
+
+<div class="quick-buttons">
+<button onclick="openSection('wetboek')">Bekijk Wetboek</button>
+<button onclick="openSection('sancties')">Sanctie Overzicht</button>
+<button onclick="openSection('staff')">Staffteam</button>
+<button onclick="openSection('protocol')">Protocol</button>
+<button onclick="openSection('gedrag')">Gedragscode</button>
+</div>
 </div>
 
-<div class="standard-grid">
-<div class="rkd-card">
-<h3>Server Status</h3>
-<p>Versie: 1.20.x</p>
-<p>Operations: Online</p>
-<p>Escalatie niveau: Normaal</p>
-</div>
-
-<div class="rkd-card">
+<div class="grid">
+<div class="card">
 <h3>Belangrijk</h3>
-<ul class="bullet-list">
-<li>Bewijs altijd verplicht</li>
-<li>Geen eigen interpretaties</li>
-<li>Escalatie bij twijfel</li>
-<li>Geen uitzonderingen voor vrienden</li>
+<ul>
+<li>Altijd bewijs verzamelen</li>
+<li>Nooit handelen uit emotie</li>
+<li>Escaleren bij twijfel</li>
+<li>Geen uitzonderingen voor bekenden</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Server Status</h3>
+<ul>
+<li>Versie: 1.20.x</li>
+<li>Status: Online</li>
+<li>Escalatieniveau: Normaal</li>
 </ul>
 </div>
 </div>
 </section>
 
-<section id="law" class="view-section">
-<div class="header-block">
-<h2>Wetboek</h2>
-<p>Uitgebreide Artikelen & Sancties</p>
-</div>
+<!-- WETBOEK -->
+<section id="wetboek" class="section">
+<h2 style="margin-bottom:30px;">Wetboek</h2>
 
-<div class="law-controls">
-<input type="text" id="lawSearch" placeholder="Zoek artikel...">
-<select id="lawCategory">
-<option value="all">Alle categorieën</option>
-<option value="Chat">Chat</option>
-<option value="PvP">PvP</option>
-<option value="Economy">Economy</option>
-<option value="Security">Security</option>
-<option value="Exploit">Exploit</option>
-</select>
-</div>
+<div id="articles"></div>
 
-<div id="lawContainer"></div>
 </section>
 
-<section id="sanctions" class="view-section">
-<div class="header-block">
-<h2>Sanctie Matrix</h2>
-<p>Herhaling & Escalatie Systeem</p>
-</div>
+<!-- SANCTIES -->
+<section id="sancties" class="section">
+<h2>Sanctie Overzicht</h2>
 
-<div class="rkd-card">
-<h3>Sanctie Richtlijnen</h3>
-<ul class="bullet-list">
-<li>Lichte overtreding → Waarschuwing / Korte mute</li>
-<li>Middel → Tijdelijke ban</li>
-<li>Zwaar → Lange ban</li>
-<li>Kritiek → Permanent / Blacklist</li>
-</ul>
-</div>
+<table>
+<tr>
+<th>Ernst</th>
+<th>Eerste</th>
+<th>Tweede</th>
+<th>Derde</th>
+<th>Vierde</th>
+</tr>
+<tr>
+<td>Licht</td>
+<td>Waarschuwing</td>
+<td>6u mute</td>
+<td>1 dag ban</td>
+<td>3 dagen ban</td>
+</tr>
+<tr>
+<td>Middel</td>
+<td>3 dagen ban</td>
+<td>7 dagen ban</td>
+<td>14 dagen ban</td>
+<td>Permanent</td>
+</tr>
+<tr>
+<td>Zwaar</td>
+<td>7 dagen ban</td>
+<td>14 dagen ban</td>
+<td>30 dagen ban</td>
+<td>Permanent</td>
+</tr>
+<tr>
+<td>Kritiek</td>
+<td>Permanent</td>
+<td>Blacklist</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</table>
+
 </section>
 
-<section id="protocol" class="view-section">
-<div class="header-block">
+<!-- STAFF -->
+<section id="staff" class="section">
+
+<div class="staff-section">
+<div class="staff-title">Beheer</div>
+<div class="staff-grid">
+<div class="staff-card">
+<img src="https://mc-heads.net/body/Binnenlander/right">
+<h4>Binnenlander</h4>
+<span>Owner</span>
+</div>
+</div>
+</div>
+
+<div class="staff-section">
+<div class="staff-title">Admin</div>
+<div class="staff-grid">
+<div class="staff-card">
+<img src="https://mc-heads.net/body/Shaykuhh/right">
+<h4>Shaykuhh</h4>
+<span>Admin</span>
+</div>
+<div class="staff-card">
+<img src="https://mc-heads.net/body/Penpijn/right">
+<h4>Penpijn</h4>
+<span>Admin</span>
+</div>
+</div>
+</div>
+
+</section>
+
+<!-- PROTOCOL -->
+<section id="protocol" class="section">
 <h2>Staff Protocol</h2>
-<p>Bewijs & Log Richtlijnen</p>
-</div>
 
-<div class="rkd-card">
+<div class="card">
 <h3>Bewijsvereisten</h3>
-<ul class="bullet-list">
-<li>Minimaal 30 seconden video bij cheats</li>
-<li>Chat screenshot bij toxic gedrag</li>
-<li>CoreProtect logs bij griefing</li>
-<li>IP-check bij alt verdenking</li>
+<ul>
+<li>Cheats: minimaal 30 seconden video</li>
+<li>Chat: volledige screenshot</li>
+<li>Griefing: CoreProtect logs</li>
+<li>Alt verdenking: IP controle</li>
 </ul>
 </div>
+
+</section>
+
+<!-- GEDRAG -->
+<section id="gedrag" class="section">
+<h2>Gedragscode</h2>
+
+<div class="card">
+<ul>
+<li>Blijf professioneel in alle situaties</li>
+<li>Communiceer duidelijk en respectvol</li>
+<li>Gebruik bevoegdheden zorgvuldig</li>
+<li>Wees een voorbeeld voor spelers</li>
+</ul>
+</div>
+
 </section>
 
 </main>
 
 <footer>
-<span>RKD OPERATIONS 2026</span>
+RKD Staff Documentatie © 2026
 </footer>
 
 <script>
 
-/* ============================================================
-   NAVIGATION SYSTEM
-============================================================ */
+/* NAVIGATIE */
 
-function navTo(id){
-
-document.querySelectorAll('.view-section').forEach(s=>s.classList.remove('active'));
+function openSection(id){
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
 document.getElementById(id).classList.add('active');
 
-document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-document.getElementById('btn-'+id)?.classList.add('active');
+document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active'));
+document.getElementById('btn-'+id).classList.add('active');
 
 window.scrollTo({top:0,behavior:'smooth'});
-
 }
 
-/* ============================================================
-   EXTENDED LAW DATA (30 ARTICLES)
-============================================================ */
+/* WETBOEK DATA */
 
-const LAW_DATA = [
-
-{ id:1, title:"Staff Misleiding", category:"Security", severity:"high",
-desc:"Het bewust verstrekken van valse informatie aan staff.",
-sanctions:["3 dagen ban","7 dagen ban","14 dagen ban","Permanent"],
-escalation:"Senior → Admin bij herhaling" },
-
-{ id:2, title:"DDoS Dreiging", category:"Security", severity:"critical",
-desc:"Dreigen met netwerk aanvallen.",
-sanctions:["Permanent blacklist"],
-escalation:"Direct Admin + Beheer" },
-
-{ id:3, title:"Doxing", category:"Security", severity:"critical",
-desc:"Verspreiden van privé informatie.",
-sanctions:["Permanent blacklist"],
-escalation:"Direct Beheer" },
-
-{ id:4, title:"Cheating", category:"PvP", severity:"high",
-desc:"Gebruik van hacks of ongeoorloofde software.",
-sanctions:["14d","30d","Permanent"],
-escalation:"Senior review" },
-
-{ id:5, title:"Bug Abuse", category:"Exploit", severity:"high",
-desc:"Misbruik van glitches.",
-sanctions:["14d","30d"],
-escalation:"Admin review" },
-
-{ id:6, title:"Reclame", category:"Chat", severity:"mid",
-desc:"Promoten van andere servers.",
-sanctions:["7d mute","7d ban bij herhaling"],
-escalation:"Senior" },
-
-{ id:7, title:"Ban Evading", category:"Security", severity:"critical",
-desc:"Ban omzeilen met alt.",
-sanctions:["Blacklist alle accounts"],
-escalation:"Admin" },
-
-{ id:8, title:"Trapping", category:"PvP", severity:"mid",
-desc:"Onontkoombare valstrikken.",
-sanctions:["3d","7d"],
-escalation:"Senior" },
-
-{ id:9, title:"Griefing", category:"Economy", severity:"high",
-desc:"Moedwillig slopen van builds.",
-sanctions:["7d","14d","30d"],
-escalation:"Senior/Admin afhankelijk schaal" },
-
-{ id:10, title:"Chat Spam", category:"Chat", severity:"low",
-desc:"Overmatig spammen.",
-sanctions:["Waarschuwing","6h mute"],
-escalation:"Staff" },
-
-/* ... voeg hier artikelen 11 t/m 30 toe volgens zelfde structuur ... */
-
+const articlesData = [
+{ id:1, title:"Staff misleiding", category:"security", text:"Opzettelijk verstrekken van valse informatie aan staff.", sanction:"3 dagen ban" },
+{ id:2, title:"DDoS dreiging", category:"security", text:"Dreigen met aanvallen op netwerk of spelers.", sanction:"Permanent" },
+{ id:3, title:"Doxing", category:"security", text:"Verspreiden van privégegevens.", sanction:"Permanent" },
+{ id:4, title:"Cheating", category:"pvp", text:"Gebruik van hacks of externe software.", sanction:"14 dagen ban" },
+{ id:5, title:"Bug misbruik", category:"exploit", text:"Misbruiken van glitches.", sanction:"14 dagen ban" },
+{ id:6, title:"Reclame", category:"chat", text:"Promoten van andere servers.", sanction:"7 dagen mute" },
+{ id:7, title:"Ban ontduiken", category:"security", text:"Gebruik van alt accounts om ban te ontwijken.", sanction:"Permanent" },
+{ id:8, title:"Trapping", category:"pvp", text:"Onontkoombare vallen maken.", sanction:"3 dagen ban" },
+{ id:9, title:"Griefing", category:"economy", text:"Moedwillig slopen van bouwwerken.", sanction:"7 dagen ban" },
+{ id:10, title:"Chat spam", category:"chat", text:"Overmatig spammen.", sanction:"Waarschuwing" }
 ];
 
-/* ============================================================
-   LAW RENDER ENGINE
-============================================================ */
+/* RENDER ARTIKELEN */
 
-const container = document.getElementById('lawContainer');
-const searchInput = document.getElementById('lawSearch');
-const categorySelect = document.getElementById('lawCategory');
+const container = document.getElementById('articles');
 
-function renderLaw(){
-
-container.innerHTML="";
-
-let search = searchInput.value.toLowerCase();
-let cat = categorySelect.value;
-
-LAW_DATA
-.filter(a=>{
-let matchSearch = a.title.toLowerCase().includes(search) || a.desc.toLowerCase().includes(search);
-let matchCat = cat==="all" || a.category===cat;
-return matchSearch && matchCat;
-})
-.forEach(a=>{
-
-let severityClass = {
-low:"sev-low",
-mid:"sev-mid",
-high:"sev-high",
-critical:"sev-critical"
-}[a.severity];
-
-let el = document.createElement('div');
-el.className="law-item";
-
+articlesData.forEach(a=>{
+let el=document.createElement('div');
+el.className='article';
 el.innerHTML=`
-<div class="law-header" onclick="this.parentElement.classList.toggle('open')">
-<div>
-<span class="law-title">Art. ${a.id} - ${a.title}</span>
-<span class="severity ${severityClass}">${a.severity.toUpperCase()}</span>
+<div class="article-header" onclick="this.parentElement.classList.toggle('open')">
+<h4>Artikel ${a.id} - ${a.title}</h4>
+<span class="badge ${a.category}">${a.category}</span>
 </div>
-<div class="law-meta">${a.category}</div>
-</div>
-<div class="law-body">
-<div class="law-content">
-<p>${a.desc}</p>
-<br>
-<strong>Sancties:</strong>
-<ul>
-${a.sanctions.map(s=>`<li>${s}</li>`).join('')}
-</ul>
-<br>
-<strong>Escalatie:</strong> ${a.escalation}
-</div>
+<div class="article-body">
+<p style="margin-bottom:10px;">${a.text}</p>
+<strong>Standaard sanctie:</strong> ${a.sanction}
 </div>
 `;
-
 container.appendChild(el);
-
 });
-
-}
-
-searchInput.addEventListener('input',renderLaw);
-categorySelect.addEventListener('change',renderLaw);
-
-renderLaw();
 
 </script>
 
