@@ -3,522 +3,872 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RKD | Remake Kingdom</title>
+    <title>RKD | Remake Kingdom Official</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;600;900&family=Cinzel+Decorative:wght@700;900&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Cinzel+Decorative:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CORE DESIGN SYSTEM --- */
+        /* CSS ARCHITECTURE - LAYER 1: VARIABLES 
+        */
         :root {
-            --bg-primary: #020205;
-            --gold-main: #ffd700;
-            --gold-soft: rgba(255, 215, 0, 0.1);
-            --glass-base: rgba(255, 255, 255, 0.03);
-            --glass-stroke: rgba(255, 255, 255, 0.08);
-            --white: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.5);
+            /* Colors */
+            --primary-bg: #020205;
+            --secondary-bg: #0a0a0f;
+            --accent-gold: #ffd700;
+            --accent-gold-rgb: 255, 215, 0;
+            --pure-white: #ffffff;
+            --text-main: #e0e0e0;
+            --text-dim: rgba(255, 255, 255, 0.4);
             
-            /* Rank Palette */
-            --beheer: #ff4757;
-            --project: #f9ca24;
-            --admin: #7d5fff;
-            --senior: #ffaf40;
-            --staff: #3ae374;
+            /* Glassmorphism */
+            --glass-v1: rgba(255, 255, 255, 0.03);
+            --glass-v2: rgba(255, 255, 255, 0.06);
+            --glass-stroke: rgba(255, 255, 255, 0.1);
             
-            /* Motion Dynamics */
-            --cubic: cubic-bezier(0.4, 0, 0.2, 1);
+            /* Ranks Identity */
+            --color-beheer: #ff4757;
+            --color-project: #f9ca24;
+            --color-admin: #7d5fff;
+            --color-senior: #ffaf40;
+            --color-staff: #3ae374;
+            
+            /* Animation Constants */
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: all 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
         }
 
-        /* --- GLOBAL NORMALIZE --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        html, body { 
-            background: var(--bg-primary); 
-            color: var(--white); 
-            font-family: 'Outfit', sans-serif; 
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
+        /* CSS ARCHITECTURE - LAYER 2: RESET & SCROLL 
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- CUSTOM SCROLLBAR (100+ lines for UI perfection) --- */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg-primary); }
-        ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(to bottom, transparent, var(--gold-main), transparent);
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--primary-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, transparent, var(--accent-gold), transparent);
             border-radius: 20px;
+            border: 3px solid var(--primary-bg);
         }
 
-        /* --- BACKGROUND PARTICLES --- */
-        #particle-canvas {
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* CSS ARCHITECTURE - LAYER 3: BACKGROUND ENGINE 
+        */
+        #master-canvas {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
             pointer-events: none;
-            opacity: 0.4;
+            opacity: 0.6;
         }
 
-        /* --- NAVIGATION --- */
-        .nav-hub {
+        .ambient-glow {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100px;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 10%;
-            background: rgba(2, 2, 5, 0.8);
-            backdrop-filter: blur(25px);
-            border-bottom: 1px solid var(--glass-stroke);
-            z-index: 9999;
-            transition: 0.5s var(--cubic);
+            top: 50%;
+            left: 50%;
+            width: 80vw;
+            height: 80vh;
+            background: radial-gradient(circle, rgba(var(--accent-gold-rgb), 0.05) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
         }
 
-        .nav-hub.minimal { height: 75px; background: rgba(2, 2, 5, 0.95); }
+        /* CSS ARCHITECTURE - LAYER 4: NAVIGATION 
+        */
+        .navbar-top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8%;
+            background: rgba(2, 2, 5, 0.7);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--glass-stroke);
+            z-index: 10000;
+            transition: var(--transition-smooth);
+        }
 
-        .branding {
-            font-family: 'Cinzel Decorative';
+        .navbar-top.sticky {
+            height: 80px;
+            background: rgba(2, 2, 5, 0.95);
+        }
+
+        .nav-logo {
+            font-family: 'Cinzel Decorative', cursive;
             font-size: 2.5rem;
-            color: var(--gold-main);
+            font-weight: 900;
+            color: var(--accent-gold);
             letter-spacing: 12px;
             cursor: pointer;
-            text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+            text-shadow: 0 0 30px rgba(var(--accent-gold-rgb), 0.5);
+            transition: var(--transition-smooth);
         }
 
-        .menu { display: flex; gap: 40px; }
-        .menu-item {
+        .nav-logo:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 45px;
+        }
+
+        .nav-link {
             text-decoration: none;
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.85rem;
             letter-spacing: 3px;
             cursor: pointer;
-            transition: 0.4s var(--cubic);
-            padding: 10px 0;
+            transition: var(--transition-smooth);
             position: relative;
+            padding: 10px 0;
         }
 
-        .menu-item::after {
+        .nav-link::before {
             content: '';
-            position: absolute; bottom: 0; left: 0;
-            width: 0%; height: 2px;
-            background: var(--gold-main);
-            transition: 0.4s var(--cubic);
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: var(--transition-smooth);
+            transform: translateX(-50%);
         }
 
-        .menu-item:hover::after, .menu-item.active::after { width: 100%; }
-        .menu-item:hover, .menu-item.active { color: var(--gold-main); }
+        .nav-link:hover::before, .nav-link.active::before {
+            width: 100%;
+        }
 
-        /* --- CONTAINER SYSTEM --- */
-        .viewport {
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-gold);
+            transform: translateY(-2px);
+        }
+
+        /* CSS ARCHITECTURE - LAYER 5: HERO & HOME 
+        */
+        .content-main {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 180px 50px 100px;
+            padding: 200px 5% 100px;
         }
 
-        .view-section {
+        .section-view {
             display: none;
             opacity: 0;
-            transform: translateY(50px);
-            transition: 0.8s var(--cubic);
+            transform: translateY(60px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .view-section.active {
+        .section-view.active {
             display: block;
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* --- HOME GRID --- */
-        .hero-header { text-align: center; margin-bottom: 100px; }
-        .hero-header h1 {
+        .hero-banner {
+            text-align: center;
+            margin-bottom: 120px;
+        }
+
+        .hero-banner h1 {
             font-family: 'Cinzel Decorative';
-            font-size: 6rem;
-            margin-bottom: 20px;
-            background: linear-gradient(180deg, #fff, var(--gold-main));
+            font-size: clamp(3rem, 10vw, 7rem);
+            line-height: 1.1;
+            margin-bottom: 30px;
+            background: linear-gradient(to bottom, #fff 20%, var(--accent-gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
         }
 
-        .hero-header p { font-size: 1.5rem; color: var(--text-muted); font-weight: 300; }
+        .hero-banner p {
+            font-size: 1.6rem;
+            color: var(--text-dim);
+            max-width: 900px;
+            margin: 0 auto;
+            font-weight: 200;
+        }
 
-        .feature-grid {
+        .grid-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 80px;
+            gap: 40px;
+            margin-top: 100px;
         }
 
-        .feature-box {
-            background: var(--glass-base);
+        .stat-item {
+            background: var(--glass-v1);
             border: 1px solid var(--glass-stroke);
             padding: 60px 40px;
-            border-radius: 40px;
+            border-radius: 50px;
             text-align: center;
-            transition: 0.5s var(--cubic);
-        }
-
-        .feature-box:hover { transform: translateY(-20px); border-color: var(--gold-main); background: var(--gold-soft); }
-        .feature-box h2 { font-family: 'Cinzel Decorative'; font-size: 4rem; color: var(--gold-main); margin-bottom: 10px; }
-        .feature-box p { text-transform: uppercase; letter-spacing: 4px; font-size: 0.8rem; opacity: 0.6; }
-
-        /* --- HIERARCHY CARDS --- */
-        .hier-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-        }
-
-        .rank-card {
-            background: var(--glass-base);
-            border: 1px solid var(--glass-stroke);
-            padding: 50px 40px;
-            border-radius: 40px;
-            border-top: 6px solid var(--r-color);
-            transition: 0.5s var(--cubic);
-        }
-
-        .rank-card:hover { transform: translateY(-15px); background: rgba(255,255,255,0.05); }
-        .rank-card h3 { font-family: 'Cinzel Decorative'; font-size: 2.2rem; color: var(--r-color); margin-bottom: 30px; }
-        .rank-list { list-style: none; }
-        .rank-list li { margin-bottom: 15px; color: #ccc; padding-left: 25px; position: relative; }
-        .rank-list li::before { content: '⬥'; position: absolute; left: 0; color: var(--r-color); }
-
-        /* --- LAW ENGINE (SMOOTH ACCORDION) --- */
-        .law-book { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
-
-        .article-wrap {
-            background: var(--glass-base);
-            border: 1px solid var(--glass-stroke);
-            border-radius: 25px;
+            transition: var(--transition-smooth);
+            position: relative;
             overflow: hidden;
-            transition: 0.4s var(--cubic);
         }
 
-        .article-trigger {
-            padding: 30px 40px;
+        .stat-item:hover {
+            transform: translateY(-20px) scale(1.02);
+            border-color: var(--accent-gold);
+            background: rgba(var(--accent-gold-rgb), 0.03);
+        }
+
+        .stat-item h2 {
+            font-family: 'Cinzel Decorative';
+            font-size: 5rem;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+        }
+
+        .stat-item p {
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-size: 0.9rem;
+            opacity: 0.5;
+        }
+
+        /* CSS ARCHITECTURE - LAYER 6: HIERARCHY CARDS 
+        */
+        .title-reveal {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .title-reveal h2 {
+            font-family: 'Cinzel Decorative';
+            font-size: 4rem;
+            color: var(--pure-white);
+        }
+
+        .hier-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 35px;
+        }
+
+        .card-rank {
+            background: var(--glass-v1);
+            border: 1px solid var(--glass-stroke);
+            padding: 50px;
+            border-radius: 45px;
+            border-top: 8px solid var(--rank-color);
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-rank:hover {
+            transform: translateY(-15px);
+            background: var(--glass-v2);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+
+        .card-rank h3 {
+            font-family: 'Cinzel Decorative';
+            font-size: 2.4rem;
+            color: var(--rank-color);
+            margin-bottom: 30px;
+        }
+
+        .card-rank ul {
+            list-style: none;
+        }
+
+        .card-rank li {
+            margin-bottom: 20px;
+            color: #ccc;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1rem;
+        }
+
+        .card-rank li::before {
+            content: '⬥';
+            position: absolute;
+            left: 0;
+            color: var(--rank-color);
+            font-size: 1.4rem;
+        }
+
+        .admin-special {
+            background: linear-gradient(135deg, rgba(125, 95, 255, 0.1), transparent);
+            border: 2px solid var(--color-admin);
+        }
+
+        /* CSS ARCHITECTURE - LAYER 7: LAW ENGINE (ACCORDIONS) 
+        */
+        .law-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .art-box {
+            background: var(--glass-v1);
+            border: 1px solid var(--glass-stroke);
+            border-radius: 30px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .art-box:hover {
+            border-color: var(--accent-gold);
+            background: rgba(255, 215, 0, 0.02);
+        }
+
+        .art-header {
+            padding: 35px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            user-select: none;
-            background: rgba(255,255,255,0.01);
+            transition: 0.3s;
         }
 
-        .article-trigger:hover { background: rgba(255,255,255,0.03); }
-        .article-trigger h4 { font-family: 'Cinzel Decorative'; font-size: 1.4rem; color: var(--gold-main); }
+        .art-header h4 {
+            font-family: 'Cinzel Decorative';
+            font-size: 1.6rem;
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+        }
 
-        .chevron {
-            width: 20px; height: 2px;
-            background: var(--gold-main);
+        .art-icon {
+            width: 30px;
+            height: 30px;
             position: relative;
-            transition: 0.4s var(--cubic);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .chevron::after {
+        .art-icon::before, .art-icon::after {
             content: '';
-            position: absolute; width: 100%; height: 100%;
-            background: var(--gold-main);
-            transform: rotate(90deg);
-            transition: 0.4s var(--cubic);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 2px;
+            background: var(--accent-gold);
+            transform: translate(-50%, -50%);
+            transition: 0.4s;
         }
 
-        .article-wrap.open .chevron { transform: rotate(180deg); }
-        .article-wrap.open .chevron::after { transform: rotate(0deg); opacity: 0; }
+        .art-icon::after {
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
 
-        .article-content {
+        .art-box.is-open .art-icon {
+            transform: rotate(135deg);
+        }
+
+        .art-box.is-open {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 40px rgba(var(--accent-gold-rgb), 0.1);
+        }
+
+        .art-body {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.6s cubic-bezier(0, 1, 0, 1); /* Special smooth logic */
-            padding: 0 40px;
+            transition: max-height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(0,0,0,0.2);
         }
 
-        .article-wrap.open .article-content { max-height: 1000px; transition: max-height 0.6s cubic-bezier(1, 0, 1, 0); }
-        .article-inner { padding: 30px 0 40px; border-top: 1px solid var(--glass-stroke); }
+        .art-content-padding {
+            padding: 40px 50px;
+            border-top: 1px solid var(--glass-stroke);
+        }
 
-        .law-desc { font-size: 1.2rem; color: #ddd; margin-bottom: 25px; line-height: 1.8; }
-        .law-punish {
+        .art-description {
+            font-size: 1.25rem;
+            color: #bbb;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .art-punishment-tag {
             background: rgba(255, 71, 87, 0.1);
-            border-left: 5px solid #ff4757;
-            padding: 25px;
+            border-left: 6px solid var(--color-beheer);
+            padding: 30px;
             border-radius: 15px;
         }
 
-        .law-punish span { display: block; color: #ff4757; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px; }
-        .law-punish p { font-family: 'Space Mono'; font-size: 1.1rem; color: #fff; }
+        .art-punishment-tag span {
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--color-beheer);
+            font-weight: 900;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+        }
 
-        /* --- TEAM DISPLAY --- */
-        .staff-header { text-align: center; margin: 100px 0 50px; font-family: 'Cinzel Decorative'; font-size: 3rem; }
-        .team-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-bottom: 80px; }
-        
-        .skin-box {
-            width: 280px;
-            background: var(--glass-base);
+        .art-punishment-tag p {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--pure-white);
+        }
+
+        /* CSS ARCHITECTURE - LAYER 8: TEAM DISPLAY 
+        */
+        .team-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 100px;
+        }
+
+        .staff-profile {
+            width: 300px;
+            background: var(--glass-v1);
             border: 1px solid var(--glass-stroke);
-            padding: 50px 20px;
-            border-radius: 45px;
+            padding: 60px 30px;
+            border-radius: 50px;
             text-align: center;
-            transition: 0.5s var(--cubic);
+            transition: var(--transition-smooth);
+            position: relative;
         }
 
-        .skin-box:hover { transform: translateY(-20px); border-color: var(--r-color); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
-        .skin-box img { height: 180px; margin-bottom: 30px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6)); transition: 0.4s; }
-        .skin-box:hover img { transform: scale(1.1); }
-        .skin-box h4 { font-size: 2rem; margin-bottom: 10px; }
-        .skin-box p { font-weight: 900; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
-
-        /* --- FOOTER --- */
-        .footer-end {
-            text-align: center; padding: 100px 0; border-top: 1px solid var(--glass-stroke);
-            background: rgba(0,0,0,0.3);
+        .staff-profile:hover {
+            transform: translateY(-25px);
+            border-color: var(--r-color);
+            background: rgba(var(--r-rgb), 0.05);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 30px rgba(var(--r-rgb), 0.2);
         }
-        .footer-end p { opacity: 0.3; letter-spacing: 8px; text-transform: uppercase; font-size: 0.75rem; }
 
-        /* --- RESPONSIVE --- */
-        @media (max-width: 1100px) {
-            .nav-hub { padding: 0 5%; }
-            .menu { display: none; }
-            .feature-grid { grid-template-columns: 1fr; }
-            .hero-header h1 { font-size: 3.5rem; }
+        .staff-profile img {
+            height: 220px;
+            margin-bottom: 35px;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+            transition: transform 0.5s var(--transition-bounce);
+        }
+
+        .staff-profile:hover img {
+            transform: scale(1.15) translateY(-10px);
+        }
+
+        .staff-profile h4 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .staff-profile p {
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            color: var(--r-color);
+        }
+
+        /* CSS ARCHITECTURE - LAYER 9: FOOTER 
+        */
+        .footer-main {
+            padding: 120px 0;
+            text-align: center;
+            border-top: 1px solid var(--glass-stroke);
+            background: linear-gradient(to bottom, transparent, #000);
+        }
+
+        .footer-logo {
+            font-family: 'Cinzel Decorative';
+            font-size: 2rem;
+            letter-spacing: 15px;
+            color: var(--accent-gold);
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        .footer-copy {
+            opacity: 0.3;
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        /* CSS ARCHITECTURE - LAYER 10: RESPONSIVE 
+        */
+        @media (max-width: 1200px) {
+            .hero-banner h1 { font-size: 5rem; }
+            .grid-stats { grid-template-columns: 1fr; }
+            .nav-menu { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="particle-canvas"></canvas>
+    <canvas id="master-canvas"></canvas>
+    <div class="ambient-glow"></div>
 
-    <header class="nav-hub" id="main-nav">
-        <div class="branding" onclick="navTo('home')">RKD</div>
-        <nav class="menu">
-            <a class="menu-item active" id="m-home" onclick="navTo('home')">Home</a>
-            <a class="menu-item" id="m-hier" onclick="navTo('hier')">Staff Hiërarchie</a>
-            <a class="menu-item" id="m-law" onclick="navTo('law')">Wetboek</a>
-            <a class="menu-item" id="m-staff" onclick="navTo('staff')">Staffteam</a>
-            <a class="menu-item" id="m-info" onclick="navTo('info')">Informatie</a>
-        </nav>
-    </header>
+    <nav class="navbar-top" id="top-nav">
+        <div class="nav-logo" onclick="navigateTo('home')">RKD</div>
+        <div class="nav-menu">
+            <a class="nav-link active" id="btn-home" onclick="navigateTo('home')">Home</a>
+            <a class="nav-link" id="btn-hier" onclick="navigateTo('hier')">Hiërarchie</a>
+            <a class="nav-link" id="btn-law" onclick="navigateTo('law')">Wetboek</a>
+            <a class="nav-link" id="btn-team" onclick="navigateTo('team')">Staffteam</a>
+            <a class="nav-link" id="btn-info" onclick="navigateTo('info')">Kingdoms</a>
+        </div>
+    </nav>
 
-    <main class="viewport">
+    <main class="content-main">
 
-        <section id="home" class="view-section active">
-            <div class="hero-header">
+        <section id="home" class="section-view active">
+            <div class="hero-banner">
                 <h1>REMAKE KINGDOM</h1>
-                <p>De Ultieme Kingdom Ervaring | Sinds 2026</p>
-            </div>
-            
-            <div class="feature-grid">
-                <div class="feature-box"><h2>300+</h2><p>Spelers</p></div>
-                <div class="feature-box"><h2>6</h2><p>Kingdoms</p></div>
-                <div class="feature-box"><h2>1.20</h2><p>Minecraft Versie</p></div>
+                <p>De meest solide Kingdom ervaring van Nederland. Gebouwd op een community van 300+ actieve spelers en een team dat passie ademt.</p>
+                
+                <div class="grid-stats">
+                    <div class="stat-item">
+                        <h2>300+</h2>
+                        <p>Loyale Leden</p>
+                    </div>
+                    <div class="stat-item">
+                        <h2>6</h2>
+                        <p>Machtige Rijken</p>
+                    </div>
+                    <div class="stat-item">
+                        <h2>1.20</h2>
+                        <p>Server Versie</p>
+                    </div>
+                </div>
             </div>
 
-            <div style="margin-top: 100px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                <div class="rank-card" style="--r-color: var(--gold-main); text-align: center;">
-                    <h3 style="font-size: 4rem;">!</h3>
-                    <p style="font-size: 1.2rem; color: #fff;"><b>Roleplay Chat</b></p>
-                    <p style="color: #888; margin-top: 10px;">Gebruik ! voor alle In-Character communicatie.</p>
+            <div class="hier-container">
+                <div class="card-rank" style="--rank-color: var(--accent-gold); text-align: center;">
+                    <h3 style="font-size: 5rem;">!</h3>
+                    <p style="font-size: 1.5rem; color: #fff;"><b>Roleplay Chat</b></p>
+                    <p style="color: var(--text-dim); margin-top: 15px;">Verplicht voor alle In-Character interacties binnen de rijken.</p>
                 </div>
-                <div class="rank-card" style="--r-color: var(--gold-main); text-align: center;">
-                    <h3 style="font-size: 4rem;">$</h3>
-                    <p style="font-size: 1.2rem; color: #fff;"><b>Trade Chat</b></p>
-                    <p style="color: #888; margin-top: 10px;">Gebruik $ voor alle economische handelingen.</p>
+                <div class="card-rank" style="--rank-color: var(--accent-gold); text-align: center;">
+                    <h3 style="font-size: 5rem;">$</h3>
+                    <p style="font-size: 1.5rem; color: #fff;"><b>Trade Chat</b></p>
+                    <p style="color: var(--text-dim); margin-top: 15px;">Hét kanaal voor alle economische handel en verdragen.</p>
                 </div>
             </div>
         </section>
 
-        <section id="hier" class="view-section">
-            <h2 class="staff-header">STAFF HIËRARCHIE</h2>
-            <div class="hier-grid">
-                <div class="rank-card" style="--r-color: var(--beheer)">
+        <section id="hier" class="section-view">
+            <div class="title-reveal">
+                <h2>BEVOEGDHEDEN</h2>
+            </div>
+            <div class="hier-container">
+                <div class="card-rank" style="--rank-color: var(--color-beheer)">
                     <h3>Beheer</h3>
                     <ul class="rank-list">
-                        <li>Hoogste leiding over de volledige server.</li>
-                        <li>Verantwoordelijk voor technische infra & Discord.</li>
-                        <li>Beslist over de koers van Remake Kingdom.</li>
+                        <li>Eindverantwoordelijke over het netwerk.</li>
+                        <li>Verantwoordelijk voor technische infra.</li>
+                        <li>Management van de Project Leider.</li>
+                        <li>Financieel & Strategisch beleid.</li>
                     </ul>
                 </div>
-                <div class="rank-card" style="--r-color: var(--admin)">
+                <div class="card-rank admin-special" style="--rank-color: var(--color-admin)">
                     <h3>Admin</h3>
                     <ul class="rank-list">
-                        <li style="color: #fff; font-weight: 900;">Neemt ALTIJD het eindbesluit in alle zaken.</li>
-                        <li>Bevoegd voor permanente bans en zware sancties.</li>
-                        <li>Manage alle in-game conflicten op hoog niveau.</li>
+                        <li style="color: #fff; font-weight: 900;">Neemt ALTIJD het bindende eindbesluit.</li>
+                        <li>Toezicht op zware in-game sancties.</li>
+                        <li>Verantwoordelijk voor rust en orde.</li>
+                        <li>Hoogste escalatiepunt voor tickets.</li>
                     </ul>
                 </div>
-                <div class="rank-card" style="--r-color: var(--senior)">
+                <div class="card-rank" style="--rank-color: var(--color-senior)">
                     <h3>Senior Staff</h3>
                     <ul class="rank-list">
-                        <li>Handelt complexe tickets en in-game zaken af.</li>
-                        <li>Heeft ban-bevoegdheid voor ernstige feiten.</li>
-                        <li>Begeleidt en controleert de reguliere Staffleden.</li>
+                        <li>Afhandeling van complexe tickets.</li>
+                        <li>Bevoegd voor in-game bans.</li>
+                        <li>Begeleiding van Junior Staffleden.</li>
+                        <li>Handhaving van het wetboek.</li>
                     </ul>
                 </div>
-                <div class="rank-card" style="--r-color: var(--staff)">
+                <div class="card-rank" style="--rank-color: var(--color-staff)">
                     <h3>Staff</h3>
                     <ul class="rank-list">
-                        <li>Eerste aanspreekpunt voor spelers in-game.</li>
-                        <li>Moderatie van de chat: kicken en muten.</li>
-                        <li>Handelt simpele tickets en vragen af.</li>
+                        <li>Eerste hulp bij speler-vragen.</li>
+                        <li>Moderatie van chatkanalen.</li>
+                        <li>Bevoegd voor kicks en mutes.</li>
+                        <li>Basis ondersteuning in-game.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <section id="law" class="view-section">
-            <h2 class="staff-header">OFFICIEEL WETBOEK</h2>
-            <div class="law-book" id="law-container">
+        <section id="law" class="section-view">
+            <div class="title-reveal">
+                <h2>HET WETBOEK</h2>
+                <p style="color: var(--text-dim);">Klik op een artikel om de sancties te bekijken.</p>
+            </div>
+            <div class="law-wrapper" id="law-engine-render">
                 </div>
         </section>
 
-        <section id="staff" class="view-section">
-            <h2 class="staff-header">ONS TEAM</h2>
-            <div id="team-inject"></div>
+        <section id="team" class="section-view">
+            <div class="title-reveal">
+                <h2>OFFICIEEL TEAM</h2>
+            </div>
+            <div id="team-engine-render">
+                </div>
         </section>
 
-        <section id="info" class="view-section">
-            <h2 class="staff-header">KINGDOM LORE</h2>
-            <div class="hier-grid">
-                <div class="rank-card" style="--r-color: #eee;"><h3>Kingdom 1</h3><p>Beschrijving volgt...</p></div>
-                <div class="rank-card" style="--r-color: #eee;"><h3>Kingdom 2</h3><p>Beschrijving volgt...</p></div>
-                <div class="rank-card" style="--r-color: #eee;"><h3>Kingdom 3</h3><p>Beschrijving volgt...</p></div>
-                <div class="rank-card" style="--r-color: #eee;"><h3>Kingdom 4</h3><p>Beschrijving volgt...</p></div>
-                <div class="rank-card" style="--r-color: #eee;"><h3>Kingdom 5</h3><p>Beschrijving volgt...</p></div>
-                <div class="rank-card" style="--r-color: #eee;"><h3>Kingdom 6</h3><p>Beschrijving volgt...</p></div>
+        <section id="info" class="section-view">
+            <div class="title-reveal">
+                <h2>DE 6 RIJKEN</h2>
+            </div>
+            <div class="hier-container">
+                <div class="card-rank" style="--rank-color: #eee;"><h3>Kingdom 1</h3><p>Lore volgt...</p></div>
+                <div class="card-rank" style="--rank-color: #eee;"><h3>Kingdom 2</h3><p>Lore volgt...</p></div>
+                <div class="card-rank" style="--rank-color: #eee;"><h3>Kingdom 3</h3><p>Lore volgt...</p></div>
+                <div class="card-rank" style="--rank-color: #eee;"><h3>Kingdom 4</h3><p>Lore volgt...</p></div>
+                <div class="card-rank" style="--rank-color: #eee;"><h3>Kingdom 5</h3><p>Lore volgt...</p></div>
+                <div class="card-rank" style="--rank-color: #eee;"><h3>Kingdom 6</h3><p>Lore volgt...</p></div>
             </div>
         </section>
 
     </main>
 
-    <footer class="footer-end">
-        <p>REMAKE KINGDOM | DEVELOPMENT PORTAL &copy; 2026</p>
+    <footer class="footer-main">
+        <span class="footer-logo">RKD</span>
+        <p class="footer-copy">REMAKE KINGDOM | DEVELOPMENT PORTAL 2026</p>
     </footer>
 
     <script>
-        /* --- 1. NAVIGATION ENGINE --- */
-        function navTo(id) {
-            const currentView = document.querySelector('.view-section.active');
-            const targetView = document.getElementById(id);
-            const menuItems = document.querySelectorAll('.menu-item');
+        /**
+         * LAYER 1: DATA OBJECTS
+         * Pre-defining the law for the rendering engine.
+         */
+        const RKD_LAWS = [
+            { id: 1, title: "Staff Misleiding", desc: "Liegen tegen staff of niet luisteren naar staff.", punish: "First punishment: 3 dagen ban" },
+            { id: 2, title: "DDoS Activiteiten", desc: "DDoS-related stuff of het dreigen met netwerkaanvallen.", punish: "SANCTIE: BLACKLIST" },
+            { id: 3, title: "Doxing / Privacy", desc: "Het lekken van IP's en andere privégegevens van spelers.", punish: "SANCTIE: BLACKLIST" },
+            { id: 4, title: "Cheating & Hacks", desc: "Gebruik van externe software of exploits voor unfair advantage.", punish: "1st: 14d ban | 2nd: 1 maand ban | 3rd: Perm ban" },
+            { id: 5, title: "Bug / Glitch Abuse", desc: "Misbruik maken of het niet melden van een bug/glitch.", punish: "1st: 14 dagen ban | 2nd: 1 maand ban" },
+            { id: 6, title: "Reclame", desc: "Reclame maken voor andere Minecraft servers of projecten.", punish: "First punishment: 7 dagen mute" },
+            { id: 7, title: "Ban Evading", desc: "Het omzeilen van een ban met een alternatief account.", punish: "SANCTIE: BLACKLIST" },
+            { id: 8, title: "Trapping", desc: "Het maken van of lokken van spelers in een valstrik (trap).", punish: "1st: 3d ban | 2nd: 7d ban (Voor zowel maker als uitvoerder)" },
+            { id: 9, title: "Grieving", desc: "Het moedwillig slopen of beschadigen van andermans bouwwerken.", punish: "Klein: 7d | Middel: 14d | Groot: 1 maand ban" },
+            { id: 10, title: "Kanaal Misbruik", desc: "Non-Roleplay, Non-Trade of HelpOp misbruik.", punish: "First punishment: 6 uur mute" },
+            { id: 11, title: "Aanvallen zonder Toestemming", desc: "Het aanvallen van spelers of kingdoms zonder geldige reden.", punish: "1st: 3d | 2nd: 7d | 3rd+: 14 dagen ban" },
+            { id: 12, title: "PvP Loggen", desc: "Uitloggen tijdens een lopend gevecht om dood te voorkomen.", punish: "1st: 3 dagen ban | 2nd+: 7 dagen ban" },
+            { id: 13, title: "Ijstunnel Sabotage", desc: "Het plaatsen van cobwebs of lava in een ijstunnel.", punish: "1st: 1 dag ban | 2nd+: 3 dagen ban" },
+            { id: 14, title: "Inbouwen", desc: "Het inbouwen van anderen of jezelf tijdens een gevecht.", punish: "1st: 1 dag ban | 2nd+: 3 dagen ban" },
+            { id: 15, title: "Item Transfer", desc: "Het overzetten van spullen tussen eigen accounts.", punish: "14 dagen ban + Inventaris Clear (/inv clear)" },
+            { id: 16, title: "Kingdom Alten", desc: "Het hebben van een alt-account in een ander kingdom.", punish: "Alt: Perm ban | Main: +7 dagen extra ban" },
+            { id: 17, title: "Toxic Gedrag", desc: "Toxic gedrag vertonen of schelden met ernstige ziektes.", punish: "1st: 12 uur mute | 2nd+: 24 uur mute" }
+        ];
 
-            if (currentView) {
-                currentView.style.opacity = '0';
-                currentView.style.transform = 'translateY(-20px)';
+        const RKD_TEAM = [
+            { rank: "Beheer", color: "var(--color-beheer)", rgb: "255, 71, 87", members: [{name: "Binnenlander", pos: "Owner"}] },
+            { rank: "Project Leider", color: "var(--color-project)", rgb: "249, 202, 36", members: [{name: "Advies", pos: "Project Leider"}] },
+            { rank: "Admin", color: "var(--color-admin)", rgb: "125, 95, 255", members: [{name: "Shaykuhh", pos: "Admin"}, {name: "Penpijn", pos: "Admin"}] },
+            { rank: "Senior Staff", color: "var(--color-senior)", rgb: "255, 175, 64", members: [{name: "Noootjee", pos: "Senior"}, {name: "BjornNL", pos: "Senior"}, {name: "Peanerd", pos: "Senior"}] },
+            { rank: "Staff", color: "var(--color-staff)", rgb: "58, 227, 116", members: [
+                {name: "ItssAyden", pos: "Staff"}, {name: "Koningbitterbal", pos: "Staff"}, {name: "Annewannn", pos: "Staff"},
+                {name: "Clashermike", pos: "Staff"}, {name: "ItssGirav", pos: "Staff"}, {name: "Odsko", pos: "Staff"}
+            ]}
+        ];
+
+        /**
+         * LAYER 2: NAVIGATION & RENDERER
+         */
+        function navigateTo(targetId) {
+            const currentActive = document.querySelector('.section-view.active');
+            const targetElement = document.getElementById(targetId);
+            const menuLinks = document.querySelectorAll('.nav-link');
+
+            // Handle transition
+            if (currentActive) {
+                currentActive.style.opacity = '0';
+                currentActive.style.transform = 'translateY(-20px)';
+                
                 setTimeout(() => {
-                    currentView.classList.remove('active');
-                    targetView.classList.add('active');
+                    currentActive.classList.remove('active');
+                    targetElement.classList.add('active');
+                    
                     setTimeout(() => {
-                        targetView.style.opacity = '1';
-                        targetView.style.transform = 'translateY(0)';
+                        targetElement.style.opacity = '1';
+                        targetElement.style.transform = 'translateY(0)';
                     }, 50);
                 }, 400);
             }
 
-            menuItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.id === `m-${id}`) item.classList.add('active');
+            // Update UI Links
+            menuLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.id === `btn-${targetId}`) link.classList.add('active');
             });
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Scroll Detector
         window.addEventListener('scroll', () => {
-            const nav = document.getElementById('main-nav');
-            if (window.scrollY > 50) nav.classList.add('minimal');
-            else nav.classList.remove('minimal');
+            const nav = document.getElementById('top-nav');
+            if (window.scrollY > 100) nav.classList.add('sticky');
+            else nav.classList.remove('sticky');
         });
 
-        /* --- 2. THE 17 ARTICLES (THE LAW) --- */
-        const lawData = [
-            { art: 1, title: "Staff Misleiding", desc: "Liegen tegen staff of niet luisteren naar staff.", punish: "First punishment: 3 dagen ban" },
-            { art: 2, title: "DDoS Zaken", desc: "DDoS-related stuff of dreigementen.", punish: "SANCTIE: BLACKLIST" },
-            { art: 3, title: "Doxing / Privacy", desc: "Het lekken van IP's en andere privégegevens van spelers.", punish: "SANCTIE: BLACKLIST" },
-            { art: 4, title: "Cheating / Hacks", desc: "Gebruik van externe software voor oneerlijk voordeel.", punish: "1st: 14d ban | 2nd: 1 maand ban | 3rd: Perm ban" },
-            { art: 5, title: "Bug / Glitch Abuse", desc: "Misbruik maken of het niet melden van een bug/glitch.", punish: "1st: 14 dagen ban | 2nd: 1 maand ban" },
-            { art: 6, title: "Reclame Maken", desc: "Promoten van andere Minecraft servers of diensten.", punish: "First punishment: 7 dagen mute" },
-            { art: 7, title: "Ban Evading", desc: "Het omzeilen van een ban met een nieuw account.", punish: "SANCTIE: BLACKLIST" },
-            { art: 8, title: "Trapping", desc: "Het maken van of lokken van spelers in een trap.", punish: "1st: 3d ban | 2nd: 7d ban (Maker & Gebruiker)" },
-            { art: 9, title: "Grieving", desc: "Het opzettelijk slopen van bouwwerken van anderen.", punish: "Klein: 7d | Middel: 14d | Groot: 1 maand ban" },
-            { art: 10, title: "Misbruik Kanalen", desc: "Non-Roleplay, Non-Trade of HelpOp misbruik.", punish: "First punishment: 6 uur mute" },
-            { art: 11, title: "Illegale Aanval", desc: "Aanvallen zonder geldige reden of toestemming.", punish: "1st: 3d | 2nd: 7d | 3rd+: 14 dagen ban" },
-            { art: 12, title: "PvP Loggen", desc: "Uitloggen tijdens of direct na een gevecht.", punish: "1st: 3 dagen ban | 2nd+: 7 dagen ban" },
-            { art: 13, title: "Ijstunnel Sabotage", desc: "Cobwebs of lava plaatsen in een ijstunnel.", punish: "1st: 1 dag ban | 2nd+: 3 dagen ban" },
-            { art: 14, title: "Inbouwen", desc: "Inbouwen van anderen of jezelf tijdens combat.", punish: "1st: 1 dag ban | 2nd+: 3 dagen ban" },
-            { art: 15, title: "Item Transfer", desc: "Overzetten van spullen tussen eigen accounts.", punish: "14 dagen ban + /inv clear" },
-            { art: 16, title: "Kingdom Alts", desc: "Alten in een ander kingdom dan je main account.", punish: "Alt: Perm ban | Main: +7 dagen extra ban" },
-            { art: 17, title: "Toxiciteit", desc: "Toxic gedrag of schelden met ernstige ziektes.", punish: "1st: 12 uur mute | 2nd+: 24 uur mute" }
-        ];
-
-        const lawBook = document.getElementById('law-container');
-        lawData.forEach(l => {
-            const wrap = document.createElement('div');
-            wrap.className = 'article-wrap';
-            wrap.innerHTML = `
-                <div class="article-trigger" onclick="toggleArt(this)">
-                    <h4>Art. ${l.art} - ${l.title}</h4>
-                    <div class="chevron"></div>
+        /**
+         * LAYER 3: LAW ACCORDION LOGIC
+         * Injects the articles and handles the physics-based opening.
+         */
+        const lawTarget = document.getElementById('law-engine-render');
+        
+        RKD_LAWS.forEach(law => {
+            const artEl = document.createElement('div');
+            artEl.className = 'art-box';
+            artEl.innerHTML = `
+                <div class="art-header" onclick="toggleLaw(this)">
+                    <h4>Art. ${law.id} - ${law.title}</h4>
+                    <div class="art-icon"></div>
                 </div>
-                <div class="article-content">
-                    <div class="article-inner">
-                        <p class="law-desc">${l.desc}</p>
-                        <div class="law-punish">
-                            <span>Sanctie conform Art. ${l.art}</span>
-                            <p>${l.punish}</p>
+                <div class="art-body">
+                    <div class="art-content-padding">
+                        <p class="art-description">${law.desc}</p>
+                        <div class="art-punishment-tag">
+                            <span>Sanctie conform Art. ${law.id}</span>
+                            <p>${law.punish}</p>
                         </div>
                     </div>
                 </div>
             `;
-            lawBook.appendChild(wrap);
+            lawTarget.appendChild(artEl);
         });
 
-        function toggleArt(el) {
-            const parent = el.parentElement;
-            const isOpen = parent.classList.contains('open');
+        function toggleLaw(header) {
+            const box = header.parentElement;
+            const body = header.nextElementSibling;
+            const isOpen = box.classList.contains('is-open');
             
-            // Close others
-            document.querySelectorAll('.article-wrap').forEach(w => w.classList.remove('open'));
-            
-            if (!isOpen) parent.classList.add('open');
-        }
+            // Close all others first
+            document.querySelectorAll('.art-box').forEach(other => {
+                if (other !== box) {
+                    other.classList.remove('is-open');
+                    other.querySelector('.art-body').style.maxHeight = '0px';
+                }
+            });
 
-        /* --- 3. TEAM DATA ENGINE --- */
-        const teamData = [
-            { r: "Beheer", c: "var(--beheer)", m: [{n:"Binnenlander", p:"Eigenaar"}] },
-            { r: "Project Leider", c: "var(--project)", m: [{n:"Advies", p:"Project Leider"}] },
-            { r: "Admin", c: "var(--admin)", m: [{n:"Shaykuhh", p:"Admin"}, {n:"Penpijn", p:"Admin"}] },
-            { r: "Senior Staff", c: "var(--senior)", m: [{n:"Noootjee", p:"Senior"}, {n:"BjornNL", p:"Senior"}, {n:"Peanerd", p:"Senior"}] },
-            { r: "Staff", c: "var(--staff)", m: [
-                {n:"ItssAyden", p:"Staff"},{n:"Koningbitterbal", p:"Staff"},{n:"Annewannn", p:"Staff"},
-                {n:"Clashermike", p:"Staff"},{n:"ItssGirav", p:"Staff"},{n:"Odsko", p:"Staff"}
-            ]}
-        ];
-
-        const tInject = document.getElementById('team-inject');
-        teamData.forEach(group => {
-            const section = document.createElement('div');
-            section.innerHTML = `<h3 class="staff-header" style="color:${group.c}; font-size:2rem; margin-top:50px;">${group.r}</h3>
-                                 <div class="team-row">${group.m.map(member => `
-                                    <div class="skin-box" style="--r-color:${group.c}">
-                                        <img src="https://mc-heads.net/body/${member.n}/right">
-                                        <h4>${member.n}</h4>
-                                        <p style="color:${group.c}">${member.p}</p>
-                                    </div>
-                                 `).join('')}</div>`;
-            tInject.appendChild(section);
-        });
-
-        /* --- 4. PARTICLE ENGINE --- */
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let dots = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.onresize = resize; resize();
-        class Dot {
-            constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.s = Math.random()*2; this.v = Math.random()*0.3; }
-            draw() {
-                ctx.fillStyle = "rgba(255, 215, 0, 0.2)";
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI*2); ctx.fill();
-                this.y -= this.v; if(this.y < -10) this.y = canvas.height+10;
+            // Toggle current
+            if (isOpen) {
+                box.classList.remove('is-open');
+                body.style.maxHeight = '0px';
+            } else {
+                box.classList.add('is-open');
+                body.style.maxHeight = body.scrollHeight + 'px';
             }
         }
-        for(let i=0; i<80; i++) dots.push(new Dot());
-        function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); dots.forEach(d => d.draw()); requestAnimationFrame(anim); }
-        anim();
+
+        /**
+         * LAYER 4: TEAM RENDERER
+         */
+        const teamTarget = document.getElementById('team-engine-render');
+        
+        RKD_TEAM.forEach(group => {
+            const groupTitle = document.createElement('h3');
+            groupTitle.style = `color: ${group.color}; text-align: center; font-family: 'Cinzel Decorative'; font-size: 2.5rem; margin: 80px 0 40px;`;
+            groupTitle.innerText = group.rank;
+            teamTarget.appendChild(groupTitle);
+
+            const grid = document.createElement('div');
+            grid.className = 'team-grid';
+            
+            group.members.forEach(m => {
+                grid.innerHTML += `
+                    <div class="staff-profile" style="--r-color: ${group.color}; --r-rgb: ${group.rgb}">
+                        <img src="https://mc-heads.net/body/${m.name}/right" alt="${m.name}">
+                        <h4>${m.name}</h4>
+                        <p>${m.pos}</p>
+                    </div>
+                `;
+            });
+            teamTarget.appendChild(grid);
+        });
+
+        /**
+         * LAYER 5: CANVAS PARTICLES ENGINE
+         * High performance animation loop for the background.
+         */
+        const canvas = document.getElementById('master-canvas');
+        const ctx = canvas.getContext('2d');
+        let dots = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedY = Math.random() * 0.4 + 0.1;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.y -= this.speedY;
+                if (this.y < -10) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 215, 0, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 120; i++) {
+            dots.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            dots.forEach(dot => {
+                dot.update();
+                dot.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        // Start engines
+        animate();
+
+        // LOG INITIALIZATION
+        console.log("RKD Portal Engine Initialized...");
+        console.log("Articles Loaded: 17");
+        console.log("Staff Groups Loaded: 5");
     </script>
 </body>
 </html>
