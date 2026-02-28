@@ -2,546 +2,480 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>REMAKE KINGDOM | STAFF PORTAL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Quicksand:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RKD | Staff Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
-        /* [1. CORE STYLING - DE AUTHENTIEKE RKD LOOK] */
-        body {
-            background-color: #02040a;
-            color: #d1d5db;
-            font-family: 'Quicksand', sans-serif;
+        /* [1. CSS VARIABELEN - DE POLLY KLEUREN] */
+        :root {
+            --bg-dark: #0f111a;
+            --bg-card: #161925;
+            --bg-accent: #1f2335;
+            
+            --primary: #3d5afe; /* Polly Blue accent */
+            --primary-glow: rgba(61, 90, 254, 0.3);
+            
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            
+            --rank-beheer: #ff4757;
+            --rank-admin: #3d5afe;
+            --rank-senior: #ffa502;
+            --rank-staff: #2ed573;
+            
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* [2. RESET & BASIS] */
+        * {
             margin: 0;
             padding: 0;
-            background-image: radial-gradient(circle at center, #0f172a 0%, #02040a 100%);
-            background-attachment: fixed;
+            box-sizing: border-box;
         }
 
-        /* [2. NAVIGATION - BOVENIN, NIET LINKS] */
-        .rkd-navbar {
-            background: rgba(5, 7, 15, 0.95);
-            border-bottom: 2px solid #c5a059;
-            padding: 20px 0;
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { 
+            background: var(--bg-accent); 
+            border-radius: 10px;
+        }
+
+        /* [3. NAVBAR - BOVENIN, SMOOTH] */
+        .navbar {
+            height: 80px;
+            background: rgba(22, 25, 37, 0.8);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
             position: sticky;
             top: 0;
-            z-index: 9999;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .rkd-navbar a {
-            color: #c5a059;
-            text-decoration: none;
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            margin: 0 25px;
-            font-size: 1rem;
-            letter-spacing: 2px;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
-
-        .rkd-navbar a:hover {
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
             color: #fff;
-            text-shadow: 0 0 10px rgba(197, 160, 89, 0.8);
         }
 
-        /* [3. HEADER & LOGO] */
-        .rkd-header {
-            text-align: center;
-            padding: 100px 20px;
-        }
-
-        .rkd-logo {
-            font-family: 'Cinzel', serif;
-            font-size: 5rem;
-            font-weight: 900;
-            color: #c5a059;
-            text-shadow: 0 0 30px rgba(197, 160, 89, 0.4);
-            letter-spacing: 15px;
-            margin: 0;
-        }
-
-        .rkd-subtitle {
-            font-family: 'Cinzel', serif;
-            letter-spacing: 5px;
-            color: #6b7280;
-            text-transform: uppercase;
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-
-        /* [4. MAIN CONTAINER] */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .section-title {
-            font-family: 'Cinzel', serif;
-            font-size: 2.5rem;
-            color: #c5a059;
-            text-align: center;
-            margin: 80px 0 40px;
-            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
-            padding-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        /* [5. STAFF MATRIX - DIRECT VAN JE SCREENSHOT] */
-        .matrix-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .nav-links {
+            display: flex;
             gap: 30px;
         }
 
-        .matrix-card {
-            background: #0a0d17;
-            border: 1px solid rgba(197, 160, 89, 0.2);
-            padding: 40px;
-            border-radius: 4px;
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        /* [4. MAIN LAYOUT] */
+        .container {
+            max-width: 1300px;
+            margin: 60px auto;
+            padding: 0 40px;
+        }
+
+        .hero {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* [5. STAFF MATRIX CARDS] */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 80px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 35px;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: var(--transition);
             position: relative;
+            overflow: hidden;
         }
 
-        .matrix-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
+        .card:hover {
+            transform: translateY(-5px);
+            background: var(--bg-accent);
+            border-color: rgba(61, 90, 254, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        .rank-beheer::before { background: #ff4757; }
-        .rank-admin::before { background: #70a1ff; }
-        .rank-senior::before { background: #ffa502; }
-        .rank-staff::before { background: #2ed573; }
-
-        .matrix-card h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.8rem;
-            margin-top: 0;
-            margin-bottom: 25px;
-        }
-
-        .matrix-card ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .matrix-card ul li {
-            margin-bottom: 15px;
-            padding-left: 30px;
-            position: relative;
-            line-height: 1.6;
-        }
-
-        .matrix-card ul li::before {
-            content: '♦';
-            position: absolute;
-            left: 0;
-            color: #c5a059;
-        }
-
-        /* [6. WETBOEK - DEEP DETAIL] */
-        .law-item {
-            background: #0a0d17;
+        .card-rank {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
         }
 
-        .law-item:hover {
-            border-color: #c5a059;
+        .matrix-list {
+            list-style: none;
+        }
+
+        .matrix-list li {
+            margin-bottom: 12px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .matrix-list li::before {
+            content: '•';
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* [6. WETBOEK ACCORDION] */
+        .law-item {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.03);
+            overflow: hidden;
         }
 
         .law-header {
-            padding: 25px 40px;
+            padding: 25px 35px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: var(--transition);
+        }
+
+        .law-header:hover {
             background: rgba(255,255,255,0.02);
         }
 
-        .law-name {
-            font-family: 'Cinzel', serif;
+        .law-title {
             font-weight: 700;
-            font-size: 1.2rem;
-            color: #eee;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .law-punishment {
-            font-size: 0.8rem;
-            font-weight: 900;
-            color: #000;
-            background: #c5a059;
-            padding: 5px 15px;
-            border-radius: 2px;
-            text-transform: uppercase;
+        .law-id {
+            color: var(--primary);
+            font-family: 'Fira Code', monospace;
         }
 
         .law-content {
-            padding: 40px;
-            border-top: 1px solid rgba(197, 160, 89, 0.1);
-            line-height: 1.8;
-            color: #9ca3af;
+            padding: 0 35px 35px;
+            display: none;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            animation: fadeIn 0.4s ease;
         }
 
-        .cmd-box {
+        .punish-tag {
+            background: rgba(255, 71, 87, 0.1);
+            color: #ff4757;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+        .cmd-display {
             background: #000;
-            color: #2ed573;
-            padding: 20px;
-            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
+            border-radius: 8px;
             margin-top: 20px;
-            border-left: 3px solid #c5a059;
-            font-size: 0.9rem;
+            font-family: 'Fira Code', monospace;
+            color: #2ed573;
+            font-size: 0.85rem;
         }
 
-        /* [7. PROCEDURE BLOKKEN] */
-        .procedure-box {
-            background: #0a0d17;
-            border: 1px solid rgba(197, 160, 89, 0.2);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* [7. PROCEDURE SECTIE] */
+        .proc-card {
+            background: linear-gradient(145deg, var(--bg-card), var(--bg-dark));
             padding: 40px;
-            margin-bottom: 40px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .proc-step {
+            margin-bottom: 30px;
+            padding-left: 20px;
+            border-left: 2px solid var(--bg-accent);
+        }
+
+        .proc-step h4 {
+            color: var(--primary);
+            margin-bottom: 5px;
         }
 
         /* [8. FOOTER] */
-        .footer {
-            text-align: center;
+        footer {
             padding: 60px;
-            color: #4b5563;
+            text-align: center;
+            color: var(--text-muted);
             font-size: 0.8rem;
-            border-top: 1px solid rgba(197, 160, 89, 0.1);
         }
-
-        /* Extra classes voor volume */
-        .spacer { height: 100px; }
     </style>
 </head>
 <body>
 
-    <nav class="rkd-navbar">
-        <a href="#home">Home</a>
-        <a href="#matrix">Matrix</a>
-        <a href="#wetboek">Wetboek</a>
-        <a href="#procedures">Procedures</a>
-        <a href="#rijken">Rijken</a>
+    <nav class="navbar">
+        <div class="nav-brand">RKD SYSTEM</div>
+        <div class="nav-links">
+            <a href="#matrix" class="active">Matrix</a>
+            <a href="#wetboek">Wetboek</a>
+            <a href="#procedures">Procedures</a>
+            <a href="#rijken">Rijken</a>
+        </div>
     </nav>
 
-    <header class="rkd-header" id="home">
-        <h1 class="rkd-logo">RKD</h1>
-        <p class="rkd-subtitle">Remake Kingdom Staff Operations</p>
-    </header>
-
     <div class="container">
+        
+        <div class="hero">
+            <h1>Staff Operations Portal</h1>
+            <p style="color: var(--text-muted);">Welkom terug bij de Remake Kingdom staff-omgeving.</p>
+        </div>
 
-        <h2 class="section-title" id="matrix">Staff Matrix</h2>
-        <div class="matrix-container">
+        <h2 id="matrix" style="margin-bottom: 30px; font-weight: 800;">Staff Matrix</h2>
+        <div class="matrix-grid">
             
-            <div class="matrix-card rank-beheer">
-                <h3 style="color: #ff4757;">BEHEER</h3>
-                <ul>
+            <div class="card">
+                <span class="card-rank" style="background: rgba(255, 71, 87, 0.1); color: var(--rank-beheer);">Beheer</span>
+                <ul class="matrix-list">
                     <li>Eindverantwoordelijke over het netwerk.</li>
                     <li>Verantwoordelijk voor technische infra.</li>
                     <li>Management van de Project Leider.</li>
-                    <li>Financieel & Strategisch beleid van de server.</li>
-                    <li>Hoogste macht bij alle server-brede conflicten.</li>
+                    <li>Financieel & Strategisch beleid.</li>
                 </ul>
             </div>
 
-            <div class="matrix-card rank-admin">
-                <h3 style="color: #70a1ff;">ADMIN</h3>
-                <ul>
+            <div class="card">
+                <span class="card-rank" style="background: rgba(61, 90, 254, 0.1); color: var(--rank-admin);">Admin</span>
+                <ul class="matrix-list">
                     <li><b>Neemt ALTIJD het bindende eindbesluit.</b></li>
-                    <li>Toezicht op zware in-game sancties en bans.</li>
-                    <li>Verantwoordelijk voor rust en orde binnen het team.</li>
-                    <li>Hoogste escalatiepunt voor tickets en speler-claims.</li>
-                    <li>Beslist over Kingdom-grenzen en oorlogsverklaringen.</li>
+                    <li>Toezicht op zware in-game sancties.</li>
+                    <li>Verantwoordelijk voor rust en orde.</li>
+                    <li>Hoogste escalatiepunt voor tickets.</li>
                 </ul>
             </div>
 
-            <div class="matrix-card rank-senior">
-                <h3 style="color: #ffa502;">SENIOR STAFF</h3>
-                <ul>
-                    <li>Afhandeling van complexe tickets die meer ervaring eisen.</li>
-                    <li>Bevoegd voor het uitvoeren van in-game bans.</li>
-                    <li>Begeleiding en training van (Junior) Staffleden.</li>
-                    <li>Handhaving van het wetboek en controle op bewijslast.</li>
-                    <li>Direct aanspreekpunt voor Staff bij twijfel.</li>
+            <div class="card">
+                <span class="card-rank" style="background: rgba(255, 165, 2, 0.1); color: var(--rank-senior);">Senior Staff</span>
+                <ul class="matrix-list">
+                    <li>Afhandeling van complexe tickets.</li>
+                    <li>Bevoegd voor in-game bans.</li>
+                    <li>Begeleiding van Junior Staffleden.</li>
+                    <li>Handhaving van het wetboek.</li>
                 </ul>
             </div>
 
-            <div class="matrix-card rank-staff">
-                <h3 style="color: #2ed573;">STAFF</h3>
-                <ul>
-                    <li>Eerste hulp bij speler-vragen en technische problemen.</li>
-                    <li>Moderatie van alle chatkanalen (Mutes/Kicks).</li>
-                    <li>Rapporteren van onregelmatigheden aan Senior Staff.</li>
-                    <li>Basis handhaving van de algemene server-regels.</li>
-                    <li>Hulp bij kleine incidenten zoals griefing meldingen.</li>
+            <div class="card">
+                <span class="card-rank" style="background: rgba(46, 213, 115, 0.1); color: var(--rank-staff);">Staff</span>
+                <ul class="matrix-list">
+                    <li>Eerste hulp bij speler-vragen.</li>
+                    <li>Moderatie van chatkanalen.</li>
+                    <li>Rapporteren van onregelmatigheden.</li>
+                    <li>Basis sancties uitvoeren.</li>
                 </ul>
             </div>
 
         </div>
 
-        <h2 class="section-title" id="wetboek">Het Wetboek</h2>
+        <h2 id="wetboek" style="margin-bottom: 30px; font-weight: 800;">Het Wetboek</h2>
         <div class="law-container">
 
             <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 1: Staff Misleiding</span>
-                    <span class="law-punishment">3 DAGEN BAN</span>
+                <div class="law-header" onclick="toggleLaw(1)">
+                    <div class="law-title">
+                        <span class="law-id">#01</span>
+                        <span>Staff Misleiding</span>
+                    </div>
+                    <span class="punish-tag">3 Dagen Ban</span>
                 </div>
-                <div class="law-content">
-                    Het opzettelijk verstrekken van onjuiste informatie aan een bevoegd stafflid. Dit omvat het vervalsen van screenshots, het liegen over incidenten of het verzwijgen van cruciale feiten om een sanctie te ontlopen.
-                    <div class="cmd-box">/tempban [naam] 3d Artikel 1 - Misleiding van bevoegd gezag.</div>
-                </div>
-            </div>
-
-            <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 2: DDoS / Netwerk Dreigementen</span>
-                    <span class="law-punishment" style="background: red; color: #fff;">BLACKLIST</span>
-                </div>
-                <div class="law-content">
-                    Elke vorm van dreiging die de stabiliteit van de server of de veiligheid van spelers in gevaar brengt. Het dreigen met DDoS, het platleggen van de website of het aanvallen van de database resulteert in een onmiddellijke blacklist.
-                    <div class="cmd-box">/blacklist [naam] Artikel 2 - Ernstige netwerkdreiging.</div>
+                <div class="law-content" id="art-1">
+                    <p>Het opzettelijk verstrekken van onjuiste informatie aan een stafflid. Dit geldt voor zowel chat als tickets.</p>
+                    <div class="cmd-display">/tempban [player] 3d Artikel 1 - Misleiding</div>
                 </div>
             </div>
 
             <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 3: Doxing / Privacy</span>
-                    <span class="law-punishment" style="background: red; color: #fff;">BLACKLIST</span>
+                <div class="law-header" onclick="toggleLaw(2)">
+                    <div class="law-title">
+                        <span class="law-id">#02</span>
+                        <span>DDoS Dreigementen</span>
+                    </div>
+                    <span class="punish-tag" style="background: #000; color: #ff4757;">BLACKLIST</span>
                 </div>
-                <div class="law-content">
-                    Het verspreiden of dreigen met verspreiden van privé-informatie van spelers of staffleden. Dit omvat echte namen, woonadressen, telefoonnummers of privéfoto's.
-                    <div class="cmd-box">/blacklist [naam] Artikel 3 - Schending van de persoonlijke levenssfeer.</div>
-                </div>
-            </div>
-
-            <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 4: Hacks / Externe Software</span>
-                    <span class="law-punishment">14 DAGEN BAN</span>
-                </div>
-                <div class="law-content">
-                    Gebruik van gemodificeerde clients of software die een oneerlijk voordeel geeft in PvP of gameplay. Voorbeelden: Fly, KillAura, X-Ray, Auto-Clicker (>15 CPS).
-                    <div class="cmd-box">/tempban [naam] 14d Artikel 4 - Gebruik van niet-toegestane modificaties.</div>
+                <div class="law-content" id="art-2">
+                    <p>Dreigen met het aanvallen van het netwerk of individuele spelers.</p>
+                    <div class="cmd-display">/blacklist [player] Artikel 2 - Dreiging</div>
                 </div>
             </div>
 
             <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 5: Bug / Glitch Abuse</span>
-                    <span class="law-punishment">7 DAGEN BAN</span>
+                <div class="law-header" onclick="toggleLaw(3)">
+                    <div class="law-title">
+                        <span class="law-id">#03</span>
+                        <span>Doxing</span>
+                    </div>
+                    <span class="punish-tag" style="background: #000; color: #ff4757;">BLACKLIST</span>
                 </div>
-                <div class="law-content">
-                    Het bewust uitbuiten van fouten in de server, plugins of Minecraft zelf om items te dupliceren of toegang te krijgen tot verboden gebieden.
-                    <div class="cmd-box">/tempban [naam] 7d Artikel 5 - Misbruik van server-defecten.</div>
-                </div>
-            </div>
-
-            <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 6: Reclame / Advertising</span>
-                    <span class="law-punishment">PERMANENTE MUTE</span>
-                </div>
-                <div class="law-content">
-                    Het promoten van andere Minecraft-servers of commerciële Discord-links die niet gerelateerd zijn aan RKD.
-                    <div class="cmd-box">/mute [naam] perm Artikel 6 - Ongeoorloofde reclame.</div>
+                <div class="law-content" id="art-3">
+                    <p>Het verspreiden van privégegevens van spelers of staff.</p>
+                    <div class="cmd-display">/blacklist [player] Artikel 3 - Doxing</div>
                 </div>
             </div>
 
             <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 7: Ban Evading</span>
-                    <span class="law-punishment">BLACKLIST ALT</span>
+                <div class="law-header" onclick="toggleLaw(4)">
+                    <div class="law-title">
+                        <span class="law-id">#04</span>
+                        <span>Cheating / Hacks</span>
+                    </div>
+                    <span class="punish-tag">14 Dagen Ban</span>
                 </div>
-                <div class="law-content">
-                    Het inloggen op een alternatief account om een actieve ban te omzeilen. De ban op het hoofdaccount kan hierdoor worden verlengd.
-                    <div class="cmd-box">/blacklist [naam] Artikel 7 - Ban ontwijking.</div>
-                </div>
-            </div>
-
-            <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 8: Trapping</span>
-                    <span class="law-punishment">3 DAGEN BAN</span>
-                </div>
-                <div class="law-content">
-                    Spelers lokken naar locaties waar zij direct doodgaan of niet meer weg kunnen zonder hulp van staff (bijv. Portal Traps).
-                    <div class="cmd-box">/tempban [naam] 3d Artikel 8 - Onethische speler-vallen.</div>
+                <div class="law-content" id="art-4">
+                    <p>Gebruik van software zoals Fly, KillAura of X-Ray.</p>
+                    <div class="cmd-display">/tempban [player] 14d Artikel 4 - Hacks</div>
                 </div>
             </div>
 
             <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 9: Grieving</span>
-                    <span class="law-punishment">7 DAGEN BAN</span>
+                <div class="law-header" onclick="toggleLaw(5)">
+                    <div class="law-title"><span class="law-id">#05</span><span>Bug Abuse</span></div>
+                    <span class="punish-tag">7 Dagen Ban</span>
                 </div>
-                <div class="law-content">
-                    Het opzettelijk vernielen van bouwwerken van andere spelers of Kingdoms buiten een officiële oorlog.
-                    <div class="cmd-box">/tempban [naam] 7d Artikel 9 - Vernieling van eigendommen.</div>
+                <div class="law-content" id="art-5"><p>Misbruik van glitches.</p></div>
+            </div>
+            
+            <div class="law-item">
+                <div class="law-header" onclick="toggleLaw(6)">
+                    <div class="law-title"><span class="law-id">#06</span><span>Advertising</span></div>
+                    <span class="punish-tag">Perm Mute</span>
                 </div>
+                <div class="law-content" id="art-6"><p>Promoten van andere servers.</p></div>
             </div>
 
             <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 10: Spam / Chatvervuiling</span>
-                    <span class="law-punishment">6 UUR MUTE</span>
+                <div class="law-header" onclick="toggleLaw(7)">
+                    <div class="law-title"><span class="law-id">#07</span><span>Ban Evading</span></div>
+                    <span class="punish-tag">IP Blacklist</span>
                 </div>
-                <div class="law-content">
-                    Het herhaaldelijk sturen van dezelfde berichten of het gebruik van overmatig hoofdletters in de publieke chat.
-                    <div class="cmd-box">/mute [naam] 6h Artikel 10 - Chatvervuiling.</div>
-                </div>
+                <div class="law-content" id="art-7"><p>Inloggen op alts tijdens ban.</p></div>
             </div>
 
             <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 11: Illegale Aanval</span>
-                    <span class="law-punishment">3 DAGEN BAN</span>
+                <div class="law-header" onclick="toggleLaw(8)">
+                    <div class="law-title"><span class="law-id">#08</span><span>Trapping</span></div>
+                    <span class="punish-tag">3 Dagen Ban</span>
                 </div>
-                <div class="law-content">Aanvallen buiten de vastgestelde tijden.</div>
-            </div>
-            <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 12: PvP Loggen</span>
-                    <span class="law-punishment">3 DAGEN BAN</span>
-                </div>
-                <div class="law-content">Uitloggen tijdens combat.</div>
-            </div>
-            <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 13: Sabotage</span>
-                    <span class="law-punishment">1 DAG BAN</span>
-                </div>
-                <div class="law-content">Blokkeren van wegen of poorten.</div>
-            </div>
-            <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 14: Inbouwen</span>
-                    <span class="law-punishment">1 DAG BAN</span>
-                </div>
-                <div class="law-content">Jezelf inbouwen tijdens een gevecht.</div>
-            </div>
-            <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 15: Item Transfer</span>
-                    <span class="law-punishment">14 DAGEN BAN</span>
-                </div>
-                <div class="law-content">Items stallen op alts.</div>
-            </div>
-            <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 16: Kingdom Alten</span>
-                    <span class="law-punishment">PERMANENT</span>
-                </div>
-                <div class="law-content">Accounts in meerdere kingdoms.</div>
-            </div>
-            <div class="law-item">
-                <div class="law-header">
-                    <span class="law-name">Artikel 17: Toxic Gedrag</span>
-                    <span class="law-punishment">12 UUR MUTE</span>
-                </div>
-                <div class="law-content">Ernstig schelden of respectloos gedrag.</div>
+                <div class="law-content" id="art-8"><p>Vastzetten van spelers.</p></div>
             </div>
 
+            <div class="law-item">
+                <div class="law-header" onclick="toggleLaw(9)">
+                    <div class="law-title"><span class="law-id">#09</span><span>Grieving</span></div>
+                    <span class="punish-tag">7 Dagen Ban</span>
+                </div>
+                <div class="law-content" id="art-9"><p>Slopen van andermans werk.</p></div>
+            </div>
+
+            <div class="law-item">
+                <div class="law-header" onclick="toggleLaw(10)">
+                    <div class="law-title"><span class="law-id">#10</span><span>Spam</span></div>
+                    <span class="punish-tag">6 Uur Mute</span>
+                </div>
+                <div class="law-content" id="art-10"><p>Chatvervuiling.</p></div>
+            </div>
+
+            <div class="law-item"><div class="law-header" onclick="toggleLaw(11)"><div class="law-title"><span class="law-id">#11</span><span>Illegale Aanval</span></div><span class="punish-tag">3 Dagen Ban</span></div></div>
+            <div class="law-item"><div class="law-header" onclick="toggleLaw(12)"><div class="law-title"><span class="law-id">#12</span><span>PvP Log</span></div><span class="punish-tag">3 Dagen Ban</span></div></div>
+            <div class="law-item"><div class="law-header" onclick="toggleLaw(13)"><div class="law-title"><span class="law-id">#13</span><span>Sabotage</span></div><span class="punish-tag">1 Dag Ban</span></div></div>
+            <div class="law-item"><div class="law-header" onclick="toggleLaw(14)"><div class="law-title"><span class="law-id">#14</span><span>Inbouwen</span></div><span class="punish-tag">1 Dag Ban</span></div></div>
+            <div class="law-item"><div class="law-header" onclick="toggleLaw(15)"><div class="law-title"><span class="law-id">#15</span><span>Item Transfer</span></div><span class="punish-tag">14 Dagen Ban</span></div></div>
+            <div class="law-item"><div class="law-header" onclick="toggleLaw(16)"><div class="law-title"><span class="law-id">#16</span><span>Alten</span></div><span class="punish-tag">Perm Ban</span></div></div>
+            <div class="law-item"><div class="law-header" onclick="toggleLaw(17)"><div class="law-title"><span class="law-id">#17</span><span>Toxic Gedrag</span></div><span class="punish-tag">12 Uur Mute</span></div></div>
         </div>
 
-        <h2 class="section-title" id="procedures">Staff Procedures</h2>
-        <div class="procedure-box">
-            <h3>Protocol bij Grieving Meldingen</h3>
-            <p>Wanneer een speler melding maakt van grieving, volg dan strikt dit stappenplan:</p>
-            <ol style="line-height: 2;">
-                <li>Teleporteer naar de locatie van het incident via /tp of /tppos.</li>
-                <li>Activeer de CoreProtect inspector met <b>/co i</b>.</li>
-                <li>Klik op de beschadigde blokken om te zien wie ze geplaatst of verwijderd heeft.</li>
-                <li>Maak een screenshot van de CoreProtect data als bewijs voor in de logs.</li>
-                <li>Stel vast of er sprake is van een oorlog. Zo nee, pas Artikel 9 toe.</li>
-                <li>Herstel de schade met <b>/co rollback t:time r:radius u:user</b>.</li>
-                <li>Log de actie in het #staff-logs kanaal op Discord.</li>
-            </ol>
-        </div>
-
-        <div class="procedure-box">
-            <h3>Protocol bij Hack Meldingen</h3>
-            <p>Bij het vermoeden van hacks mag je NOOIT direct bannen zonder observatie:</p>
-            <ol style="line-height: 2;">
-                <li>Ga in Vanish met <b>/v</b> en teleporteer onopvallend naar de speler.</li>
-                <li>Observeer de speler voor minimaal 5 minuten. Let op head-snaps en onnatuurlijk bereik (reach).</li>
-                <li>Start een schermopname (OBS) als bewijsmateriaal.</li>
-                <li>Bij overduidelijke hacks: voer de ban uit volgens Artikel 4.</li>
-                <li>Bij twijfel: roep een Admin of Senior Stafflid erbij voor een 'second opinion'.</li>
-            </ol>
-        </div>
-
-        <h2 class="section-title" id="rijken">De Rijken van RKD</h2>
-        <div class="matrix-container">
-            <div class="matrix-card">
-                <h3>Aragon</h3>
-                <p>Het bastion van het Westen. Bekend om hun ridders en de witte muren van de hoofdstad.</p>
+        <h2 id="procedures" style="margin: 60px 0 30px; font-weight: 800;">Procedures</h2>
+        <div class="proc-card">
+            <div class="proc-step">
+                <h4>1. Melding ontvangen</h4>
+                <p>Bekijk het ticket of de in-game melding. Groet de speler vriendelijk.</p>
             </div>
-            <div class="matrix-card">
-                <h3>Eredon</h3>
-                <p>Het schaduwrijk in het zuiden. Meesters van de duisternis en tactische overvallen.</p>
+            <div class="proc-step">
+                <h4>2. Bewijs verzamelen</h4>
+                <p>Gebruik /co i voor logs en maak screenshots van de chat of de situatie.</p>
             </div>
-            <div class="matrix-card">
-                <h3>Morthal</h3>
-                <p>De krijgers van het noorden. Overleven in de eeuwige sneeuw met brute kracht.</p>
+            <div class="proc-step">
+                <h4>3. Sanctie bepalen</h4>
+                <p>Kijk in het wetboek. Bij twijfel vraag je een Senior Stafflid.</p>
             </div>
-            <div class="matrix-card">
-                <h3>Valoria</h3>
-                <p>Het rijk van kennis en handel. Gelegen tussen de hoogste toppen van het continent.</p>
+            <div class="proc-step">
+                <h4>4. Afhandeling</h4>
+                <p>Voer de sanctie uit en log deze in het juiste Discord kanaal.</p>
             </div>
         </div>
-
-        <div class="spacer"></div>
 
     </div>
 
-    <footer class="footer">
-        &copy; 2026 REMAKE KINGDOM - OFFICIAL STAFF PANEL<br>
-        RECHTEN VOORBEHOUDEN AAN HET BEHEER
+    <footer>
+        &copy; 2026 Remake Kingdom | Polly UI System
     </footer>
 
     <script>
-        // Smooth scroll voor navigatie
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Wetboek open/dicht klappen
-        document.querySelectorAll('.law-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const isOpen = content.style.display === 'block';
-                
-                // Sluit alle anderen
+        function toggleLaw(id) {
+            const content = document.getElementById('art-' + id);
+            if(content) {
+                const isVisible = content.style.display === 'block';
                 document.querySelectorAll('.law-content').forEach(c => c.style.display = 'none');
-                
-                // Toggle deze
-                content.style.display = isOpen ? 'none' : 'block';
-            });
-        });
-
-        // Voorbereiding voor database/logs (Extra regels logica)
-        const staffData = {
-            version: "1.0.4",
-            lastUpdate: "2026-02-28",
-            serverStatus: "Online",
-            activeStaff: ["Binnenlander", "Shaykuhh", "Penpijn", "Noootjee"]
-        };
-
-        function checkStatus() {
-            console.log("RKD System Status: " + staffData.serverStatus);
+                content.style.display = isVisible ? 'none' : 'block';
+            }
         }
-        
-        checkStatus();
     </script>
 </body>
 </html>
