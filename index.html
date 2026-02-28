@@ -3,49 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RKD | Staff & Operations Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;700;900&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+    <title>RKD | Officiële Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;600;900&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #030305;
-            --accent-gold: #ffd700;
-            --accent-glow: rgba(255, 215, 0, 0.4);
+            --bg: #020205;
+            --gold: #ffd700;
+            --gold-glow: rgba(255, 215, 0, 0.3);
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
             
-            /* Rank Colors */
+            /* Ranks */
             --c-beheer: #ff4757;
             --c-project: #f9ca24;
             --c-admin: #7d5fff;
             --c-senior: #ffaf40;
             --c-staff: #3ae374;
+            
+            /* UI */
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: var(--bg-deep);
+            background-color: var(--bg);
             color: #fff;
             font-family: 'Outfit', sans-serif;
             overflow-x: hidden;
-            scroll-behavior: smooth;
+            line-height: 1.6;
         }
 
-        /* --- DYNAMISCHE ACHTERGROND --- */
-        #canvas-bg {
+        /* --- GEANIMEERDE ACHTERGROND --- */
+        #bg-canvas {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            filter: blur(2px);
+            opacity: 0.4;
         }
 
-        /* --- NAVIGATIE (SMOOTH) --- */
-        .nav-bar {
+        /* --- NAVIGATIE --- */
+        .navbar {
             position: fixed;
-            top: 0; width: 100%; height: 90px;
+            top: 0; width: 100%; height: 100px;
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 10%;
-            background: rgba(3, 3, 5, 0.7);
-            backdrop-filter: blur(25px);
+            padding: 0 8%;
+            background: rgba(2, 2, 5, 0.8);
+            backdrop-filter: blur(30px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
         }
@@ -53,302 +56,286 @@
         .logo {
             font-family: 'Cinzel Decorative', cursive;
             font-size: 2.2rem;
-            color: var(--accent-gold);
-            text-shadow: 0 0 25px var(--accent-glow);
+            color: var(--gold);
+            letter-spacing: 10px;
             cursor: pointer;
-            letter-spacing: 8px;
-            transition: 0.5s;
+            text-shadow: 0 0 20px var(--gold-glow);
         }
 
-        .nav-menu { display: flex; gap: 40px; }
-        .nav-link {
+        .nav-links { display: flex; gap: 35px; }
+        .nav-item {
             text-decoration: none;
             color: rgba(255,255,255,0.5);
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             letter-spacing: 2px;
             cursor: pointer;
-            transition: 0.4s;
+            transition: 0.3s var(--ease);
         }
 
-        .nav-link:hover, .nav-link.active { color: var(--accent-gold); transform: translateY(-2px); }
+        .nav-item:hover, .nav-item.active { color: var(--gold); transform: translateY(-2px); }
 
-        /* --- CONTAINER & PAGINA'S --- */
-        .main-wrapper { max-width: 1400px; margin: 0 auto; padding: 150px 5% 100px; }
+        /* --- PAGINA STRUCTUUR --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 160px 50px 100px; }
         
         .page { 
             display: none; 
             opacity: 0; 
-            transform: translateY(40px) scale(0.98); 
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(30px); 
+            transition: all 0.6s var(--ease); 
         }
-        .page.active { display: block; opacity: 1; transform: translateY(0) scale(1); }
+        .page.active { display: block; opacity: 1; transform: translateY(0); }
 
-        /* --- HOME DESIGN --- */
-        .hero-title {
+        /* --- HOME SECTION --- */
+        .hero { text-align: center; margin-bottom: 100px; }
+        .hero h1 {
             font-family: 'Cinzel Decorative';
-            font-size: clamp(3rem, 10vw, 6.5rem);
-            text-align: center;
-            background: linear-gradient(180deg, #fff 0%, var(--accent-gold) 100%);
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            margin-bottom: 20px;
+            background: linear-gradient(to bottom, #fff 30%, var(--gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-            animation: float 6s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
+        .hero p { font-size: 1.3rem; color: #888; max-width: 800px; margin: 0 auto 50px; }
 
-        .stat-hub {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 60px 0;
-        }
-
-        .stat-item {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            padding: 35px;
-            border-radius: 25px;
-            text-align: center;
-            width: 250px;
-            transition: 0.4s;
-        }
-
-        .stat-item:hover { border-color: var(--accent-gold); background: rgba(255,215,0,0.05); transform: translateY(-10px); }
-        .stat-item h2 { font-size: 3.5rem; color: var(--accent-gold); font-family: 'Cinzel Decorative'; }
-
-        /* --- BUTTONS --- */
-        .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .btn-prime {
-            padding: 20px 45px;
-            border: 2px solid var(--accent-gold);
-            background: transparent;
-            color: #fff;
-            text-transform: uppercase;
-            font-weight: 900;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.4s;
-            letter-spacing: 2px;
-        }
-
-        .btn-prime:hover { background: var(--accent-gold); color: #000; box-shadow: 0 0 40px var(--accent-glow); }
-
-        /* --- HIERARCHY CARDS --- */
-        .h-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
-        .h-card {
-            background: var(--glass);
-            border-radius: 30px;
-            padding: 40px;
-            border-top: 5px solid var(--r-color);
-            transition: 0.4s;
-        }
-
-        .h-card:hover { transform: scale(1.02); background: rgba(255,255,255,0.06); }
-        .h-card h3 { font-size: 1.8rem; margin-bottom: 20px; color: var(--r-color); }
-        .h-list { list-style: none; }
-        .h-list li { margin-bottom: 12px; padding-left: 20px; position: relative; color: #ccc; }
-        .h-list li::before { content: '>'; position: absolute; left: 0; color: var(--r-color); font-weight: 900; }
-
-        /* --- STAFF CARDS (MC SKIN) --- */
-        .staff-wrap { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; }
-        .p-card {
-            width: 280px;
-            background: rgba(255,255,255,0.02);
-            padding: 40px;
-            border-radius: 30px;
-            text-align: center;
-            border: 1px solid var(--glass-border);
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .p-card:hover { transform: translateY(-20px); border-color: var(--r-color); box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 20px var(--r-color); }
-        .p-card img { height: 180px; margin-bottom: 25px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
-
-        /* --- SANCTIE TABLE --- */
-        .table-glass {
-            background: var(--glass);
-            border-radius: 30px;
-            padding: 40px;
-            border: 1px solid var(--glass-border);
-            overflow-x: auto;
-        }
-
-        table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        th { padding: 20px; text-align: left; color: var(--accent-gold); font-family: 'Cinzel Decorative'; border-bottom: 2px solid var(--glass-border); }
-        td { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.03); }
-
-        /* --- CHAT INFO --- */
-        .chat-info {
+        .stat-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 30px;
-            margin-top: 50px;
+            margin: 50px 0;
         }
 
-        .chat-box {
-            background: rgba(255,215,0,0.05);
+        .stat-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
             padding: 40px;
             border-radius: 30px;
-            border: 1px solid var(--accent-gold);
             text-align: center;
+            transition: 0.4s var(--ease);
         }
 
-        .symbol { font-size: 4rem; font-weight: 900; color: var(--accent-gold); display: block; margin-bottom: 10px; }
+        .stat-card:hover { transform: translateY(-10px); border-color: var(--gold); background: rgba(255,215,0,0.05); }
+        .stat-card h2 { font-size: 4rem; color: var(--gold); font-family: 'Cinzel Decorative'; margin-bottom: 10px; }
+        .stat-card p { text-transform: uppercase; letter-spacing: 3px; font-size: 0.8rem; opacity: 0.5; }
 
-        footer { text-align: center; padding: 100px 0; opacity: 0.4; font-size: 0.9rem; letter-spacing: 2px; }
+        /* --- CHAT COMMANDS --- */
+        .cmd-section { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 50px; }
+        .cmd-card {
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), transparent);
+            border: 1px solid var(--gold);
+            padding: 40px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
 
-        @media (max-width: 800px) {
-            .nav-menu { display: none; }
-            .chat-info { grid-template-columns: 1fr; }
-            .stat-hub { flex-direction: column; align-items: center; }
+        .cmd-icon { font-size: 4rem; color: var(--gold); font-weight: 900; font-family: monospace; }
+
+        /* --- HIERARCHY / CARDS --- */
+        .title-center { text-align: center; font-family: 'Cinzel Decorative'; font-size: 3rem; margin-bottom: 60px; }
+        
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card-glass {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 35px;
+            border-top: 4px solid var(--r-color);
+            transition: 0.4s var(--ease);
+        }
+
+        .card-glass:hover { transform: translateY(-10px) scale(1.02); background: rgba(255,255,255,0.06); }
+        .card-glass h3 { font-size: 1.8rem; margin-bottom: 20px; color: var(--r-color); }
+        .card-glass ul { list-style: none; }
+        .card-glass li { margin-bottom: 12px; color: #bbb; padding-left: 20px; position: relative; }
+        .card-glass li::before { content: '•'; position: absolute; left: 0; color: var(--r-color); }
+
+        /* --- SANCTIE LIJST (WETBOEK STIJL) --- */
+        .sanctie-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .art-box {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 25px 40px;
+            border-radius: 20px;
+            border-left: 4px solid var(--gold);
+            transition: 0.3s var(--ease);
+        }
+
+        .art-box:hover { border-left-width: 15px; background: rgba(255,255,255,0.06); }
+        .art-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .art-header h4 { font-size: 1.2rem; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+        .art-type { font-size: 0.7rem; background: #fff; color: #000; padding: 2px 10px; border-radius: 4px; font-weight: 900; }
+        .art-content { color: #ccc; font-weight: 300; }
+        .art-punish { margin-top: 10px; color: #ff4757; font-weight: 700; font-family: monospace; }
+
+        /* --- STAFF SKINS --- */
+        .staff-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 35px; margin-bottom: 100px; }
+        .skin-card {
+            width: 260px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--glass-border);
+            padding: 40px 20px;
+            border-radius: 30px;
+            text-align: center;
+            transition: 0.5s var(--ease);
+        }
+
+        .skin-card:hover { transform: translateY(-20px); border-color: var(--r-color); box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px var(--r-color); }
+        .skin-card img { height: 160px; margin-bottom: 25px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+
+        footer { text-align: center; padding: 80px 0; border-top: 1px solid var(--glass-border); opacity: 0.4; font-size: 0.8rem; letter-spacing: 2px; }
+
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .stat-grid, .cmd-section { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas-bg"></canvas>
+    <canvas id="bg-canvas"></canvas>
 
-    <nav class="nav-bar">
-        <div class="logo" onclick="changePage('home')">RKD</div>
-        <div class="nav-menu">
-            <div class="nav-link active" id="n-home" onclick="changePage('home')">Home</div>
-            <div class="nav-link" id="n-hierarchy" onclick="changePage('hierarchy')">Hiërarchie</div>
-            <div class="nav-link" id="n-staff" onclick="changePage('staff')">Staffteam</div>
-            <div class="nav-link" id="n-sancties" onclick="changePage('sancties')">Sancties</div>
-            <div class="nav-link" id="n-info" onclick="changePage('info')">Informatie</div>
+    <nav class="navbar">
+        <div class="logo" onclick="showPage('home')">RKD</div>
+        <div class="nav-links">
+            <div class="nav-item active" id="l-home" onclick="showPage('home')">Home</div>
+            <div class="nav-item" id="l-hier" onclick="showPage('hier')">Hiërarchie</div>
+            <div class="nav-item" id="l-staff" onclick="showPage('staff')">Staffteam</div>
+            <div class="nav-item" id="l-sancties" onclick="showPage('sancties')">Sancties</div>
+            <div class="nav-item" id="l-info" onclick="showPage('info')">Informatie</div>
         </div>
     </nav>
 
-    <div class="main-wrapper">
+    <div class="container">
 
         <section id="home" class="page active">
-            <h1 class="hero-title">REMAKE KINGDOM</h1>
-            <p style="text-align: center; color: #aaa; font-size: 1.3rem; max-width: 800px; margin: 0 auto;">
-                De ultieme Kingdom ervaring met een actieve community van 300+ spelers en 6 unieke koninkrijken.
-            </p>
-
-            <div class="stat-hub">
-                <div class="stat-item"><h2>300+</h2><p>Leden</p></div>
-                <div class="stat-item"><h2>6</h2><p>Kingdoms</p></div>
-                <div class="stat-item"><h2>24/7</h2><p>Online</p></div>
+            <div class="hero">
+                <h1>REMAKE KINGDOM</h1>
+                <p>De meest solide Kingdom ervaring van Nederland. Gebouwd op een community van 300+ actieve spelers en 6 unieke rijken.</p>
+                <div class="stat-grid">
+                    <div class="stat-card"><h2>300+</h2><p>Leden</p></div>
+                    <div class="stat-card"><h2>6</h2><p>Kingdoms</p></div>
+                    <div class="stat-card"><h2>1.20</h2><p>Versie</p></div>
+                </div>
             </div>
 
-            <div class="btn-group">
-                <button class="btn-prime" onclick="changePage('hierarchy')">Staff Hiërarchie</button>
-                <button class="btn-prime" onclick="changePage('info')">In-game Info</button>
+            <div class="cmd-section">
+                <div class="cmd-card">
+                    <div class="cmd-icon">!</div>
+                    <div>
+                        <h3>Roleplay Chat</h3>
+                        <p>Praat In-Character met spelers om je heen. Verplicht bij elke interactie.</p>
+                    </div>
+                </div>
+                <div class="cmd-card">
+                    <div class="cmd-icon">$</div>
+                    <div>
+                        <h3>Trade Chat</h3>
+                        <p>Vind kopers, verkopers en handelsverdragen tussen Kingdoms.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section id="hierarchy" class="page">
-            <h1 style="font-family: 'Cinzel Decorative'; text-align: center; font-size: 3rem; margin-bottom: 50px;">STAFF BEVOEGDHEDEN</h1>
-            
-            <div class="h-grid">
-                <div class="h-card" style="--r-color: var(--c-beheer)">
+        <section id="hier" class="page">
+            <h2 class="title-center">STAFF BEVOEGDHEDEN</h2>
+            <div class="grid-cards">
+                <div class="card-glass" style="--r-color: var(--c-beheer)">
                     <h3>Beheer</h3>
-                    <ul class="h-list">
-                        <li>Eindverantwoordelijk voor alles</li>
-                        <li>Server-ontwikkeling & Updates</li>
-                        <li>Hoogste beslissingsbevoegdheid</li>
-                        <li>Volledige toegang DC & In-game</li>
+                    <ul>
+                        <li>Eindverantwoordelijke over het hele netwerk.</li>
+                        <li>Server-ontwikkeling, plugins & financiën.</li>
+                        <li>Management van de Project Leider.</li>
                     </ul>
                 </div>
-
-                <div class="h-card" style="--r-color: var(--c-admin)">
+                <div class="card-glass" style="--r-color: var(--c-admin)">
                     <h3>Admin</h3>
-                    <ul class="h-list">
-                        <li><b>Neemt altijd het eindbesluit</b></li>
-                        <li>Zware in-game sancties (Perma-bans)</li>
-                        <li>Kingdom-beheer & Lore-controle</li>
-                        <li>Management van Senior Staff</li>
+                    <ul>
+                        <li><b>Neemt altijd het eindbesluit bij conflicten.</b></li>
+                        <li>Beheer van alle zware in-game sancties.</li>
+                        <li>Verantwoordelijk voor de algemene server-rust.</li>
                     </ul>
                 </div>
-
-                <div class="h-card" style="--r-color: var(--c-senior)">
+                <div class="card-glass" style="--r-color: var(--c-senior)">
                     <h3>Senior Staff</h3>
-                    <ul class="h-list">
-                        <li>Hoofdverantwoordelijk in-game</li>
-                        <li>Afhandeling complexe tickets</li>
-                        <li>Begeleiding van junior staff</li>
-                        <li>In-game ban bevoegdheid</li>
+                    <ul>
+                        <li>Handelt de meeste in-game zaken zelfstandig af.</li>
+                        <li>Beheer van complexe tickets in Discord.</li>
+                        <li>In-game ban-bevoegdheid voor overtredingen.</li>
                     </ul>
                 </div>
-
-                <div class="h-card" style="--r-color: var(--c-staff)">
+                <div class="card-glass" style="--r-color: var(--c-staff)">
                     <h3>Staff</h3>
-                    <ul class="h-list">
-                        <li>Eerste aanspreekpunt voor spelers</li>
-                        <li>Chat moderatie (Mutes & Kicks)</li>
-                        <li>Basis tickets afhandelen</li>
-                        <li>Helpen bij simpele in-game vragen</li>
+                    <ul>
+                        <li>Eerste hulp bij vragen van spelers.</li>
+                        <li>Chat-moderatie: Kicken en Muten bij overlast.</li>
+                        <li>Basis in-game ondersteuning.</li>
                     </ul>
                 </div>
             </div>
         </section>
 
         <section id="staff" class="page">
-            <h1 style="font-family: 'Cinzel Decorative'; text-align: center; font-size: 3rem; margin-bottom: 60px;">HET TEAM</h1>
+            <h2 class="title-center">HET TEAM</h2>
             <div id="staff-inject"></div>
         </section>
 
         <section id="sancties" class="page">
-            <h1 style="font-family: 'Cinzel Decorative'; text-align: center; font-size: 3rem; margin-bottom: 50px;">RECHTSPRAAK</h1>
-            <div class="table-glass">
-                <table>
-                    <thead>
-                        <tr><th>Overtreding</th><th>Type</th><th>Straf 1</th><th>Straf 2</th><th>Eindbesluit</th></tr>
-                    </thead>
-                    <tbody id="s-inject"></tbody>
-                </table>
-            </div>
+            <h2 class="title-center">HET WETBOEK</h2>
+            <div class="sanctie-container" id="sanctie-inject">
+                </div>
         </section>
 
         <section id="info" class="page">
-            <h1 style="font-family: 'Cinzel Decorative'; text-align: center; font-size: 3rem; margin-bottom: 50px;">SERVER COMMANDO'S</h1>
-            <div class="chat-info">
-                <div class="chat-box">
-                    <span class="symbol">!</span>
-                    <h3>Roleplay Chat</h3>
-                    <p>Gebruik dit voor alle communicatie die je karakter uitvoert (In-Character).</p>
-                </div>
-                <div class="chat-box">
-                    <span class="symbol">$</span>
-                    <h3>Trade Chat</h3>
-                    <p>Gebruik dit voor handel, verkoop van items en economische deals.</p>
-                </div>
+            <h2 class="title-center">KINGDOM OVERZICHT</h2>
+            <div class="grid-cards">
+                <div class="card-glass" style="--r-color: var(--gold)"><h3>Kingdom 1</h3><p>Beschrijving volgt...</p></div>
+                <div class="card-glass" style="--r-color: var(--gold)"><h3>Kingdom 2</h3><p>Beschrijving volgt...</p></div>
+                <div class="card-glass" style="--r-color: var(--gold)"><h3>Kingdom 3</h3><p>Beschrijving volgt...</p></div>
+                <div class="card-glass" style="--r-color: var(--gold)"><h3>Kingdom 4</h3><p>Beschrijving volgt...</p></div>
+                <div class="card-glass" style="--r-color: var(--gold)"><h3>Kingdom 5</h3><p>Beschrijving volgt...</p></div>
+                <div class="card-glass" style="--r-color: var(--gold)"><h3>Kingdom 6</h3><p>Beschrijving volgt...</p></div>
             </div>
         </section>
 
     </div>
 
     <footer>
-        <p>REMAKE KINGDOM DEVELOPMENT &copy; 2026</p>
+        REMAKE KINGDOM &copy; 2026 | PLAY.REMAKEKINGDOM.NL
     </footer>
 
     <script>
         // --- PAGE SWITCHER ---
-        function changePage(id) {
-            const current = document.querySelector('.page.active');
-            const target = document.getElementById(id);
-            
-            if(current) current.classList.remove('active');
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+                setTimeout(() => p.style.display = 'none', 300);
+            });
             setTimeout(() => {
-                document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+                const target = document.getElementById(id);
                 target.style.display = 'block';
                 setTimeout(() => target.classList.add('active'), 50);
             }, 300);
 
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById('n-'+id).classList.add('active');
-            window.scrollTo({top: 0, behavior: 'smooth'});
+            document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
+            document.getElementById('l-'+id).classList.add('active');
+            window.scrollTo({top:0, behavior:'smooth'});
         }
 
-        // --- DATA INJECTION ---
+        // --- STAFF DATA ---
         const staffTeam = [
             { r: "Beheer", c: "var(--c-beheer)", m: [{n:"Binnenlander", p:"Eigenaar"}] },
             { r: "Project Leider", c: "var(--c-project)", m: [{n:"Advies", p:"Project Leider"}] },
@@ -357,64 +344,69 @@
             { r: "Staff", c: "var(--c-staff)", m: [{n:"ItssAyden", p:"Staff"},{n:"Koningbitterbal", p:"Staff"},{n:"Annewannn", p:"Staff"},{n:"Clashermike", p:"Staff"},{n:"ItssGirav", p:"Staff"},{n:"Odsko", p:"Staff"}] }
         ];
 
-        const sTarget = document.getElementById('staff-inject');
-        staffTeam.forEach(group => {
+        const sWrap = document.getElementById('staff-inject');
+        staffTeam.forEach(g => {
             const div = document.createElement('div');
-            div.innerHTML = `
-                <h2 style="color:${group.c}; text-align:center; font-family:'Cinzel Decorative'; margin: 60px 0 30px; font-size:2rem;">${group.r}</h2>
-                <div class="staff-wrap">
-                    ${group.m.map(p => `
-                        <div class="p-card" style="--r-color:${group.c}">
-                            <img src="https://mc-heads.net/body/${p.n}/right">
-                            <h3>${p.n}</h3>
-                            <p style="color:${group.c}">${p.p}</p>
-                        </div>
-                    `).join('')}
-                </div>`;
-            sTarget.appendChild(div);
+            div.innerHTML = `<h3 style="color:${g.c}; text-align:center; font-family:'Cinzel Decorative'; margin: 40px 0;">${g.r}</h3>
+                             <div class="staff-grid">${g.m.map(p => `
+                                <div class="skin-card" style="--r-color:${g.c}">
+                                    <img src="https://mc-heads.net/body/${p.n}/right">
+                                    <h4 style="font-size:1.5rem;">${p.n}</h4>
+                                    <p style="color:${g.c}; font-weight:900; font-size:0.8rem; letter-spacing:1px;">${p.p}</p>
+                                </div>`).join('')}</div>`;
+            sWrap.appendChild(div);
         });
 
-        const rules = [
-            {n:"Spam / Caps", t:"Chat", s1:"Warn", s2:"Kick", e:"1u Mute"},
-            {n:"Belediging", t:"Gedrag", s1:"Warn", s2:"2u Mute", e:"24u Ban"},
-            {n:"Combat Log", t:"Gameplay", s1:"Warn + Clear", s2:"1d Ban", e:"3d Ban"},
-            {n:"Hacking", t:"Cheats", s1:"Permanent", s2:"-", e:"N.v.t."},
-            {n:"Meta-gaming", t:"RP", s1:"Warn", s2:"3u Mute", e:"12u Ban"}
+        // --- SANCTIE DATA (JOUW SPECIFIEKE LIJST) ---
+        const sancties = [
+            { art: 1, title: "Staff Misleiding", content: "Liegen tegen staff of niet luisteren naar staff.", punish: "First: 3 dagen ban" },
+            { art: 2, title: "DDoS", content: "DDoS-related stuff.", punish: "BLACKLIST" },
+            { art: 3, title: "Doxing", content: "Het lekken van IP's en andere privégegevens.", punish: "BLACKLIST" },
+            { art: 4, title: "Cheating", content: "Gebruik van externe software of hacks.", punish: "1st: 14d | 2nd: 1m | 3rd: PERM" },
+            { art: 5, title: "Exploiting", content: "Misbruik maken van bugs of glitches.", punish: "1st: 14d | 2nd: 1m" },
+            { art: 6, title: "Advertising", content: "Reclame maken voor andere servers/sites.", punish: "1st: 7 dagen mute" },
+            { art: 7, title: "Ban Evading", content: "Omzeilen van een ban met alts.", punish: "BLACKLIST" },
+            { art: 8, title: "Trapping", content: "Het maken of lokken in traps.", punish: "1st: 3d | 2nd: 7d (Beide partijen)" },
+            { art: 9, title: "Grieving", content: "Slopen van eigendommen.", punish: "Klein: 7d | Middel: 14d | Groot: 1m" },
+            { art: 10, title: "Misbruik Kanalen", content: "Non-RP, Non-Trade of HelpOp misbruik.", punish: "1st: 6 uur mute" },
+            { art: 11, title: "Illegal Attack", content: "Aanvallen zonder toestemming.", punish: "1st: 3d | 2nd: 7d | 3rd+: 14d" },
+            { art: 12, title: "PvP Loggen", content: "Uitloggen tijdens gevecht.", punish: "1st: 3d | 2nd+: 7d" },
+            { art: 13, title: "Ijstunnel Sabotage", content: "Cobwebs of lava in ijstunnels.", punish: "1st: 1d | 2nd+: 3d" },
+            { art: 14, title: "Inbouwen", content: "Inbouwen van anderen of jezelf.", punish: "1st: 1d | 2nd+: 3d" },
+            { art: 15, title: "Item Transfer", content: "Overzetten van spullen tussen accounts.", punish: "14d ban + /inv clear" },
+            { art: 16, title: "Kingdom Alts", content: "Alten in een ander kingdom.", punish: "Alt: PERM | Main: +7d extra" },
+            { art: 17, title: "Toxiciteit", content: "Toxic gedrag of schelden met ernstige ziektes.", punish: "1st: 12u mute | 2nd+: 24u mute" }
         ];
 
-        const rTarget = document.getElementById('s-inject');
-        rules.forEach(r => {
-            rTarget.innerHTML += `<tr><td><b>${r.n}</b></td><td>${r.t}</td><td>${r.s1}</td><td>${r.s2}</td><td style="color:var(--c-beheer); font-weight:900">${r.e}</td></tr>`;
+        const saWrap = document.getElementById('sanctie-inject');
+        sancties.forEach(s => {
+            saWrap.innerHTML += `<div class="art-box">
+                <div class="art-header">
+                    <h4>Art. ${s.art} - ${s.title}</h4>
+                    <span class="art-type">RKD LAW</span>
+                </div>
+                <p class="art-content">${s.content}</p>
+                <p class="art-punish">${s.punish}</p>
+            </div>`;
         });
 
-        // --- BACKGROUND ANIMATION ---
-        const canvas = document.getElementById('canvas-bg');
+        // --- BACKGROUND ---
+        const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let dots = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
-
         class Dot {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.r = Math.random() * 3 + 1;
-                this.sy = Math.random() * 0.5 + 0.1;
-            }
+            constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.v = Math.random()*0.4+0.1; }
             draw() {
-                ctx.fillStyle = "rgba(255, 215, 0, 0.15)";
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI*2); ctx.fill();
-                this.y -= this.sy;
-                if(this.y < -10) this.y = canvas.height + 10;
+                ctx.fillStyle = "rgba(255,215,0,0.3)";
+                ctx.beginPath(); ctx.arc(this.x, this.y, 1.5, 0, Math.PI*2); ctx.fill();
+                this.y -= this.v; if(this.y < -10) this.y = canvas.height+10;
             }
         }
-        for(let i=0; i<100; i++) dots.push(new Dot());
-        function animate() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            dots.forEach(d => d.draw());
-            requestAnimationFrame(animate);
-        }
-        animate();
+        for(let i=0; i<80; i++) dots.push(new Dot());
+        function anim() { ctx.clearRect(0,0,canvas.width,canvas.height); dots.forEach(d => d.draw()); requestAnimationFrame(anim); }
+        anim();
     </script>
 </body>
 </html>
