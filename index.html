@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RKD | Remake Kingdom</title>
+    <title>RKD | Remake Kingdom Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
+            --bg-dark: #0a0a12;
             --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             --accent-gold: #ffd700;
-            --card-glass: rgba(255, 255, 255, 0.07);
+            --card-glass: rgba(255, 255, 255, 0.05);
             --text-color: #ffffff;
+            
+            /* Ranks */
             --beheer-glow: #ff4757;
+            --project-glow: #f9ca24; /* Goud voor Project Leider */
             --admin-glow: #7d5fff;
             --senior-glow: #ffaf40;
             --staff-glow: #3ae374;
@@ -20,194 +24,213 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: var(--bg-gradient);
+            background: var(--bg-dark);
+            background-image: var(--bg-gradient);
             color: var(--text-color);
             font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* --- NAVIGATIE --- */
-        nav {
+        /* --- COOLE NAV BAR --- */
+        .top-bar {
             position: fixed;
-            top: 0; width: 100%; height: 80px;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(15, 12, 41, 0.9);
-            backdrop-filter: blur(15px);
-            border-bottom: 2px solid var(--accent-gold);
-            z-index: 1000;
+            top: 0; width: 100%; height: 70px;
+            background: rgba(10, 10, 18, 0.85);
+            backdrop-filter: blur(20px);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 50px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            z-index: 2000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
 
-        .nav-logo {
+        .nav-brand {
             font-family: 'Cinzel Decorative', cursive;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: var(--accent-gold);
-            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
             cursor: pointer;
         }
+
+        .nav-links { display: flex; gap: 30px; }
+        .nav-item { 
+            cursor: pointer; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; 
+            letter-spacing: 1px; transition: 0.3s; opacity: 0.7;
+        }
+        .nav-item:hover, .nav-item.active { opacity: 1; color: var(--accent-gold); }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 120px 20px 60px; }
 
-        /* --- PAGINA SECTIES --- */
-        .page { display: none; animation: fadeIn 0.5s ease forwards; }
+        /* --- PAGINA ANIMATIE --- */
+        .page { display: none; animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
         .page.active { display: block; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- MAIN PAGE --- */
-        .hero { text-align: center; padding: 60px 0; }
-        .hero h1 { font-family: 'Cinzel Decorative', cursive; font-size: 4rem; margin-bottom: 20px; }
-        .hero p { font-size: 1.2rem; opacity: 0.8; max-width: 700px; margin: 0 auto 40px; }
+        /* --- HOME PAGE CONTENT --- */
+        .hero-box { text-align: center; margin-bottom: 80px; }
+        .hero-box h1 { font-family: 'Cinzel Decorative', cursive; font-size: 4.5rem; margin-bottom: 10px; }
+        .hero-box p { font-size: 1.2rem; color: #ccc; margin-bottom: 40px; }
 
-        .button-grid {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; margin-bottom: 60px;
         }
 
-        .btn {
-            padding: 20px 40px;
-            font-size: 1.1rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--accent-gold);
-            border-radius: 50px;
-            cursor: pointer;
+        .info-card {
+            background: var(--card-glass);
+            padding: 40px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
             transition: 0.3s;
-            text-decoration: none;
-            font-family: 'Outfit', sans-serif;
         }
 
-        .btn:hover {
-            background: var(--accent-gold);
-            color: #0f0c29;
-            box-shadow: 0 0 20px var(--accent-gold);
-            transform: scale(1.05);
+        .info-card h3 { color: var(--accent-gold); margin-bottom: 15px; font-family: 'Cinzel Decorative', cursive; }
+        .info-card p { line-height: 1.6; color: #ddd; }
+
+        /* --- BUTTONS --- */
+        .action-btns { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
+        .main-btn {
+            padding: 15px 35px; border-radius: 50px; border: 2px solid var(--accent-gold);
+            background: transparent; color: white; font-weight: 800; cursor: pointer;
+            transition: 0.3s; text-transform: uppercase;
+        }
+        .main-btn:hover { background: var(--accent-gold); color: #000; box-shadow: 0 0 20px var(--accent-gold); }
+        
+        .back-btn {
+            display: inline-block; margin-bottom: 30px; color: var(--accent-gold);
+            cursor: pointer; font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
         }
 
-        /* --- STAFF & SANCTIES STYLING (BEHOUDEN) --- */
-        .section-title { font-family: 'Cinzel Decorative', cursive; font-size: 3rem; text-align: center; margin-bottom: 60px; }
+        /* --- STAFF SECTION --- */
         .rank-container { margin-bottom: 80px; text-align: center; }
-        .rank-title { font-family: 'Cinzel Decorative', cursive; font-size: 2.2rem; margin-bottom: 30px; color: var(--rank-color); display: inline-block; border-bottom: 2px solid var(--rank-color); padding-bottom: 5px; }
-        .staff-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
-        .staff-card { background: var(--card-glass); border-radius: 20px; padding: 30px 20px; width: 240px; text-align: center; transition: 0.4s ease; border: 1px solid rgba(255,255,255,0.1); }
-        .staff-card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.12); box-shadow: 0 15px 30px rgba(0,0,0,0.5), 0 0 15px var(--rank-color); }
-        .skin-img { height: 150px; margin-bottom: 15px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); }
+        .rank-title { font-family: 'Cinzel Decorative', cursive; font-size: 2rem; margin-bottom: 30px; color: var(--rank-color); }
+        .staff-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; }
+        .staff-card { 
+            background: var(--card-glass); border-radius: 20px; padding: 25px; width: 220px; 
+            text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: 0.4s;
+        }
+        .staff-card:hover { transform: translateY(-10px); border-color: var(--rank-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px var(--rank-color); }
+        .skin-img { height: 130px; margin-bottom: 15px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
 
-        .sanctie-category { background: rgba(0, 0, 0, 0.4); border-radius: 25px; padding: 35px; margin-bottom: 50px; border-left: 10px solid var(--cat-color); }
-        .sanctie-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .sanctie-item { background: rgba(255,255,255,0.03); padding: 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .sanctie-item h4 { color: var(--accent-gold); font-size: 1.2rem; margin-bottom: 12px; }
-        .sanctie-steps span { color: #fff; font-weight: 900; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; }
+        /* --- SANCTIES --- */
+        .sanctie-box { background: rgba(0,0,0,0.4); border-radius: 20px; padding: 30px; border-left: 8px solid var(--c); margin-bottom: 30px; }
+        .sanctie-item-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .s-card { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; }
+        .s-card b { color: var(--accent-gold); }
 
-        footer { text-align: center; padding: 60px; opacity: 0.4; cursor: pointer; }
+        footer { text-align: center; padding: 100px 0; opacity: 0.3; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-    <nav><div class="nav-logo" onclick="showPage('home')">REMAKE KINGDOM</div></nav>
+    <header class="top-bar">
+        <div class="nav-brand" onclick="showPage('home')">REMAKE KINGDOM</div>
+        <div class="nav-links">
+            <div class="nav-item active" id="link-home" onclick="showPage('home')">Home</div>
+            <div class="nav-item" id="link-staff" onclick="showPage('staff')">Staff</div>
+            <div class="nav-item" id="link-sancties" onclick="showPage('sancties')">Sancties</div>
+            <div class="nav-item" id="link-info" onclick="showPage('info')">Informatie</div>
+        </div>
+    </header>
 
     <div class="container">
         
         <section id="home" class="page active">
-            <div class="hero">
-                <h1>REMAKE KINGDOM</h1>
-                <p>Welkom op het officiële portaal van Remake Kingdom. Hier vind je alle informatie over ons team, de wetten van het rijk en hoe jij deel kunt uitmaken van onze staff.</p>
-                <div class="button-grid">
-                    <button class="btn" onclick="showPage('staff')">Staffteam</button>
-                    <button class="btn" onclick="showPage('sancties')">Sancties</button>
-                    <button class="btn" onclick="showPage('solliciteren')">Solliciteren</button>
+            <div class="hero-box">
+                <h1>HET KONINKRIJK</h1>
+                <p>Remake Kingdom is meer dan een server. Het is een wereld van politiek, macht en invloed.</p>
+                <div class="action-btns">
+                    <button class="main-btn" onclick="showPage('staff')">Bekijk Team</button>
+                    <button class="main-btn" onclick="showPage('info')">Server Info</button>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Influence Systeem</h3>
+                    <p>Bij ons draait alles om macht. Griefen is toegestaan, mits je de juiste influence hebt verzameld. Verover gebieden en breid je rijk uit.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Unieke Lore</h3>
+                    <p>Elke actie heeft gevolgen. De geschiedenis van de server wordt geschreven door de spelers zelf. Word jij een legende of een voetnoot?</p>
+                </div>
+                <div class="info-card">
+                    <h3>Community</h3>
+                    <p>Onze staff staat 24/7 klaar om de magie te bewaken. Geen saaie regels, maar een levendig systeem dat meebeweegt met de spelers.</p>
                 </div>
             </div>
         </section>
 
         <section id="staff" class="page">
-            <h1 class="section-title">HET STAFFTEAM</h1>
+            <div class="back-btn" onclick="showPage('home')">← Terug naar home</div>
+            <h1 class="section-title">HET TEAM</h1>
             <div id="staff-target"></div>
         </section>
 
         <section id="sancties" class="page">
-            <h1 class="section-title" style="color: #ff4757;">SANCTIE PROTOCOL</h1>
+            <div class="back-btn" onclick="showPage('home')">← Terug naar home</div>
+            <h1 class="section-title">RECHTSPRAAK</h1>
             
-            <div class="sanctie-category" style="--cat-color: #3ae374;">
-                <h2>1. COMMUNICATIE</h2>
-                <div class="sanctie-grid">
-                    <div class="sanctie-item">
-                        <h4>Spam / Caps</h4>
-                        <p class="sanctie-steps">1e: <span>Warn</span> | 2e: <span>Kick</span> | 3e: <span>1u Mute</span></p>
-                    </div>
-                    <div class="sanctie-item">
-                        <h4>Toxicity</h4>
-                        <p class="sanctie-steps">1e: <span>Warn</span> | 2e: <span>2u Mute</span> | 3e: <span>12u Mute</span></p>
-                    </div>
+            <div class="sanctie-box" style="--c: #3ae374;">
+                <h2 style="color: #3ae374; font-family: 'Cinzel Decorative';">Chat & Gedrag</h2>
+                <div class="sanctie-item-grid">
+                    <div class="s-card"><b>Spam/Caps:</b> 1e: Warn | 2e: Kick | 3e: 1u Mute</div>
+                    <div class="s-card"><b>Belediging:</b> 1e: Warn | 2e: 1u Mute | 3e: 24u Ban</div>
                 </div>
             </div>
 
-            <div class="sanctie-category" style="--cat-color: #ffa502;">
-                <h2>2. GAMEPLAY & INFLUENCE</h2>
-                <div class="sanctie-grid">
-                    <div class="sanctie-item">
-                        <h4>Influence Omzeiling</h4>
-                        <p class="sanctie-steps">Sanctie: <span>7d Ban + Reset vorderingen</span></p>
-                    </div>
-                    <div class="sanctie-item">
-                        <h4>Combat Log</h4>
-                        <p class="sanctie-steps">1e: <span>Warn + Inv Clear</span> | 2e: <span>1d Ban</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sanctie-category" style="--cat-color: #ff4757;">
-                <h2>3. ZWARE OVERTREDINGEN</h2>
-                <div class="sanctie-grid">
-                    <div class="sanctie-item">
-                        <h4>Hacking / Cheating</h4>
-                        <p class="sanctie-steps">Straf: <span>PERMANENT BAN</span></p>
-                    </div>
+            <div class="sanctie-box" style="--c: #ffa502;">
+                <h2 style="color: #ffa502; font-family: 'Cinzel Decorative';">Gameplay & Influence</h2>
+                <div class="sanctie-item-grid">
+                    <div class="s-card"><b>Combat Log:</b> Warn + Inventory Clear</div>
+                    <div class="s-card"><b>Influence Abuse:</b> 7 Dagen Verbanning</div>
                 </div>
             </div>
         </section>
 
-        <section id="solliciteren" class="page">
-            <h1 class="section-title">WORD STAFF</h1>
-            <div class="hero">
-                <p>Wil jij helpen Remake Kingdom te laten groeien? Wij zijn altijd op zoek naar gemotiveerde spelers.</p>
-                <a href="#" class="btn">Open Sollicitatieformulier</a>
+        <section id="info" class="page">
+            <div class="back-btn" onclick="showPage('home')">← Terug naar home</div>
+            <h1 class="section-title">SERVER INFORMATIE</h1>
+            <div class="info-card" style="max-width: 800px; margin: 0 auto;">
+                <p>Remake Kingdom is een Minecraft Roleplay server waar de focus ligt op koninkrijken, oorlogen en diplomatie. <br><br>
+                <b>Versie:</b> 1.20.x<br>
+                <b>IP:</b> play.remakekingdom.nl (voorbeeld)<br>
+                <b>Discord:</b> discord.gg/rkd</p>
             </div>
         </section>
 
     </div>
 
-    <footer onclick="showPage('home')">&copy; 2026 RKD REMAKE KINGDOM</footer>
+    <footer>&copy; 2026 RKD REMAKE KINGDOM | STAY MAGICAL</footer>
 
     <script>
-        // Pagina wisselen functie
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
+            document.getElementById('link-' + pageId).classList.add('active');
             window.scrollTo(0,0);
         }
 
-        // Staff Data inladen
-        const staffMembers = [
+        const staffData = [
             { rank: "Beheer", color: "var(--beheer-glow)", members: [{ name: "Binnenlander", role: "Eigenaar" }]},
+            { rank: "Project Leider", color: "var(--project-glow)", members: [{ name: "Advies", role: "Project Leider" }]},
             { rank: "Admin", color: "var(--admin-glow)", members: [{ name: "Shaykuhh", role: "Admin" }, { name: "Penpijn", role: "Admin" }]},
             { rank: "Senior Staff", color: "var(--senior-glow)", members: [{ name: "Noootjee", role: "Senior Staff" }, { name: "BjornNL", role: "Senior Staff" }, { name: "Peanerd", role: "Senior Staff" }]},
             { rank: "Staff", color: "var(--staff-glow)", members: [{ name: "ItssAyden", role: "Staff" }, { name: "Koningbitterbal", role: "Staff" }, { name: "Annewannn", role: "Staff" }, { name: "Clashermike", role: "Staff" }, { name: "ItssGirav", role: "Staff" }, { name: "Odsko", role: "Staff" }]}
         ];
 
         const target = document.getElementById('staff-target');
-        staffMembers.forEach(group => {
-            const container = document.createElement('div');
-            container.className = 'rank-container';
-            container.style.setProperty('--rank-color', group.color);
-            container.innerHTML = `
+        staffData.forEach(group => {
+            const wrap = document.createElement('div');
+            wrap.className = 'rank-container';
+            wrap.style.setProperty('--rank-color', group.color);
+            wrap.innerHTML = `
                 <h2 class="rank-title">${group.rank}</h2>
                 <div class="staff-grid">
                     ${group.members.map(m => `
@@ -218,8 +241,8 @@
                         </div>
                     `).join('')}
                 </div>`;
-            target.appendChild(container);
+            target.appendChild(wrap);
         });
     </script>
 </body>
-</html
+</html>
