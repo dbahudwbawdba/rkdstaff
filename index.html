@@ -11,29 +11,30 @@
 
 /* ============================================================
    RKD STAFF PORTAAL
-   Professionele Interne Documentatie
-   ============================================================ */
+   Professionele Interne Omgeving
+============================================================ */
 
-/* =========================
-   BASIS VARIABELEN
-========================= */
+/* ========================
+   ROOT VARIABELEN
+======================== */
 
 :root{
---bg-dark:#0b0b11;
---bg-card:#14141c;
---bg-card-hover:#1b1b26;
+--bg-main:#0c0d14;
+--bg-card:#141622;
+--bg-card-hover:#1b1e2c;
 --gold:#d4af37;
---text-main:#e4e4e7;
---text-muted:#8a8a95;
+--text:#e6e7ee;
+--muted:#8c8fa3;
 --danger:#ff4d4f;
 --warning:#ffb020;
 --success:#3ecf8e;
---radius:18px;
+--radius:16px;
+--transition:0.3s ease;
 }
 
-/* =========================
+/* ========================
    RESET
-========================= */
+======================== */
 
 *{
 margin:0;
@@ -43,18 +44,18 @@ box-sizing:border-box;
 
 html{
 scroll-behavior:smooth;
-background:var(--bg-dark);
 }
 
 body{
 font-family:'Inter',sans-serif;
-color:var(--text-main);
+background:var(--bg-main);
+color:var(--text);
 overflow-x:hidden;
 }
 
-/* =========================
-   ACHTERGROND ANIMATIE
-========================= */
+/* ========================
+   ANIMATED BACKGROUND
+======================== */
 
 body::before{
 content:"";
@@ -64,20 +65,20 @@ left:0;
 width:100%;
 height:100%;
 background:
-radial-gradient(circle at 20% 20%, rgba(212,175,55,0.08), transparent 40%),
+radial-gradient(circle at 10% 20%, rgba(212,175,55,0.08), transparent 40%),
 radial-gradient(circle at 80% 70%, rgba(212,175,55,0.05), transparent 50%);
-animation:backgroundMove 20s infinite alternate ease-in-out;
+animation:bgMove 25s infinite alternate ease-in-out;
 z-index:-2;
 }
 
-@keyframes backgroundMove{
+@keyframes bgMove{
 0%{transform:translate(0,0);}
-100%{transform:translate(-50px,-30px);}
+100%{transform:translate(-80px,-40px);}
 }
 
-/* =========================
+/* ========================
    NAVIGATIE
-========================= */
+======================== */
 
 nav{
 position:fixed;
@@ -85,11 +86,11 @@ top:0;
 left:0;
 width:100%;
 height:80px;
-background:rgba(11,11,17,0.95);
 display:flex;
-align-items:center;
 justify-content:space-between;
+align-items:center;
 padding:0 5%;
+background:rgba(12,13,20,0.95);
 border-bottom:1px solid rgba(255,255,255,0.05);
 z-index:1000;
 }
@@ -98,97 +99,101 @@ z-index:1000;
 font-weight:800;
 letter-spacing:3px;
 color:var(--gold);
-font-size:1.2rem;
 }
 
-.nav-links{
+.menu{
 display:flex;
-gap:30px;
+gap:25px;
 }
 
-.nav-links button{
+.menu button{
 background:none;
 border:none;
-color:var(--text-muted);
-cursor:pointer;
+color:var(--muted);
 font-weight:600;
-transition:0.3s;
+cursor:pointer;
+transition:var(--transition);
 }
 
-.nav-links button:hover,
-.nav-links button.active{
+.menu button:hover,
+.menu button.active{
 color:var(--gold);
 }
 
-/* =========================
+/* ========================
    CONTAINER
-========================= */
+======================== */
 
 main{
-max-width:1400px;
+max-width:1500px;
 margin:auto;
-padding:140px 5% 100px;
+padding:140px 5% 120px;
 }
 
 .section{
 display:none;
+animation:fadeIn 0.4s ease;
 }
 
 .section.active{
 display:block;
 }
 
-/* =========================
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* ========================
    HERO
-========================= */
+======================== */
 
 .hero{
 text-align:center;
-margin-bottom:80px;
+margin-bottom:70px;
 }
 
 .hero h1{
 font-size:3rem;
-font-weight:800;
 color:var(--gold);
-margin-bottom:15px;
+margin-bottom:10px;
 }
 
 .hero p{
-color:var(--text-muted);
+color:var(--muted);
 margin-bottom:40px;
 }
 
-.quick-buttons{
+.hero-buttons{
 display:flex;
-flex-wrap:wrap;
 justify-content:center;
+flex-wrap:wrap;
 gap:20px;
 }
 
-.quick-buttons button{
+.hero-buttons button{
 padding:14px 28px;
 background:var(--bg-card);
 border:1px solid rgba(255,255,255,0.08);
 border-radius:var(--radius);
-color:var(--text-main);
-cursor:pointer;
+color:var(--text);
 font-weight:600;
-transition:0.3s;
+cursor:pointer;
+transition:var(--transition);
 }
 
-.quick-buttons button:hover{
-background:var(--bg-card-hover);
+.hero-buttons button:hover{
 border-color:var(--gold);
+background:var(--bg-card-hover);
 }
 
-/* =========================
+/* ========================
    KAARTEN
-========================= */
+======================== */
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
 gap:30px;
 }
 
@@ -197,7 +202,7 @@ background:var(--bg-card);
 padding:30px;
 border-radius:var(--radius);
 border:1px solid rgba(255,255,255,0.05);
-transition:0.3s;
+transition:var(--transition);
 }
 
 .card:hover{
@@ -210,24 +215,33 @@ margin-bottom:15px;
 color:var(--gold);
 }
 
-.card ul{
-list-style:none;
-}
-
-.card li{
-margin-bottom:8px;
-}
-
-/* =========================
+/* ========================
    WETBOEK
-========================= */
+======================== */
+
+.search-bar{
+display:flex;
+gap:15px;
+margin-bottom:25px;
+flex-wrap:wrap;
+}
+
+.search-bar input,
+.search-bar select{
+padding:12px;
+background:var(--bg-card);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:var(--radius);
+color:var(--text);
+}
 
 .article{
 background:var(--bg-card);
 border-radius:var(--radius);
 margin-bottom:15px;
-overflow:hidden;
 border:1px solid rgba(255,255,255,0.05);
+overflow:hidden;
+transition:var(--transition);
 }
 
 .article-header{
@@ -238,8 +252,8 @@ justify-content:space-between;
 align-items:center;
 }
 
-.article-header h4{
-font-size:1rem;
+.article-header:hover{
+background:var(--bg-card-hover);
 }
 
 .article-body{
@@ -254,32 +268,9 @@ max-height:1000px;
 padding:20px;
 }
 
-.badge{
-padding:4px 10px;
-border-radius:12px;
-font-size:0.7rem;
-font-weight:600;
-}
-
-.badge.chat{background:rgba(255,255,255,0.1);}
-.badge.pvp{background:rgba(255,176,32,0.2);}
-.badge.security{background:rgba(255,77,79,0.2);}
-.badge.economy{background:rgba(62,207,142,0.2);}
-.badge.exploit{background:rgba(212,175,55,0.2);}
-
-/* =========================
-   STAFFTEAM
-========================= */
-
-.staff-section{
-margin-bottom:80px;
-}
-
-.staff-title{
-margin-bottom:20px;
-font-size:1.5rem;
-color:var(--gold);
-}
+/* ========================
+   STAFF
+======================== */
 
 .staff-grid{
 display:grid;
@@ -293,6 +284,12 @@ padding:25px;
 border-radius:var(--radius);
 text-align:center;
 border:1px solid rgba(255,255,255,0.05);
+transition:var(--transition);
+}
+
+.staff-card:hover{
+border-color:var(--gold);
+background:var(--bg-card-hover);
 }
 
 .staff-card img{
@@ -300,18 +297,9 @@ height:120px;
 margin-bottom:15px;
 }
 
-.staff-card h4{
-margin-bottom:5px;
-}
-
-.staff-card span{
-color:var(--text-muted);
-font-size:0.8rem;
-}
-
-/* =========================
+/* ========================
    TABEL
-========================= */
+======================== */
 
 table{
 width:100%;
@@ -329,16 +317,69 @@ th{
 background:var(--bg-card-hover);
 }
 
-/* =========================
+/* ========================
+   MODAL (POPUP)
+======================== */
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:none;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,0.7);
+z-index:2000;
+}
+
+.modal.active{
+display:flex;
+animation:fadeIn 0.3s ease;
+}
+
+.modal-content{
+background:var(--bg-card);
+padding:40px;
+border-radius:var(--radius);
+width:90%;
+max-width:500px;
+border:1px solid var(--gold);
+box-shadow:0 0 30px rgba(212,175,55,0.4);
+animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+from{box-shadow:0 0 20px rgba(212,175,55,0.3);}
+to{box-shadow:0 0 40px rgba(212,175,55,0.6);}
+}
+
+.modal-content h3{
+margin-bottom:20px;
+color:var(--gold);
+}
+
+.modal-content button{
+margin-top:20px;
+padding:10px 20px;
+background:var(--gold);
+border:none;
+border-radius:var(--radius);
+cursor:pointer;
+font-weight:600;
+}
+
+/* ========================
    FOOTER
-========================= */
+======================== */
 
 footer{
-margin-top:120px;
-padding:40px 0;
 text-align:center;
+padding:40px;
 border-top:1px solid rgba(255,255,255,0.05);
-color:var(--text-muted);
+color:var(--muted);
+margin-top:100px;
 }
 
 </style>
@@ -347,74 +388,60 @@ color:var(--text-muted);
 
 <nav>
 <div class="logo">RKD STAFF</div>
-<div class="nav-links">
+<div class="menu">
 <button onclick="openSection('home')" class="active" id="btn-home">Start</button>
 <button onclick="openSection('wetboek')" id="btn-wetboek">Wetboek</button>
 <button onclick="openSection('sancties')" id="btn-sancties">Sancties</button>
 <button onclick="openSection('staff')" id="btn-staff">Staffteam</button>
 <button onclick="openSection('protocol')" id="btn-protocol">Protocol</button>
-<button onclick="openSection('gedrag')" id="btn-gedrag">Gedragscode</button>
+<button onclick="openSection('appeals')" id="btn-appeals">Appeals</button>
 </div>
 </nav>
 
 <main>
 
-<!-- START -->
 <section id="home" class="section active">
 <div class="hero">
 <h1>RKD Staff Portaal</h1>
-<p>Interne documentatie, regels en procedures</p>
+<p>Interne richtlijnen, procedures en documentatie</p>
 
-<div class="quick-buttons">
-<button onclick="openSection('wetboek')">Bekijk Wetboek</button>
-<button onclick="openSection('sancties')">Sanctie Overzicht</button>
+<div class="hero-buttons">
+<button onclick="openSection('wetboek')">Wetboek</button>
+<button onclick="openSection('sancties')">Sancties</button>
 <button onclick="openSection('staff')">Staffteam</button>
-<button onclick="openSection('protocol')">Protocol</button>
-<button onclick="openSection('gedrag')">Gedragscode</button>
-</div>
-</div>
-
-<div class="grid">
-<div class="card">
-<h3>Belangrijk</h3>
-<ul>
-<li>Altijd bewijs verzamelen</li>
-<li>Nooit handelen uit emotie</li>
-<li>Escaleren bij twijfel</li>
-<li>Geen uitzonderingen voor bekenden</li>
-</ul>
-</div>
-
-<div class="card">
-<h3>Server Status</h3>
-<ul>
-<li>Versie: 1.20.x</li>
-<li>Status: Online</li>
-<li>Escalatieniveau: Normaal</li>
-</ul>
+<button onclick="openModal()">Belangrijke melding</button>
 </div>
 </div>
 </section>
 
-<!-- WETBOEK -->
 <section id="wetboek" class="section">
-<h2 style="margin-bottom:30px;">Wetboek</h2>
+<h2>Wetboek</h2>
+
+<div class="search-bar">
+<input type="text" id="searchInput" placeholder="Zoek artikel...">
+<select id="categoryFilter">
+<option value="">Alle categorieën</option>
+<option value="chat">Chat</option>
+<option value="pvp">PvP</option>
+<option value="exploit">Exploit</option>
+<option value="security">Security</option>
+<option value="economy">Economie</option>
+</select>
+</div>
 
 <div id="articles"></div>
 
 </section>
 
-<!-- SANCTIES -->
 <section id="sancties" class="section">
-<h2>Sanctie Overzicht</h2>
-
+<h2>Sanctie Richtlijnen</h2>
 <table>
 <tr>
 <th>Ernst</th>
-<th>Eerste</th>
-<th>Tweede</th>
-<th>Derde</th>
-<th>Vierde</th>
+<th>1e Overtreding</th>
+<th>2e</th>
+<th>3e</th>
+<th>4e</th>
 </tr>
 <tr>
 <td>Licht</td>
@@ -437,134 +464,138 @@ color:var(--text-muted);
 <td>30 dagen ban</td>
 <td>Permanent</td>
 </tr>
-<tr>
-<td>Kritiek</td>
-<td>Permanent</td>
-<td>Blacklist</td>
-<td>-</td>
-<td>-</td>
-</tr>
 </table>
-
 </section>
 
-<!-- STAFF -->
 <section id="staff" class="section">
+<h2>Staffteam</h2>
 
-<div class="staff-section">
-<div class="staff-title">Beheer</div>
 <div class="staff-grid">
 <div class="staff-card">
 <img src="https://mc-heads.net/body/Binnenlander/right">
 <h4>Binnenlander</h4>
-<span>Owner</span>
+<p>Owner</p>
 </div>
-</div>
-</div>
-
-<div class="staff-section">
-<div class="staff-title">Admin</div>
-<div class="staff-grid">
 <div class="staff-card">
 <img src="https://mc-heads.net/body/Shaykuhh/right">
 <h4>Shaykuhh</h4>
-<span>Admin</span>
+<p>Admin</p>
 </div>
 <div class="staff-card">
 <img src="https://mc-heads.net/body/Penpijn/right">
 <h4>Penpijn</h4>
-<span>Admin</span>
+<p>Admin</p>
 </div>
 </div>
-</div>
-
 </section>
 
-<!-- PROTOCOL -->
 <section id="protocol" class="section">
-<h2>Staff Protocol</h2>
-
+<h2>Onderzoeksprotocol</h2>
 <div class="card">
-<h3>Bewijsvereisten</h3>
+<h3>Bewijs</h3>
 <ul>
-<li>Cheats: minimaal 30 seconden video</li>
-<li>Chat: volledige screenshot</li>
-<li>Griefing: CoreProtect logs</li>
-<li>Alt verdenking: IP controle</li>
+<li>Minimaal 30 seconden bij cheat verdenking</li>
+<li>Volledige context bij chatlogs</li>
+<li>Gebruik CoreProtect bij griefing</li>
+<li>Alt accounts controleren bij ban ontwijking</li>
 </ul>
 </div>
-
 </section>
 
-<!-- GEDRAG -->
-<section id="gedrag" class="section">
-<h2>Gedragscode</h2>
-
+<section id="appeals" class="section">
+<h2>Appeals Richtlijnen</h2>
 <div class="card">
+<h3>Voorwaarden</h3>
 <ul>
-<li>Blijf professioneel in alle situaties</li>
-<li>Communiceer duidelijk en respectvol</li>
-<li>Gebruik bevoegdheden zorgvuldig</li>
-<li>Wees een voorbeeld voor spelers</li>
+<li>Alleen via Discord ticket</li>
+<li>Maximaal 1 per sanctie</li>
+<li>Beslissing is bindend</li>
 </ul>
 </div>
-
 </section>
 
 </main>
 
+<div class="modal" id="modal">
+<div class="modal-content">
+<h3>Belangrijke interne melding</h3>
+<p>Zorg altijd dat sancties correct worden geregistreerd in het logboek.</p>
+<button onclick="closeModal()">Sluiten</button>
+</div>
+</div>
+
 <footer>
-RKD Staff Documentatie © 2026
+RKD Staff Portaal © 2026
 </footer>
 
 <script>
-
-/* NAVIGATIE */
 
 function openSection(id){
 document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
 document.getElementById(id).classList.add('active');
 
-document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active'));
+document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
 document.getElementById('btn-'+id).classList.add('active');
 
 window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* WETBOEK DATA */
+function openModal(){
+document.getElementById('modal').classList.add('active');
+}
 
-const articlesData = [
-{ id:1, title:"Staff misleiding", category:"security", text:"Opzettelijk verstrekken van valse informatie aan staff.", sanction:"3 dagen ban" },
-{ id:2, title:"DDoS dreiging", category:"security", text:"Dreigen met aanvallen op netwerk of spelers.", sanction:"Permanent" },
-{ id:3, title:"Doxing", category:"security", text:"Verspreiden van privégegevens.", sanction:"Permanent" },
-{ id:4, title:"Cheating", category:"pvp", text:"Gebruik van hacks of externe software.", sanction:"14 dagen ban" },
-{ id:5, title:"Bug misbruik", category:"exploit", text:"Misbruiken van glitches.", sanction:"14 dagen ban" },
-{ id:6, title:"Reclame", category:"chat", text:"Promoten van andere servers.", sanction:"7 dagen mute" },
-{ id:7, title:"Ban ontduiken", category:"security", text:"Gebruik van alt accounts om ban te ontwijken.", sanction:"Permanent" },
-{ id:8, title:"Trapping", category:"pvp", text:"Onontkoombare vallen maken.", sanction:"3 dagen ban" },
-{ id:9, title:"Griefing", category:"economy", text:"Moedwillig slopen van bouwwerken.", sanction:"7 dagen ban" },
-{ id:10, title:"Chat spam", category:"chat", text:"Overmatig spammen.", sanction:"Waarschuwing" }
-];
+function closeModal(){
+document.getElementById('modal').classList.remove('active');
+}
 
-/* RENDER ARTIKELEN */
+/* ========================
+   WETBOEK DATA
+======================== */
 
-const container = document.getElementById('articles');
+const articlesData = [];
+
+for(let i=1;i<=40;i++){
+articlesData.push({
+id:i,
+title:"Artikel "+i,
+category:["chat","pvp","exploit","security","economy"][i%5],
+text:"Beschrijving van overtreding "+i+". Volledige uitleg en interne richtlijnen.",
+sanction:"Zie sanctietabel"
+});
+}
+
+const container=document.getElementById('articles');
+
+function renderArticles(){
+container.innerHTML="";
+const search=document.getElementById('searchInput').value.toLowerCase();
+const category=document.getElementById('categoryFilter').value;
 
 articlesData.forEach(a=>{
+if((!category || a.category===category) &&
+(a.title.toLowerCase().includes(search) || a.text.toLowerCase().includes(search))){
+
 let el=document.createElement('div');
 el.className='article';
 el.innerHTML=`
 <div class="article-header" onclick="this.parentElement.classList.toggle('open')">
-<h4>Artikel ${a.id} - ${a.title}</h4>
-<span class="badge ${a.category}">${a.category}</span>
+<h4>${a.title}</h4>
+<span>${a.category}</span>
 </div>
 <div class="article-body">
-<p style="margin-bottom:10px;">${a.text}</p>
-<strong>Standaard sanctie:</strong> ${a.sanction}
+<p>${a.text}</p>
+<strong>Sanctie:</strong> ${a.sanction}
 </div>
 `;
 container.appendChild(el);
+}
 });
+}
+
+document.getElementById('searchInput').addEventListener('input',renderArticles);
+document.getElementById('categoryFilter').addEventListener('change',renderArticles);
+
+renderArticles();
 
 </script>
 
