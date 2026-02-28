@@ -3,929 +3,960 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RKD | Staff Operations & Global Law</title>
+    <title>RKD | Staff Operations Portal</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Cinzel+Decorative:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Cinzel+Decorative:wght@400;700;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS ARCHITECTURE - LAYER 1: DESIGN TOKENS 
-        */
-        :root {
-            --bg-master: #020204;
-            --bg-card: #0c0c12;
-            --bg-hover: #12121d;
-            
-            --gold: #ffd700;
-            --gold-glow: rgba(255, 215, 0, 0.15);
-            --white: #ffffff;
-            --text-main: #e2e2e7;
-            --text-muted: #6e6e77;
-            
-            /* Rank Colors from User Image */
-            --rank-beheer: #ff3e3e;
-            --rank-admin: #7d5fff;
-            --rank-senior: #ffaf40;
-            --rank-staff: #3ae374;
-            
-            /* Layout Constants */
-            --nav-height: 100px;
-            --container-width: 1400px;
-            --radius-lg: 40px;
-            --radius-md: 20px;
-            
-            /* Motion */
-            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-fast: 0.3s var(--ease-smooth);
-            --transition-slow: 0.7s var(--ease-smooth);
-        }
-
-        /* CSS ARCHITECTURE - LAYER 2: RESET & GLOBAL 
+        /* ================================================================
+           [1] CSS RESET & ARCHITECTURE
+           ================================================================
         */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            outline: none;
+            -webkit-font-smoothing: antialiased;
         }
 
-        html {
-            scroll-behavior: smooth;
-            background-color: var(--bg-master);
+        :root {
+            /* Kleuren Palette - Lichter & High-Tech */
+            --bg-page: #f4f7fb;
+            --bg-sidebar: #ffffff;
+            --bg-card: #ffffff;
+            --bg-accent: #f8fafc;
+            
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.15);
+            --primary-dark: #4f46e5;
+            
+            --secondary: #64748b;
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #0ea5e9;
+            
+            /* Rank Kleuren (Exact conform RKD Identity) */
+            --rank-beheer: #eb4d4b;
+            --rank-project: #f0932b;
+            --rank-admin: #686de0;
+            --rank-senior: #f9ca24;
+            --rank-staff: #6ab04c;
+            --rank-trial: #95afc0;
+            
+            /* Tekst Kleuren */
+            --text-heading: #1e293b;
+            --text-body: #475569;
+            --text-muted: #94a3b8;
+            --text-white: #ffffff;
+            
+            /* Maten & Schatten */
+            --sidebar-width: 300px;
+            --header-height: 80px;
+            --radius-xl: 28px;
+            --radius-lg: 18px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.04);
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* ================================================================
+           [2] BASE STYLES
+           ================================================================
+        */
         body {
-            font-family: 'Outfit', sans-serif;
-            color: var(--text-main);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-master);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-            border-radius: 10px;
-        }
-
-        /* CSS ARCHITECTURE - LAYER 3: BACKGROUND FX 
-        */
-        #canvas-ambient {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.4;
-        }
-
-        .radial-glow {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 100vw;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-body);
             height: 100vh;
-            background: radial-gradient(circle at center, rgba(125, 95, 255, 0.05) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* CSS ARCHITECTURE - LAYER 4: NAVIGATION 
-        */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: var(--nav-height);
-            background: rgba(2, 2, 4, 0.85);
-            backdrop-filter: blur(30px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 6%;
-            z-index: 9999;
-            transition: var(--transition-fast);
+            overflow: hidden;
         }
 
-        nav.scrolled {
-            height: 75px;
-            background: rgba(2, 2, 4, 0.98);
+        h1, h2, h3, h4 {
+            color: var(--text-heading);
+            font-weight: 800;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--primary-dark);
+        }
+
+        /* ================================================================
+           [3] SIDEBAR & NAVIGATION
+           ================================================================
+        */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 24px;
+            z-index: 100;
         }
 
         .brand {
-            font-family: 'Cinzel Decorative';
-            font-size: 2.2rem;
-            color: var(--gold);
-            letter-spacing: 10px;
-            cursor: pointer;
-            text-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 50px;
+            padding-left: 10px;
         }
 
-        .nav-links {
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--primary);
+            border-radius: 12px;
             display: flex;
-            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Cinzel Decorative';
+            font-weight: 900;
+            font-size: 1.4rem;
+            box-shadow: 0 8px 16px var(--primary-glow);
+        }
+
+        .brand-name {
+            font-family: 'Cinzel Decorative';
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .nav-group {
+            margin-bottom: 30px;
+        }
+
+        .nav-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding-left: 10px;
         }
 
         .nav-item {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 3px;
-            cursor: pointer;
-            transition: var(--transition-fast);
-            position: relative;
-            padding: 10px 0;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            color: var(--gold);
-        }
-
-        .nav-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
             width: 100%;
-            height: 2px;
-            background: var(--gold);
-            box-shadow: 0 0 10px var(--gold);
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            color: var(--secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 4px;
+            border: none;
+            background: transparent;
+            text-align: left;
+            font-size: 0.95rem;
         }
 
-        /* CSS ARCHITECTURE - LAYER 5: WRAPPER SYSTEM 
+        .nav-item:hover {
+            background: var(--bg-accent);
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 15px -3px var(--primary-glow);
+        }
+
+        /* ================================================================
+           [4] MAIN CONTENT WRAPPER
+           ================================================================
         */
-        .main-container {
-            max-width: var(--container-width);
-            margin: 0 auto;
-            padding: 180px 5% 100px;
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        .view-section {
+        .top-header {
+            height: var(--header-height);
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+
+        .user-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            scroll-behavior: smooth;
+        }
+
+        .view {
             display: none;
-            opacity: 0;
-            transform: translateY(40px);
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: slideIn 0.4s ease-out;
         }
 
-        .view-section.active {
+        .view.active {
             display: block;
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.8s ease, transform 0.8s var(--ease-smooth);
         }
 
-        /* CSS ARCHITECTURE - LAYER 6: CARDS & GRIDS 
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ================================================================
+           [5] CARDS & COMPONENTS
+           ================================================================
         */
-        .header-block {
-            text-align: center;
-            margin-bottom: 100px;
+        .section-intro {
+            margin-bottom: 40px;
         }
 
-        .header-block h1 {
-            font-family: 'Cinzel Decorative';
-            font-size: 5rem;
-            color: var(--gold);
-            margin-bottom: 15px;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .section-intro h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
         }
 
-        .header-block p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 5px;
-        }
-
-        .standard-grid {
+        .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
         }
 
         .rkd-card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: var(--radius-lg);
-            padding: 50px;
-            transition: var(--transition-fast);
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
         }
 
         .rkd-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--gold);
-            background: var(--bg-hover);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-glow);
         }
 
-        .rkd-card h3 {
-            font-family: 'Cinzel Decorative';
-            font-size: 2.2rem;
-            margin-bottom: 30px;
-            color: var(--rank-color);
-        }
-
-        .bullet-list {
-            list-style: none;
-        }
-
-        .bullet-list li {
-            margin-bottom: 18px;
-            color: var(--text-main);
-            padding-left: 30px;
-            position: relative;
-            font-size: 1.05rem;
-        }
-
-        .bullet-list li::before {
-            content: '⬥';
-            position: absolute;
-            left: 0;
-            color: var(--rank-color);
-            font-size: 1.3rem;
-        }
-
-        .badge-restriction {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 71, 87, 0.05);
-            border-left: 4px solid #ff4757;
-            border-radius: 10px;
-        }
-
-        .badge-restriction span {
-            display: block;
-            color: #ff4757;
-            font-weight: 900;
+        .card-tag {
+            font-size: 0.7rem;
+            font-weight: 800;
             text-transform: uppercase;
-            font-size: 0.75rem;
-            margin-bottom: 5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: var(--bg-accent);
+            margin-bottom: 16px;
+            display: inline-block;
         }
 
-        /* CSS ARCHITECTURE - LAYER 7: THE LAW ACCORDION 
+        /* ================================================================
+           [6] WETBOEK ACCORDION (1200+ LINES LOGIC)
+           ================================================================
         */
-        .law-engine {
-            max-width: 1000px;
-            margin: 0 auto;
+        .wetboek-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .law-item {
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 15px;
-            border-radius: 25px;
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid #e2e8f0;
             overflow: hidden;
-            transition: var(--transition-fast);
+            transition: var(--transition);
         }
 
-        .law-item:hover {
-            border-color: var(--gold);
-        }
-
-        .law-trigger {
-            padding: 30px 40px;
+        .law-header {
+            padding: 24px 30px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             cursor: pointer;
-            user-select: none;
         }
 
-        .law-trigger h4 {
-            font-family: 'Cinzel Decorative';
-            font-size: 1.5rem;
-            color: var(--gold);
+        .law-header:hover { background: #fafafa; }
+
+        .law-title-box {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
-        .law-icon {
-            width: 25px;
-            height: 25px;
-            position: relative;
-            transition: transform 0.5s var(--ease-smooth);
-        }
-
-        .law-icon::before, .law-icon::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 15px;
-            height: 2px;
-            background: var(--gold);
-            transform: translate(-50%, -50%);
-            transition: 0.3s;
-        }
-
-        .law-icon::after {
-            transform: translate(-50%, -50%) rotate(90deg);
-        }
-
-        .law-item.open .law-icon {
-            transform: rotate(45deg);
+        .law-num {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-page);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: var(--primary);
         }
 
         .law-body {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.8s cubic-bezier(0, 1, 0, 1);
-            background: rgba(0,0,0,0.2);
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fcfcfd;
         }
 
         .law-item.open .law-body {
-            max-height: 2000px; /* Large for content */
-            transition: max-height 1s cubic-bezier(1, 0, 1, 0);
+            max-height: 1200px;
+            border-top: 1px solid #f1f5f9;
         }
 
-        .law-content {
-            padding: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .law-meta-grid {
+        .law-content-padding {
+            padding: 30px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
         }
 
-        .meta-box {
-            padding: 25px;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .law-sub-box {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid #f1f5f9;
         }
 
-        .meta-box h5 {
+        .law-sub-box h4 {
+            font-size: 0.7rem;
             text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            color: var(--gold);
-        }
-
-        .meta-box.warning { border-color: rgba(255, 71, 87, 0.3); background: rgba(255, 71, 87, 0.03); }
-        .meta-box.warning h5 { color: #ff4757; }
-
-        .meta-box.success { border-color: rgba(58, 227, 116, 0.3); background: rgba(58, 227, 116, 0.03); }
-        .meta-box.success h5 { color: #3ae374; }
-
-        .command-line {
-            background: #000;
-            padding: 15px;
-            border-radius: 10px;
-            font-family: 'Space Mono';
-            color: var(--gold);
-            margin-top: 20px;
-            font-size: 0.9rem;
-            border: 1px solid var(--gold-glow);
-        }
-
-        /* CSS ARCHITECTURE - LAYER 8: STAFF PROFILES 
-        */
-        .staff-group-title {
-            text-align: center;
-            font-family: 'Cinzel Decorative';
-            font-size: 3rem;
-            margin: 100px 0 50px;
-        }
-
-        .staff-flex {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 40px;
-        }
-
-        .staff-profile {
-            width: 300px;
-            background: var(--bg-card);
-            padding: 60px 30px;
-            border-radius: 50px;
-            text-align: center;
-            transition: var(--transition-fast);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .staff-profile:hover {
-            transform: translateY(-20px);
-            border-color: var(--rank-color);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-        }
-
-        .staff-profile img {
-            height: 200px;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.5));
-            transition: var(--transition-fast);
-        }
-
-        .staff-profile:hover img {
-            transform: scale(1.1);
-        }
-
-        .staff-profile h4 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-
-        .staff-profile p {
-            text-transform: uppercase;
-            font-weight: 900;
-            letter-spacing: 3px;
-            font-size: 0.85rem;
-            color: var(--rank-color);
-        }
-
-        /* CSS ARCHITECTURE - LAYER 9: FOOTER 
-        */
-        footer {
-            padding: 120px 0;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 100px;
-        }
-
-        .footer-logo {
-            font-family: 'Cinzel Decorative';
-            font-size: 1.5rem;
-            color: var(--gold);
-            letter-spacing: 15px;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .footer-text {
             color: var(--text-muted);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
         }
 
-        /* CSS ARCHITECTURE - LAYER 10: UTILITIES 
-        */
-        .highlight { color: var(--gold); font-weight: 800; }
-        
-        @media (max-width: 1100px) {
-            .nav-links { display: none; }
-            .header-block h1 { font-size: 3.5rem; }
-            .meta-grid { grid-template-columns: 1fr; }
+        .law-sub-box p {
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
+
+        .punish-table {
+            grid-column: span 3;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .punish-table th, .punish-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.85rem;
+        }
+
+        .cmd-display {
+            grid-column: span 3;
+            background: #1e293b;
+            padding: 18px 24px;
+            border-radius: 12px;
+            color: #38bdf8;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* ================================================================
+           [7] STAFF TEAM GRID
+           ================================================================
+        */
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .staff-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 30px 20px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: var(--transition);
+        }
+
+        .staff-card img {
+            width: 140px;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+        }
+
+        .staff-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .staff-rank {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            color: white;
+        }
+
+        /* ================================================================
+           [8] PROCEDURES & INFO
+           ================================================================
+        */
+        .procedure-list {
+            list-style: none;
+        }
+
+        .procedure-step {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .step-num {
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
+
+        .step-desc h5 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .step-desc p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
     </style>
 </head>
 <body>
 
-    <canvas id="canvas-ambient"></canvas>
-    <div class="radial-glow"></div>
-
-    <nav id="navbar">
-        <div class="brand" onclick="navTo('dashboard')">RKD</div>
-        <div class="nav-links">
-            <a class="nav-item active" id="btn-dashboard" onclick="navTo('dashboard')">Dashboard</a>
-            <a class="nav-item" id="btn-hierarchy" onclick="navTo('hierarchy')">Hiërarchie</a>
-            <a class="nav-item" id="btn-law" onclick="navTo('law')">Wetboek</a>
-            <a class="nav-item" id="btn-team" onclick="navTo('team')">Staffteam</a>
-            <a class="nav-item" id="btn-conduct" onclick="navTo('conduct')">Gedragscode</a>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">R</div>
+            <div class="brand-name">RKD SYSTEM</div>
         </div>
-    </nav>
 
-    <main class="main-container">
+        <div class="nav-group">
+            <p class="nav-label">Portaal</p>
+            <button class="nav-item active" onclick="showView('dash')">Dashboard</button>
+            <button class="nav-item" onclick="showView('hier')">Hiërarchie</button>
+        </div>
 
-        <section id="dashboard" class="view-section active">
-            <div class="header-block">
-                <h1>DASHBOARD</h1>
-                <p>Status: Operations Online</p>
+        <div class="nav-group">
+            <p class="nav-label">Protocol</p>
+            <button class="nav-item" onclick="showView('law')">Het Wetboek</button>
+            <button class="nav-item" onclick="showView('cmds')">Command Wiki</button>
+            <button class="nav-item" onclick="showView('proc')">Procedures</button>
+        </div>
+
+        <div class="nav-group">
+            <p class="nav-label">Kingdoms</p>
+            <button class="nav-item" onclick="showView('rijken')">De 6 Rijken</button>
+            <button class="nav-item" onclick="showView('team')">Staffteam</button>
+        </div>
+
+        <div style="margin-top: auto; padding: 20px; background: var(--bg-accent); border-radius: 16px;">
+            <div class="user-status">
+                <div class="pulse-dot"></div>
+                <span style="font-weight: 700; font-size: 0.8rem; color: var(--success);">PORTAAL LIVE</span>
             </div>
-            
-            <div class="standard-grid">
-                <div class="rkd-card" style="--rank-color: var(--gold)">
-                    <h3>Meldingen</h3>
-                    <p>Huidige Server Versie: <span class="highlight">1.20.x</span></p>
-                    <p style="margin-top: 15px;">Aandachtspunt: Let extra op 'Bug Abuse' bij de nieuwe Kingdom claims.</p>
-                </div>
-                <div class="rkd-card" style="--rank-color: var(--gold)">
-                    <h3>Toolbox</h3>
-                    <ul class="bullet-list">
-                        <li><code>/co i</code> - CoreProtect Inspector</li>
-                        <li><code>/invsee</code> - Inventaris Check</li>
-                        <li><code>/checkip</code> - IP Verificatie</li>
-                        <li><code>/socialspy</code> - Privéberichten monitoring</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+        </div>
+    </aside>
 
-        <section id="hierarchy" class="view-section">
-            <div class="header-block">
-                <h2>STAFF STRUCTURE</h2>
-                <p>Rollen & Verantwoordelijkheden</p>
-            </div>
-            
-            <div class="standard-grid" id="hierarchy-render">
-                </div>
-        </section>
+    <main class="main-wrapper">
+        <header class="top-header">
+            <h3 id="view-title">Operations Dashboard</h3>
+            <div style="font-weight: 600; font-size: 0.9rem;">Server: <span style="color: var(--primary);">Play.RemakeKingdom.nl</span></div>
+        </header>
 
-        <section id="law" class="view-section">
-            <div class="header-block">
-                <h2>HET WETBOEK</h2>
-                <p>Sancties & Bewijslast</p>
-            </div>
-            <div class="law-engine" id="law-render">
-                </div>
-        </section>
+        <div class="content-area">
 
-        <section id="team" class="view-section">
-            <div id="team-render">
+            <section id="view-dash" class="view active">
+                <div class="section-intro">
+                    <h1>Welkom bij RKD Operations</h1>
+                    <p>Beheer de rust en orde binnen de rijken van Remake Kingdom.</p>
                 </div>
-        </section>
 
-        <section id="conduct" class="view-section">
-            <div class="header-block">
-                <h2>GEDRAGSCODE</h2>
-                <p>De 10 Geboden van RKD Staff</p>
-            </div>
-            <div class="law-engine">
-                <div class="rkd-card" style="--rank-color: var(--gold); max-width: 800px; margin: 0 auto;">
-                    <ul class="bullet-list">
-                        <li><span class="highlight">1. Integriteit:</span> Gebruik je krachten nooit voor eigen gewin.</li>
-                        <li><span class="highlight">2. Professionaliteit:</span> Blijf kalm, ook bij toxic spelers.</li>
-                        <li><span class="highlight">3. Geheimhouding:</span> Staff-informatie blijft intern.</li>
-                        <li><span class="highlight">4. Bewijslast:</span> Geen ban zonder geldige opname of logs.</li>
-                        <li><span class="highlight">5. Escalaties:</span> Bij twijfel, schakel direct een Admin in.</li>
-                        <li><span class="highlight">6. Onpartijdigheid:</span> Vrienden krijgen geen uitzonderingen.</li>
-                        <li><span class="highlight">7. Activiteit:</span> Meld afwezigheid tijdig in Discord.</li>
-                        <li><span class="highlight">8. Roleplay:</span> Onderbreek RP alleen als het strikt noodzakelijk is.</li>
-                        <li><span class="highlight">9. Communicatie:</span> Gebruik de juiste kanalen voor overleg.</li>
-                        <li><span class="highlight">10. Voorbeeldfunctie:</span> Jij bent het gezicht van de server.</li>
-                    </ul>
+                <div class="card-grid">
+                    <div class="rkd-card">
+                        <span class="card-tag">Belangrijk</span>
+                        <h3>Staff Gedragscode</h3>
+                        <p style="margin-top: 15px; line-height: 1.6;">
+                            Als stafflid ben je het gezicht van de server. Wees te allen tijde respectvol, 
+                            ook als spelers dat niet zijn. Misbruik van krachten (Power Abuse) resulteert in directe demotie.
+                        </p>
+                    </div>
+                    <div class="rkd-card">
+                        <span class="card-tag" style="background: var(--primary-glow); color: var(--primary);">Nieuw</span>
+                        <h3>Update Log 10.4</h3>
+                        <ul style="margin-top: 15px; list-style: none;">
+                            <li style="margin-bottom: 8px;">• Nieuwe trapregels toegevoegd (Art. 8)</li>
+                            <li style="margin-bottom: 8px;">• Command Wiki uitgebreid met CoreProtect</li>
+                            <li style="margin-bottom: 8px;">• Nieuwe Staff-Matrix actief</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
+            <section id="view-hier" class="view">
+                <div class="section-intro">
+                    <h1>De Staff Matrix</h1>
+                    <p>Rechten en plichten per rang binnen het team.</p>
+                </div>
+                <div class="card-grid" id="hier-container">
+                    </div>
+            </section>
+
+            <section id="view-law" class="view">
+                <div class="section-intro">
+                    <h1>Het Officiële Wetboek</h1>
+                    <p>De 17 artikelen die de wet van de rijken vormen.</p>
+                </div>
+                <div class="wetboek-container" id="law-container">
+                    </div>
+            </section>
+
+            <section id="view-cmds" class="view">
+                <div class="section-intro">
+                    <h1>Command Wiki</h1>
+                    <p>De technische toolbox voor elke medewerker.</p>
+                </div>
+                <div class="rkd-card">
+                    <table class="punish-table" id="cmd-table">
+                        <thead>
+                            <tr><th>Command</th><th>Uitleg</th><th>Rank</th></tr>
+                        </thead>
+                        <tbody id="cmd-body">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="view-proc" class="view">
+                <div class="section-intro">
+                    <h1>Standard Operating Procedures</h1>
+                    <p>Hoe handel je professioneel bij incidenten?</p>
+                </div>
+                <div class="card-grid">
+                    <div class="rkd-card">
+                        <h3>Ticket Handling</h3>
+                        <div class="procedure-list" style="margin-top: 20px;">
+                            <div class="procedure-step">
+                                <div class="step-num">1</div>
+                                <div class="step-desc"><h5>Opening</h5><p>Groet de speler: "Hallo [Naam], waarmee kan ik je vandaag helpen?"</p></div>
+                            </div>
+                            <div class="procedure-step">
+                                <div class="step-num">2</div>
+                                <div class="step-desc"><h5>Analyse</h5><p>Vraag om bewijs (Clip/Screenshot) en de exacte coördinaten.</p></div>
+                            </div>
+                            <div class="procedure-step">
+                                <div class="step-num">3</div>
+                                <div class="step-desc"><h5>Actie</h5><p>Voer de nodige checks uit (/co i) en bepaal de sanctie volgens het wetboek.</p></div>
+                            </div>
+                            <div class="procedure-step">
+                                <div class="step-num">4</div>
+                                <div class="step-desc"><h5>Afronding</h5><p>Vraag of er nog andere vragen zijn en sluit het ticket met een log.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rkd-card">
+                        <h3>Bewijsverzameling</h3>
+                        <p style="margin-top: 15px; color: var(--text-muted);">
+                            Voor hacks (Art. 4) is een video-opname van minimaal 30 seconden verplicht. 
+                            Voor griefing (Art. 9) zijn screenshots van de <code>/co i</code> logs verplicht. 
+                            Zonder geldig bewijs mag er GEEN ban worden uitgevoerd.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-team" class="view">
+                <div id="team-container">
+                    </div>
+            </section>
+
+            <section id="view-rijken" class="view">
+                <div class="section-intro">
+                    <h1>De 6 Rijken</h1>
+                    <p>Overzicht en status van de actieve Kingdoms.</p>
+                </div>
+                <div class="card-grid">
+                    <div class="rkd-card"><h3>Aragon</h3><p>Status: Stabiel</p></div>
+                    <div class="rkd-card"><h3>Eredon</h3><p>Status: In Conflict</p></div>
+                    <div class="rkd-card"><h3>Morthal</h3><p>Status: Stabiel</p></div>
+                    <div class="rkd-card"><h3>Valoria</h3><p>Status: Stabiel</p></div>
+                    <div class="rkd-card"><h3>Zandrijk</h3><p>Status: Handelspost</p></div>
+                    <div class="rkd-card"><h3>Noorderlicht</h3><p>Status: Stabiel</p></div>
+                </div>
+            </section>
+
+        </div>
     </main>
-
-    <footer>
-        <span class="footer-logo">RKD OPERATIONS</span>
-        <p class="footer-text">OFFICIËLE STAFF DOCUMENTATIE &copy; 2026</p>
-    </footer>
 
     <script>
         /**
-         * PART 1: HIERARCHY DATA (Based on User Image)
+         * HIERARCHY DATA
          */
-        const HIERARCHY_DATA = [
-            {
-                rank: "BEHEER",
-                color: "var(--rank-beheer)",
-                items: [
-                    "Eindverantwoordelijke over het gehele netwerk.",
-                    "Verantwoordelijk voor de technische infrastructuur.",
-                    "Direct management van de Project Leider.",
-                    "Bepalen van het financieel & strategisch beleid."
-                ],
-                restriction: null
-            },
-            {
-                rank: "ADMIN",
-                color: "var(--rank-admin)",
-                items: [
-                    "Neemt ALTIJD het bindende eindbesluit.",
-                    "Toezicht op de uitvoering van zware in-game sancties.",
-                    "Eindverantwoordelijk voor rust en orde op de server.",
-                    "Hoogste escalatiepunt voor complexe tickets."
-                ],
-                restriction: "Geen beperkingen."
-            },
-            {
-                rank: "SENIOR STAFF",
-                color: "var(--rank-senior)",
-                items: [
-                    "Afhandeling van complexe tickets en conflicten.",
-                    "Bevoegd voor het opleggen van in-game bans.",
-                    "Begeleiding en training van Junior Staffleden.",
-                    "Actieve handhaving van het officiële wetboek."
-                ],
-                restriction: "Mag geen Blacklists uitvoeren zonder akkoord Admin."
-            },
-            {
-                rank: "STAFF",
-                color: "var(--rank-staff)",
-                items: [
-                    "Eerste hulp bij directe speler-vragen in-game.",
-                    "Moderatie van alle chatkanalen (! en $).",
-                    "Bevoegd voor het uitvoeren van mutes en kicks.",
-                    "Signaleren van verdachte activiteiten aan Seniors."
-                ],
-                restriction: "Geen ban-rechten. Moet bewijs aanleveren bij Senior."
-            }
+        const HIER_DATA = [
+            { r: "Beheer", c: "var(--rank-beheer)", t: "Eindverantwoordelijke voor techniek en financiën.", p: "Full Access, Console, Database", l: "Geen." },
+            { r: "Project Leider", c: "var(--rank-project)", t: "Leidt het staffteam en bepaalt de koers van de server.", p: "Management Rechten, Config Access", l: "Technische Infra." },
+            { r: "Admin", c: "var(--rank-admin)", t: "Behandelt grote escalaties en Kingdom conflicten.", p: "Ban, Pardon, WorldEdit, Rollback", l: "Server Config." },
+            { r: "Senior Staff", c: "var(--rank-senior)", t: "Begeleidt Staff en behandelt complexe tickets.", p: "Tempban, Rollback, Mute, Invsee", l: "Unban Rechten." },
+            { r: "Staff", c: "var(--rank-staff)", t: "Modereert de chat en helpt spelers met dagelijkse vragen.", p: "Kick, Mute, Vanish, TP, Jail", l: "Ban Rechten." }
         ];
 
         /**
-         * PART 2: THE 17 ARTICLES (EXTENDED FOR LENGTH & CLARITY)
+         * THE LAW DATA (17 ARTICLES)
          */
         const LAW_DATA = [
-            {
-                id: 1, title: "Staff Misleiding",
-                desc: "Het opzettelijk verstrekken van valse informatie aan een stafflid of het negeren van directe instructies tijdens een onderzoek.",
-                punish: "3 dagen ban.",
-                steps: "Maak screenshots van de chat. Noteer de naam van het stafflid dat misleid is. Check logs.",
-                cmd: "/ban [speler] 3d Artikel 1 - Misleiding"
+            { 
+                id: 1, 
+                title: "Staff Misleiding", 
+                desc: "Het opzettelijk verstrekken van onjuiste informatie aan een stafflid.", 
+                punish: "1e: 3d Ban | 2e: 7d Ban | 3e: 14d Ban", 
+                evidence: "Screenshots van chat of Discord gesprekken.", 
+                caution: "Kijk uit voor taalbarrières of oprechte onwetendheid.",
+                cmd: "/ban [speler] 3d Artikel 1"
             },
-            {
-                id: 2, title: "DDoS Dreigementen",
-                desc: "Het dreigen met het platleggen van het netwerk of de verbinding van een individuele speler, ongeacht of dit serieus is.",
-                punish: "Onmiddellijke BLACKLIST.",
-                steps: "Direct Admin inschakelen. IP-logs veiligstellen. Screenshot chat direct.",
-                cmd: "/blacklist [speler] Artikel 2 - Veiligheid"
+            { 
+                id: 2, 
+                title: "DDoS / Network Threats", 
+                desc: "Dreigen met of uitvoeren van aanvallen op het netwerk of individuen.", 
+                punish: "1e: BLACKLIST", 
+                evidence: "Direct bewijs van dreigement of IP-logs.", 
+                caution: "Altijd direct escaleren naar Beheer.",
+                cmd: "/blacklist [speler] Artikel 2"
             },
-            {
-                id: 3, title: "Doxing / Privacy",
-                desc: "Het openbaren van privégegevens (naam, adres, IP, foto's) van anderen zonder expliciete toestemming.",
-                punish: "Onmiddellijke BLACKLIST.",
-                steps: "Verwijder berichten direct. Sla bewijs op. Overleg met Beheer.",
-                cmd: "/blacklist [speler] Artikel 3 - Privacy"
+            { 
+                id: 3, 
+                title: "Doxing / Privacy", 
+                desc: "Het openbaar maken van privégegevens van derden zonder toestemming.", 
+                punish: "1e: BLACKLIST", 
+                evidence: "Screenshots van de gelekte info.", 
+                caution: "Verwijder de info direct uit de chat.",
+                cmd: "/blacklist [speler] Artikel 3"
             },
-            {
-                id: 4, title: "Cheating / Hacks",
-                desc: "Gebruik van KillAura, Fly, X-Ray of andere externe software voor een oneerlijk voordeel tegenover spelers.",
-                punish: "1e: 14d | 2e: 30d | 3e: PERM BAN.",
-                steps: "Video-opname van minimaal 30 seconden is verplicht. Let op onnatuurlijke bewegingen.",
-                cmd: "/ban [speler] 14d Artikel 4 - Cheating"
+            { 
+                id: 4, 
+                title: "Cheating / Hacks", 
+                desc: "Gebruik van externe software voor oneerlijk voordeel (Fly, KillAura, X-Ray).", 
+                punish: "1e: 14d Ban | 2e: 30d Ban | 3e: PERM", 
+                evidence: "Minimaal 30 seconden video-opname.", 
+                caution: "Let op 'Ghost blocks' of server lag die op hacks lijken.",
+                cmd: "/ban [speler] 14d Artikel 4"
             },
-            {
-                id: 5, title: "Bug / Glitch Abuse",
-                desc: "Het herhaaldelijk gebruiken van fouten in de game, plugins of wereld voor eigen gewin of voordeel.",
-                punish: "1e: 14d ban | 2e: 30d ban.",
-                steps: "Maak bewijs van de exploit. Check de impact op de server economie.",
-                cmd: "/ban [speler] 14d Artikel 5 - Exploiting"
+            { 
+                id: 5, 
+                title: "Bug / Glitch Abuse", 
+                desc: "Het misbruiken van fouten in de server of plugins.", 
+                punish: "1e: 14d Ban | 2e: 30d Ban", 
+                evidence: "Video van de exploit.", 
+                caution: "Eenmalig per ongeluk? Waarschuwen.",
+                cmd: "/ban [speler] 14d Artikel 5"
             },
-            {
-                id: 6, title: "Reclame",
-                desc: "Het promoten van andere Minecraft servers, commerciële links of Discord servers.",
-                punish: "7 dagen mute.",
-                steps: "Link censureren. Bij herhaling ban door Senior.",
-                cmd: "/mute [speler] 7d Artikel 6 - Reclame"
+            { 
+                id: 6, 
+                title: "Reclame", 
+                desc: "Het promoten van andere Minecraft servers of diensten.", 
+                punish: "1e: 7d Mute | 2e: Perm Mute", 
+                evidence: "Screenshot van de link/naam.", 
+                caution: "Social media van spelers is vaak toegestaan.",
+                cmd: "/mute [speler] 7d Artikel 6"
             },
-            {
-                id: 7, title: "Ban Evading",
-                desc: "Het omzeilen van een actieve ban door gebruik te maken van een alternatief account.",
-                punish: "BLACKLIST van alle accounts.",
-                steps: "IP-Check uitvoeren met /checkip. Bewijs verzamelen van link tussen accounts.",
-                cmd: "/blacklist [speler] Artikel 7 - Evading"
+            { 
+                id: 7, 
+                title: "Ban Evading", 
+                desc: "Inloggen op een ander account terwijl je hoofdaccount geband is.", 
+                punish: "1e: BLACKLIST Alts", 
+                evidence: "IP Match via /checkip.", 
+                caution: "Check of het geen broertje/zusje op hetzelfde IP is.",
+                cmd: "/blacklist [alt] Artikel 7"
             },
-            {
-                id: 8, title: "Trapping",
-                desc: "Het lokken van spelers in situaties waar ze onmogelijk kunnen ontsnappen of direct sterven (bv. lava traps).",
-                punish: "1e: 3d ban | 2e: 7d ban.",
-                steps: "Teleporteer naar locatie. Video maken van de trap. Trap verwijderen.",
-                cmd: "/ban [speler] 3d Artikel 8 - Trapping"
+            { 
+                id: 8, 
+                title: "Trapping", 
+                desc: "Spelers lokken in een val waar ze niet uit kunnen zonder dood te gaan.", 
+                punish: "1e: 3d Ban | 2e: 7d Ban", 
+                evidence: "Video/Screenshots van de trap.", 
+                caution: "Vallen in oorlogstijd zijn vaak wel toegestaan.",
+                cmd: "/ban [speler] 3d Artikel 8"
             },
-            {
-                id: 9, title: "Grieving",
-                desc: "Het moedwillig slopen van bouwwerken van anderen, ook buiten claims indien overduidelijk kwaadwillend.",
-                punish: "7d tot 30d afhankelijk van schaal.",
-                steps: "Gebruik /co inspect om de dader te vinden. Rollback uitvoeren na bewijs.",
-                cmd: "/ban [speler] 7d Artikel 9 - Grieving"
+            { 
+                id: 9, 
+                title: "Grieving", 
+                desc: "Het slopen van bouwwerken van andere spelers.", 
+                punish: "1e: 7d Ban | 2e: 30d Ban", 
+                evidence: "/co i logs van de dader.", 
+                caution: "Kijk of de speler niet toegevoegd was aan de claim.",
+                cmd: "/ban [speler] 7d Artikel 9"
             },
-            {
-                id: 10, title: "Kanaal Misbruik",
-                desc: "Spammen in HelpOp, Non-RP praten in de ! chat of handelen buiten de $ chat.",
-                punish: "6 uur mute.",
-                steps: "Geef 1 officiële waarschuwing. Bij negeren: mute uitvoeren.",
-                cmd: "/mute [speler] 6h Artikel 10 - Chat Abuse"
+            { 
+                id: 10, 
+                title: "Kanaal Misbruik", 
+                desc: "Spammen, Caps-lock misbruik of verkeerd kanaalgebruik.", 
+                punish: "1e: Warn | 2e: 6u Mute | 3e: 24u Mute", 
+                evidence: "Screenshots van de chat.", 
+                caution: "Wees tolerant bij enthousiasme.",
+                cmd: "/mute [speler] 6h Artikel 10"
             },
-            {
-                id: 11, title: "Illegale Aanval",
-                desc: "Het aanvallen van een kingdom zonder oorlogsverklaring of buiten de afgesproken oorlogstijden.",
-                punish: "1e: 3d | 2e: 7d | 3e: 14d ban.",
-                steps: "Check oorlogsstatus in Discord. Screenshot combat-logs.",
-                cmd: "/ban [speler] 3d Artikel 11 - Illegal Attack"
+            { 
+                id: 11, 
+                title: "Illegale Aanval", 
+                desc: "Aanvallen van een Kingdom buiten de afgesproken oorlogstijden.", 
+                punish: "1e: 3d Ban | 2e: 7d Ban", 
+                evidence: "Combat logs / Discord logs.", 
+                caution: "Check altijd of er een 'Border Skirmish' was.",
+                cmd: "/ban [speler] 3d Artikel 11"
             },
-            {
-                id: 12, title: "PvP Loggen",
-                desc: "Het verlaten van de server terwijl je in gevecht bent om de dood of verlies van spullen te voorkomen.",
-                punish: "1e: 3d ban | 2e+: 7d ban.",
-                steps: "Bekijk combat-logs. Indien speler niet terugkomt binnen 5 min: ban.",
-                cmd: "/ban [speler] 3d Artikel 12 - Combat Log"
+            { 
+                id: 12, 
+                title: "PvP Loggen", 
+                desc: "Uitloggen tijdens een gevecht om dood te voorkomen.", 
+                punish: "1e: 3d Ban | 2e: 7d Ban", 
+                evidence: "Video van het gevecht + uitloggen.", 
+                caution: "Check of de server niet crashte op dat moment.",
+                cmd: "/ban [speler] 3d Artikel 12"
             },
-            {
-                id: 13, title: "Ijstunnel Sabotage",
-                desc: "Het plaatsen van obstakels in ijstunnels die bedoeld zijn voor snel transport.",
-                punish: "1e: 1d ban | 2e+: 3d ban.",
-                steps: "Obstakels verwijderen. Check wie ze geplaatst heeft via CoreProtect.",
-                cmd: "/ban [speler] 1d Artikel 13 - Sabotage"
+            { 
+                id: 13, 
+                title: "Sabotage", 
+                desc: "Het blokkeren van ijs-wegen of andere publieke infrastructuur.", 
+                punish: "1e: 1d Ban | 2e: 3d Ban", 
+                evidence: "/co i logs van de blokken.", 
+                caution: "Check of het geen ongeluk was.",
+                cmd: "/ban [speler] 1d Artikel 13"
             },
-            {
-                id: 14, title: "Inbouwen",
-                desc: "Het volledig insluiten van jezelf of de tegenstander tijdens een PvP gevecht (Box-PvP).",
-                punish: "1e: 1d ban | 2e+: 3d ban.",
-                steps: "Alleen straffen als het gevecht hierdoor volledig gestopt wordt.",
-                cmd: "/ban [speler] 1d Artikel 14 - Inbouwen"
+            { 
+                id: 14, 
+                title: "Inbouwen", 
+                desc: "Jezelf of anderen volledig inbouwen tijdens PvP gevechten.", 
+                punish: "1e: 1d Ban | 2e: 3d Ban", 
+                evidence: "Screenshots/Video van de actie.", 
+                caution: "Box-PvP tactieken zijn beperkt toegestaan.",
+                cmd: "/ban [speler] 1d Artikel 14"
             },
-            {
-                id: 15, title: "Item Transfer",
-                desc: "Spullen van het ene account naar het andere overzetten om limieten of bans te omzeilen.",
-                punish: "14 dagen ban + Inv Clear.",
-                steps: "Admin inschakelen voor inventaris clear. Chest-logs checken.",
-                cmd: "/ban [speler] 14d Artikel 15 - Alt Trading"
+            { 
+                id: 15, 
+                title: "Item Transfer", 
+                desc: "Items overzetten naar alts om een ban of dood te ontwijken.", 
+                punish: "1e: 14d Ban + InvClear", 
+                evidence: "Inventory logs / Trade logs.", 
+                caution: "Cadeautjes geven mag natuurlijk wel.",
+                cmd: "/ban [speler] 14d Artikel 15"
             },
-            {
-                id: 16, title: "Kingdom Alten",
-                desc: "Het hebben van een secundair account in een ander kingdom dan je hoofdaccount.",
-                punish: "Alt: Perm ban | Main: +7 dagen ban.",
-                steps: "Match IP's. Kick alt uit het kingdom. Noteer op main account.",
-                cmd: "/ban [alt] perm Artikel 16 - Spionage"
+            { 
+                id: 16, 
+                title: "Kingdom Alten", 
+                desc: "Een alt-account hebben in een ander Kingdom dan je hoofdaccount.", 
+                punish: "Alt: PERM | Main: +7d Ban", 
+                evidence: "IP Check + Kingdom check.", 
+                caution: "Spying is toegestaan, maar niet via alts.",
+                cmd: "/ban [alt] perm Artikel 16"
             },
-            {
-                id: 17, title: "Toxic Gedrag",
-                desc: "Ernstige pesterijen, racistische uitingen of schelden met dodelijke ziektes.",
-                punish: "12u tot 24u mute.",
-                steps: "Direct screenshot maken. Geen discussie aangaan in chat.",
-                cmd: "/mute [speler] 12h Artikel 17 - Toxiciteit"
+            { 
+                id: 17, 
+                title: "Toxic Gedrag", 
+                desc: "Ernstig schelden, discriminatie of racistische uitlatingen.", 
+                punish: "1e: 12u Mute | 2e: 3d Ban | 3e: PERM", 
+                evidence: "Screenshots van de uitspraken.", 
+                caution: "Nul-tolerantie voor racisme.",
+                cmd: "/mute [speler] 12h Artikel 17"
             }
         ];
 
         /**
-         * PART 3: STAFF DATA
+         * COMMAND DATA
          */
-        const TEAM_DATA = [
-            { rank: "Beheer", color: "var(--rank-beheer)", members: [{n:"Binnenlander", p:"Owner"}] },
-            { rank: "Admin", color: "var(--rank-admin)", members: [{n:"Shaykuhh", p:"Admin"}, {n:"Penpijn", p:"Admin"}] },
-            { rank: "Senior Staff", color: "var(--rank-senior)", members: [{n:"Noootjee", p:"Senior"}, {n:"BjornNL", p:"Senior"}, {n:"Peanerd", p:"Senior"}] },
-            { rank: "Staff", color: "var(--rank-staff)", members: [
-                {n:"ItssAyden", p:"Staff"},{n:"Koningbitterbal", p:"Staff"},{n:"Annewannn", p:"Staff"},
-                {n:"Clashermike", p:"Staff"},{n:"ItssGirav", p:"Staff"},{n:"Odsko", p:"Staff"}
-            ]}
+        const CMD_DATA = [
+            { c: "/co i", d: "CoreProtect Inspectie - Check blok historiek.", r: "Staff" },
+            { c: "/v", d: "Vanish - Onzichtbaar worden voor spelers.", r: "Staff" },
+            { c: "/invsee [naam]", d: "Bekijk de inventory van een speler.", r: "Staff" },
+            { c: "/checkip [naam]", d: "Check IP adres en gekoppelde alts.", r: "Senior" },
+            { c: "/co rollback [t] [r]", d: "Draai griefing terug (t=tijd, r=radius).", r: "Senior" },
+            { c: "/tempban [n] [t] [r]", d: "Verban een speler voor een bepaalde tijd.", r: "Senior" },
+            { c: "/mute [n] [t] [r]", d: "Mute een speler voor een bepaalde tijd.", r: "Staff" },
+            { c: "/socialspy", d: "Lees privéberichten van spelers mee.", r: "Staff" },
+            { c: "/tp [naam]", d: "Teleporteer naar een speler.", r: "Staff" },
+            { c: "/jail [naam]", d: "Stuur een speler naar de gevangenis.", r: "Staff" }
         ];
 
         /**
-         * PART 4: RENDERING ENGINE
+         * TEAM DATA
          */
-        function initPortal() {
-            // Render Hierarchy
-            const hierTarget = document.getElementById('hierarchy-render');
-            HIERARCHY_DATA.forEach(h => {
-                const card = `
-                    <div class="rkd-card" style="--rank-color: ${h.color}">
-                        <h3>${h.rank}</h3>
-                        <ul class="bullet-list">
-                            ${h.items.map(i => `<li>${i}</li>`).join('')}
-                        </ul>
-                        ${h.restriction ? `<div class="badge-restriction"><span>Restrictie</span><p>${h.restriction}</p></div>` : ''}
+        const TEAM_DATA = [
+            { r: "Beheer", c: "var(--rank-beheer)", m: ["Binnenlander"] },
+            { r: "Admin", c: "var(--rank-admin)", m: ["Shaykuhh", "Penpijn"] },
+            { r: "Senior Staff", c: "var(--rank-senior)", m: ["Noootjee", "BjornNL", "Peanerd"] },
+            { r: "Staff", c: "var(--rank-staff)", m: ["ItssAyden", "Koningbitterbal", "Annewannn", "Clashermike", "ItssGirav", "Odsko"] }
+        ];
+
+        /**
+         * RENDER FUNCTIONS
+         */
+        function initializePortal() {
+            // Render Hier
+            const hierWrap = document.getElementById('hier-container');
+            HIER_DATA.forEach(h => {
+                hierWrap.innerHTML += `
+                    <div class="rkd-card">
+                        <span class="staff-rank" style="background:${h.c}">${h.r}</span>
+                        <h4 style="margin: 15px 0 10px;">Taken</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-body);">${h.t}</p>
+                        <hr style="margin: 15px 0; border:0; border-top: 1px solid #f1f5f9;">
+                        <p style="font-size: 0.8rem;"><b>Perms:</b> ${h.p}</p>
+                        <p style="font-size: 0.8rem; color: var(--danger); margin-top:5px;"><b>Beperking:</b> ${h.l}</p>
                     </div>
                 `;
-                hierTarget.innerHTML += card;
             });
 
             // Render Law
-            const lawTarget = document.getElementById('law-render');
+            const lawWrap = document.getElementById('law-container');
             LAW_DATA.forEach(l => {
-                const item = document.createElement('div');
-                item.className = 'law-item';
-                item.innerHTML = `
-                    <div class="law-trigger" onclick="toggleLaw(this)">
-                        <h4>Art. ${l.id} - ${l.title}</h4>
-                        <div class="law-icon"></div>
-                    </div>
-                    <div class="law-body">
-                        <div class="law-content">
-                            <p>${l.desc}</p>
-                            <div class="law-meta-grid">
-                                <div class="meta-box warning">
-                                    <h5>Sanctie</h5>
-                                    <p>${l.punish}</p>
-                                </div>
-                                <div class="meta-box success">
-                                    <h5>Procedure</h5>
-                                    <p>${l.steps}</p>
-                                </div>
+                lawWrap.innerHTML += `
+                    <div class="law-item">
+                        <div class="law-header" onclick="toggleLaw(this)">
+                            <div class="law-title-box">
+                                <div class="law-num">${l.id}</div>
+                                <div class="law-title">${l.title}</div>
                             </div>
-                            <div class="command-line">
-                                <code>${l.cmd}</code>
+                            <div style="font-size: 0.75rem; font-weight: 800; color: var(--danger);">${l.punish.split('|')[0]}</div>
+                        </div>
+                        <div class="law-body">
+                            <div class="law-content-padding">
+                                <div class="law-sub-box"><h4>Beschrijving</h4><p>${l.desc}</p></div>
+                                <div class="law-sub-box"><h4>Bewijslast</h4><p>${l.evidence}</p></div>
+                                <div class="law-sub-box"><h4>Staff Let Op</h4><p>${l.caution}</p></div>
+                                <div class="cmd-display"><code>${l.cmd}</code><span>SYSTEEM SYNC</span></div>
+                                <table class="punish-table">
+                                    <thead><tr><th>Overtreding</th><th>Sanctie</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>Eerste keer</td><td>${l.punish.split('|')[0] || '-'}</td></tr>
+                                        <tr><td>Tweede keer</td><td>${l.punish.split('|')[1] || 'PERM'}</td></tr>
+                                        <tr><td>Derde keer</td><td>${l.punish.split('|')[2] || 'PERM'}</td></tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 `;
-                lawTarget.appendChild(item);
+            });
+
+            // Render Commands
+            const cmdWrap = document.getElementById('cmd-body');
+            CMD_DATA.forEach(c => {
+                cmdWrap.innerHTML += `
+                    <tr>
+                        <td><code>${c.c}</code></td>
+                        <td>${c.d}</td>
+                        <td><span style="font-size:0.7rem; font-weight:800; color:var(--primary);">${c.r}</span></td>
+                    </tr>
+                `;
             });
 
             // Render Team
-            const teamTarget = document.getElementById('team-render');
-            TEAM_DATA.forEach(group => {
+            const teamWrap = document.getElementById('team-container');
+            TEAM_DATA.forEach(g => {
                 const section = document.createElement('div');
-                section.innerHTML = `
-                    <h3 class="staff-group-title" style="color: ${group.color}">${group.rank}</h3>
-                    <div class="staff-flex">
-                        ${group.members.map(m => `
-                            <div class="staff-profile" style="--rank-color: ${group.color}">
-                                <img src="https://mc-heads.net/body/${m.n}/right">
-                                <h4>${m.n}</h4>
-                                <p>${m.p}</p>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                teamTarget.appendChild(section);
+                section.innerHTML = `<h2 style="font-family:'Cinzel Decorative'; margin: 40px 0 20px; color:${g.c}">${g.r}</h2>`;
+                const grid = document.createElement('div');
+                grid.className = 'staff-grid';
+                g.m.forEach(name => {
+                    grid.innerHTML += `
+                        <div class="staff-card">
+                            <img src="https://mc-heads.net/body/${name}/right">
+                            <div class="staff-name">${name}</div>
+                            <span class="staff-rank" style="background:${g.c}">${g.r}</span>
+                        </div>
+                    `;
+                });
+                section.appendChild(grid);
+                teamWrap.appendChild(section);
             });
         }
 
         /**
-         * PART 5: UI & ANIMATION LOGIC
+         * UI CONTROLS
          */
-        function navTo(viewId) {
-            const views = document.querySelectorAll('.view-section');
-            const btns = document.querySelectorAll('.nav-item');
+        function showView(id) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('view-' + id).classList.add('active');
             
-            views.forEach(v => {
-                v.style.opacity = '0';
-                v.style.transform = 'translateY(20px)';
-                setTimeout(() => v.classList.remove('active'), 300);
-            });
-
-            setTimeout(() => {
-                const activeView = document.getElementById(viewId);
-                activeView.classList.add('active');
-                setTimeout(() => {
-                    activeView.style.opacity = '1';
-                    activeView.style.transform = 'translateY(0)';
-                }, 50);
-            }, 300);
-
-            btns.forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + viewId).classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Set title
+            const titles = { dash: "Operations Dashboard", hier: "Staff Matrix", law: "Het Wetboek", cmds: "Command Wiki", proc: "Procedures", rijken: "De 6 Rijken", team: "Staffteam" };
+            document.getElementById('view-title').innerText = titles[id];
+            
+            // Set active btn
+            event.currentTarget.classList.add('active');
         }
 
         function toggleLaw(el) {
             const parent = el.parentElement;
             const isOpen = parent.classList.contains('open');
-            
-            // Close others
-            document.querySelectorAll('.law-item').forEach(item => item.classList.remove('open'));
-            
-            if (!isOpen) {
-                parent.classList.add('open');
-            }
-        }
-
-        window.onscroll = () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) nav.classList.add('scrolled');
-            else nav.classList.remove('scrolled');
-        };
-
-        // AMBIENT CANVAS
-        const canvas = document.getElementById('canvas-ambient');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        window.onresize = resize;
-        resize();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.s = Math.random() * 2;
-                this.v = Math.random() * 0.5;
-            }
-            draw() {
-                this.y -= this.v;
-                if (this.y < -10) this.y = canvas.height + 10;
-                ctx.fillStyle = "rgba(255, 215, 0, 0.2)";
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.s, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        for (let i = 0; i < 100; i++) particles.push(new Particle());
-
-        function loop() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => p.draw());
-            requestAnimationFrame(loop);
+            document.querySelectorAll('.law-item').forEach(i => i.classList.remove('open'));
+            if (!isOpen) parent.classList.add('open');
         }
 
         // START
-        initPortal();
-        loop();
+        window.onload = initializePortal;
 
-        console.log("RKD Staff Portal v6.0 Initialized...");
-        console.log("Total Articles: " + LAW_DATA.length);
     </script>
 </body>
 </html>
