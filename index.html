@@ -1,22 +1,19 @@
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+
     /* --- 1. NAVIGATION SYSTEM --- */
     function nav(id) {
         const current = document.querySelector('.view.active');
         const target = document.getElementById(id);
         const buttons = document.querySelectorAll('.nav-btn');
 
+        if (!target) return;
+
         if (current) {
-            current.style.opacity = '0';
-            current.style.transform = 'translateY(-20px) scale(0.98)';
-            setTimeout(() => {
-                current.classList.remove('active');
-                target.classList.add('active');
-                setTimeout(() => {
-                    target.style.opacity = '1';
-                    target.style.transform = 'translateY(0) scale(1)';
-                }, 50);
-            }, 400);
+            current.classList.remove('active');
         }
+
+        target.classList.add('active');
 
         buttons.forEach(b => {
             b.classList.remove('active');
@@ -26,10 +23,13 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    window.nav = nav;
+
     window.addEventListener('scroll', () => {
-        const nav = document.getElementById('navbar');
-        if (window.scrollY > 50) nav.classList.add('scrolled');
-        else nav.classList.remove('scrolled');
+        const navBar = document.getElementById('navbar');
+        if (!navBar) return;
+        if (window.scrollY > 50) navBar.classList.add('scrolled');
+        else navBar.classList.remove('scrolled');
     });
 
     /* --- 2. LAW ACCORDION ENGINE --- */
@@ -41,36 +41,38 @@
         { art: 5, t: "Exploiting", d: "Misbruik maken of het niet melden van een bug/glitch.", p: "1st: 14d | 2nd: 1m" },
         { art: 6, t: "Reclame", d: "Reclame maken voor andere Minecraft servers of diensten.", p: "First: 7 dagen mute" },
         { art: 7, t: "Ban Evading", d: "Het omzeilen van een ban met een ander account.", p: "BLACKLIST" },
-        { art: 8, t: "Trapping", d: "Het lokken of doden van spelers in een ontworpen trap.", p: "1st: 3d | 2nd: 7d (Maker & Uitvoerder)" },
-        { art: 9, t: "Grieving", d: "Het moedwillig slopen van andermans bouwwerken.", p: "Kleine grief: 7d | Middel: 14d | Groot: 1m" },
-        { art: 10, t: "Kanaal Misbruik", d: "Non-Roleplay, Non-Trade of HelpOp misbruik.", p: "First: 6 uur mute" },
-        { art: 11, t: "Illegale Aanval", d: "Het aanvallen van kingdoms zonder geldige reden of toestemming.", p: "1st: 3d | 2nd: 7d | 3rd+: 14d" },
-        { art: 12, t: "PvP Loggen", d: "Uitloggen tijdens of vlak na een PvP gevecht.", p: "1st: 3d | 2nd+: 7d" },
-        { art: 13, t: "Sabotage", d: "Plaatsen van cobwebs of lava in een ijstunnel.", p: "1st: 1d | 2nd+: 3d" },
-        { art: 14, t: "Inbouwen", d: "Het inbouwen van anderen of jezelf tijdens gevechten.", p: "1st: 1d | 2nd+: 3d" },
-        { art: 15, t: "Item Transfer", d: "Overzetten van spullen tussen verschillende accounts.", p: "14 dagen ban + Inventaris Clear" },
-        { art: 16, t: "Alten", d: "Het hebben van alt-accounts in een ander kingdom dan je main.", p: "Alt: PERM | Main: +7 dagen extra ban" },
-        { art: 17, t: "Toxic Gedrag", d: "Toxic gedrag of schelden met ernstige ziektes.", p: "1st: 12u mute | 2nd+: 24u mute" }
+        { art: 8, t: "Trapping", d: "Het lokken of doden van spelers in een ontworpen trap.", p: "1st: 3d | 2nd: 7d" },
+        { art: 9, t: "Grieving", d: "Het moedwillig slopen van andermans bouwwerken.", p: "7d - 1m" },
+        { art: 10, t: "Kanaal Misbruik", d: "Non-Roleplay of HelpOp misbruik.", p: "6 uur mute" },
+        { art: 11, t: "Illegale Aanval", d: "Aanvallen zonder geldige reden.", p: "3d - 14d" },
+        { art: 12, t: "PvP Loggen", d: "Uitloggen tijdens PvP.", p: "3d - 7d" },
+        { art: 13, t: "Sabotage", d: "Cobwebs/lava in ijstunnel.", p: "1d - 3d" },
+        { art: 14, t: "Inbouwen", d: "Inbouwen tijdens gevechten.", p: "1d - 3d" },
+        { art: 15, t: "Item Transfer", d: "Spullen overzetten tussen accounts.", p: "14d + Clear" },
+        { art: 16, t: "Alten", d: "Alt in ander kingdom.", p: "PERM" },
+        { art: 17, t: "Toxic Gedrag", d: "Ernstig toxic gedrag.", p: "12u - 24u mute" }
     ];
 
     const lawBox = document.getElementById('law-engine');
-    laws.forEach(l => {
-        const artEl = document.createElement('div');
-        artEl.className = 'article';
-        artEl.innerHTML = `
-            <div class="article-head" onclick="this.parentElement.classList.toggle('open')">
-                <h4>Art. ${l.art} - ${l.t}</h4>
-                <div class="article-toggle"></div>
-            </div>
-            <div class="article-body">
-                <p class="art-desc">${l.d}</p>
-                <div class="art-punishment">${l.p}</div>
-            </div>
-        `;
-        lawBox.appendChild(artEl);
-    });
+    if (lawBox) {
+        laws.forEach(l => {
+            const artEl = document.createElement('div');
+            artEl.className = 'article';
+            artEl.innerHTML = `
+                <div class="article-head" onclick="this.parentElement.classList.toggle('open')">
+                    <h4>Art. ${l.art} - ${l.t}</h4>
+                    <div class="article-toggle"></div>
+                </div>
+                <div class="article-body">
+                    <p class="art-desc">${l.d}</p>
+                    <div class="art-punishment">${l.p}</div>
+                </div>
+            `;
+            lawBox.appendChild(artEl);
+        });
+    }
 
-    /* --- 3. STAFF RENDERING ENGINE --- */
+    /* --- 3. STAFF ENGINE --- */
     const teamData = [
         { 
             r: "Beheer", 
@@ -116,69 +118,25 @@
     ];
 
     const teamBox = document.getElementById('team-engine');
-    teamData.forEach(group => {
-        const section = document.createElement('div');
-        section.className = 'staff-section';
-        section.innerHTML = `
-            <h3 class="staff-title" style="color:${group.c}">${group.r}</h3>
-            <div class="skin-flex">
-                ${group.m.map(member => `
-                    <div class="skin-card" style="--r-color:${group.c}; --r-rgb:${group.rgb}">
-                        <img src="https://mc-heads.net/body/${member.n}/right" alt="${member.n}">
-                        <h3>${member.n}</h3>
-                        <p style="color:${group.c}">${member.p}</p>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-        teamBox.appendChild(section);
-    });
-
-    /* --- 4. PARTICLE VISUALIZER --- */
-    const canvas = document.getElementById('render-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.onresize = resize;
-    resize();
-
-    class Particle {
-        constructor() { this.init(); }
-        init() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2 + 0.5;
-            this.speedX = Math.random() * 0.5 - 0.25;
-            this.speedY = Math.random() * 0.5 - 0.25;
-            this.alpha = Math.random() * 0.5 + 0.1;
-        }
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
-            if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
-        }
-        draw() {
-            ctx.fillStyle = `rgba(255, 215, 0, ${this.alpha})`;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    for (let i = 0; i < 100; i++) particles.push(new Particle());
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-            p.update();
-            p.draw();
+    if (teamBox) {
+        teamData.forEach(group => {
+            const section = document.createElement('div');
+            section.className = 'staff-section';
+            section.innerHTML = `
+                <h3 class="staff-title" style="color:${group.c}">${group.r}</h3>
+                <div class="skin-flex">
+                    ${group.m.map(member => `
+                        <div class="skin-card" style="--r-color:${group.c}; --r-rgb:${group.rgb}">
+                            <img src="https://mc-heads.net/body/${member.n}/right" alt="${member.n}">
+                            <h3>${member.n}</h3>
+                            <p style="color:${group.c}">${member.p}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            teamBox.appendChild(section);
         });
-        requestAnimationFrame(animate);
     }
-    animate();
+
+});
 </script>
